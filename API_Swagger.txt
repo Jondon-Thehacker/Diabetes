@@ -1,0 +1,229 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "1.0.0"
+  title: "Diabetes Management System"
+ 
+host: "localhost:8080"
+basePath: "/api/v1"
+
+schemes:
+- "http"
+
+paths:
+  /Doctors/{DoctorID}/patients:
+    get:
+      summary: "Returns all patients of the doctor"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      responses:
+        "200":
+          description: "the list of patients of the doctor"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Patient"
+              
+  /Doctors/{DoctorID}/patients/{patientID}:
+    get:
+      summary: "Returns the specific patient"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "patientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      responses:
+        "200":
+          description: "the patient of the doctor"
+          schema:
+              $ref: "#/definitions/Patient"
+  
+  /Doctors/{DoctorID}/{PatientID}/{DataType}:
+    get:
+      summary: "Returns all the data of the chosen type"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      - in: "path"
+        name: "DataType"
+        type: "string"
+        description: "Name of the datatype"
+        required: true
+      responses:
+        "200":
+          description: "The requested data"
+          schema: 
+              type: "array"
+              items:
+                $ref: "#/definitions/Data"
+                
+  /Doctors/{DoctorID}/{PatientID}/{DataType}/{StartDate}/{EndDate}:
+    get:
+      summary: "Returns all the data of the chosen type within the specified date interval"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      - in: "path"
+        name: "DataType"
+        type: "string"
+        description: "Name of the datatype"
+        required: true
+      - in: "path"
+        name: "StartDate"
+        type: "string"
+        description: "The start date of the requested time interval"
+        required: true
+      - in: "path"
+        name: "EndDate"
+        type: "string"
+        description: "The end date of the requested time interval"
+        required: true
+      responses:
+        "200":
+          description: "The requested data in the given time interval"
+          schema: 
+              type: "array"
+              items:
+                $ref: "#/definitions/Data"
+                
+  /Doctors/{DoctorID}/{PatientID}/Notes:
+    post: 
+      summary: "Posts a note to the given patient"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      - in: "body"
+        name: "note"
+        description: "The note to be posted"
+        required: true
+        schema:
+          $ref: "#/definitions/Note"
+      responses:
+        "200":
+          description: "Note correctly added"
+    get:
+      summary: "Returns all notes for a given patient"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      responses:
+        "200":
+          description: "The list of all notes"
+          schema: 
+              type: "array"
+              items:
+                $ref: "#/definitions/Note"
+                
+  /Doctors/{DoctorID}/{PatientID}/Notes/{NoteDate}:
+    delete:
+      summary: "Delete a note"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      - in: "path"
+        name: "NoteDate"
+        type: "string"
+        description: "The date the note was written"
+        required: true
+      responses:
+        "204":
+          description: "The note has been deleted"
+
+definitions:
+  Patient:
+    type: "object"
+    properties: 
+      id: 
+        type: "integer"
+      name: 
+        type: "string"
+      birth:
+        type: "string"
+  Doctor:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+  Data:
+    type: "object"
+    properties:
+      value:
+        type: "integer"
+      date:
+        type: "string"
+  Note: 
+    type: "object"
+    properties:
+      note:
+        type: "string"
+      date: 
+        type: "string"
+      patientId: 
+        type: "integer" #dette skal referere til den specifikke patients id
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
