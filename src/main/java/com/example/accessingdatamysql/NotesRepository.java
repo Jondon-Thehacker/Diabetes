@@ -1,6 +1,8 @@
 package com.example.accessingdatamysql;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface NotesRepository extends CrudRepository<Notes, Long > {
+@Repository
+public interface NotesRepository extends CrudRepository<Notes, NotesId > {
 }
