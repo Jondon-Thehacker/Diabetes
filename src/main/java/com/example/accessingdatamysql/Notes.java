@@ -21,6 +21,11 @@ public class Notes {
     @JoinColumn(name = "patientId")
     private Patient patient;
 
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "doctorId")
+    private Doctor doctor;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

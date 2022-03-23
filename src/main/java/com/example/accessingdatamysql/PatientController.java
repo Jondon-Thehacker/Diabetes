@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(path = "/Patient")
+@CrossOrigin
 public class PatientController {
 
     @Autowired
@@ -28,9 +28,9 @@ public class PatientController {
         return "Patient Created";
     }
     */
-
-    @GetMapping("/Doctors/{doctorId}/patients")
-    public ResponseEntity<List<Patient>> getAllPatients(@PathVariable Long doctorId) {
+    //Returns all patients of the doctor.
+    @GetMapping("/api/v1/Doctors/{doctorId}/patients")
+    public ResponseEntity<List<SimplePatient>> getAllPatients(@PathVariable Long doctorId) {
         Optional<Doctor> d = doctorRepository.findById(doctorId);
         if(d.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -38,8 +38,8 @@ public class PatientController {
         return ResponseEntity.ok(d.get().getPatients());
     }
 
-
-    @GetMapping("Doctors/{doctorId}/patients/{patientId}")
+    //Returns the specific patient.
+    @GetMapping("/api/v1/Doctors/{doctorId}/patients/{patientId}")
     public ResponseEntity<Patient> getPatient(@PathVariable Long doctorId, @PathVariable Long patientId){
         Optional<Doctor> d = doctorRepository.findById(doctorId);
         Optional<Patient> p = patientRepository.findById(patientId);

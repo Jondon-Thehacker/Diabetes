@@ -5,11 +5,16 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class MeasurementId implements Serializable {
-    private String measurementName;
+    private Measurement.MeasurementName measurementName;
     private int time;
     private Patient patient;
 
-    public MeasurementId (String measurementName, int time, Patient patient){
+    public MeasurementId (){
+
+
+    }
+
+    public MeasurementId (Measurement.MeasurementName measurementName, int time, Patient patient){
         this.measurementName = measurementName;
         this.time = time;
         this.patient = patient;

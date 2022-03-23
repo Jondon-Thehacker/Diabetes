@@ -4,13 +4,13 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "patient")
 public class Patient {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="patientId")
     private Long patientId;
     private String patientName;
@@ -79,8 +79,13 @@ public class Patient {
         this.measurements.add(measurement);
     }
 
-    public List<Doctor> getDoctors() {
-        return doctors;
+    public List<Long> getDoctors() {
+        return doctors.stream().map(d -> d.getDoctorId()).collect(Collectors.toList());
+    }
+
+    public List<SimpleMeasurement> getMeasurementOfType(String type){
+        return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).map(m -> new SimpleMeasurement(m.getTime(), m.getValue())).collect(Collectors.toList());
+
     }
 
     public void setDoctors(List<Doctor> doctors) {

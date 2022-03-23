@@ -1,16 +1,14 @@
 package com.example.accessingdatamysql;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "doctor")
 public class Doctor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long doctorId;
     private String doctorName;
     private String hospital;
@@ -19,10 +17,13 @@ public class Doctor {
     @ManyToMany(cascade = { CascadeType.ALL })  //TODO: added mappedBy
     @JoinTable(
             name = "Assignment",
-            joinColumns = { @JoinColumn(name = "patientId")},
-            inverseJoinColumns = { @JoinColumn(name = "doctorId") }
+            joinColumns = { @JoinColumn(name = "doctorId")},
+            inverseJoinColumns = { @JoinColumn(name = "patientId") }
     )
     private List<Patient> patients;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //mapped by name of field
+    private List<Notes> notes;
 
     public void setDoctorName(String firstName) {
         this.doctorName = doctorName;
@@ -48,8 +49,8 @@ public class Doctor {
         return email;
     }
 
-    public List<Patient> getPatients(){
-        return this.patients;
+    public List<SimplePatient> getPatients(){
+        return this.patients.stream().map(p -> new SimplePatient(p.getPatientId(), p.getPatientName())).collect(Collectors.toList());
     }
 
     public Patient getPatientById(Long patientId){
