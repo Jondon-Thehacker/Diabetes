@@ -11,7 +11,7 @@
                 Some quick example text to build on the card title and make up the bulk of the card's content.
             </b-card-text>
 
-            <b-button href="#" variant="primary">Go somewhere</b-button>
+            <b-button @click="testAxios()" variant="primary">Go somewhere</b-button>
         </b-card>
     </div>
 </template>
@@ -23,6 +23,19 @@ export default {
   name: 'App',
   components: {
     //HelloWorld
+  },
+  methods: {
+    testAxios() {
+      this.axios({
+        method: 'get',
+        url: 'http://api.weatherapi.com/v1/current.json',
+        params: {
+          key: "ENTER KEY",
+          q: 'London'},
+      }).then(res => {
+        console.log(res.data)
+      })
+    }
   }
 }
 </script>
