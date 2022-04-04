@@ -48,7 +48,7 @@ paths:
           schema:
               $ref: "#/definitions/Patient"
   
-  /Doctors/{DoctorID}/{PatientID}/{DataType}:
+  /Doctors/{DoctorID}/Patients/{PatientID}/Measurements/{DataType}:
     get:
       summary: "Returns all the data of the chosen type"
       parameters:
@@ -70,11 +70,11 @@ paths:
       responses:
         "200":
           description: "The requested data"
-          schema: 
+          schema:
               type: "array"
               items:
                 $ref: "#/definitions/Data"
-                
+
   /Doctors/{DoctorID}/{PatientID}/{DataType}/{StartDate}/{EndDate}:
     get:
       summary: "Returns all the data of the chosen type within the specified date interval"
@@ -107,13 +107,13 @@ paths:
       responses:
         "200":
           description: "The requested data in the given time interval"
-          schema: 
+          schema:
               type: "array"
               items:
                 $ref: "#/definitions/Data"
-                
-  /Doctors/{DoctorID}/{PatientID}/Notes:
-    post: 
+
+  /Doctors/{DoctorID}/patients/{PatientID}/Notes:
+    post:
       summary: "Posts a note to the given patient"
       parameters:
       - in: "path"
@@ -151,12 +151,12 @@ paths:
       responses:
         "200":
           description: "The list of all notes"
-          schema: 
+          schema:
               type: "array"
               items:
                 $ref: "#/definitions/Note"
-                
-  /Doctors/{DoctorID}/{PatientID}/Notes/{NoteDate}:
+
+  /Doctors/{DoctorID}/patients/{PatientID}/Notes/{NoteDate}:
     delete:
       summary: "Delete a note"
       parameters:
@@ -182,10 +182,10 @@ paths:
 definitions:
   Patient:
     type: "object"
-    properties: 
-      id: 
+    properties:
+      id:
         type: "integer"
-      name: 
+      name:
         type: "string"
       birth:
         type: "string"
@@ -201,29 +201,14 @@ definitions:
         type: "integer"
       date:
         type: "string"
-  Note: 
+  Note:
     type: "object"
     properties:
       note:
         type: "string"
-      date: 
+      date:
         type: "string"
-      patientId: 
+      doctorId:
+        type: "integer"
+      patientId:
         type: "integer" #dette skal referere til den specifikke patients id
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      

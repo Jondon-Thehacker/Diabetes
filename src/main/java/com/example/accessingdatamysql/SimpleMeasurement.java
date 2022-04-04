@@ -3,19 +3,19 @@ package com.example.accessingdatamysql;
 import java.util.Objects;
 
 public class SimpleMeasurement {
-    private int time;
+    private java.sql.Timestamp time;
     private int value;
 
-    public SimpleMeasurement(int time, int value) {
+    public SimpleMeasurement(java.sql.Timestamp time, int value) {
         this.time = time;
         this.value = value;
     }
 
-    public int getTime() {
+    public java.sql.Timestamp getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(java.sql.Timestamp time) {
         this.time = time;
     }
 

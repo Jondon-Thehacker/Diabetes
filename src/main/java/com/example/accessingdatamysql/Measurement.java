@@ -16,10 +16,10 @@ public class Measurement {
     private MeasurementName measurementName;
 
     public enum MeasurementName {
-        BOLUS("Bolus"),
-        BASAL("Basal"),
-        EXERCISE("Exercise"),
-        MEALS("Meals"),
+        BOLUS("BOLUS"),
+        BASAL("BASAL"),
+        EXERCISE("EXERCISE"),
+        MEALS("MEALS"),
         CGM("CGM");
 
         private String type;
@@ -41,7 +41,7 @@ public class Measurement {
     private int value;
 
     @Id
-    private int time;
+    private java.sql.Timestamp time;
 
     @Id
     @ManyToOne
@@ -56,11 +56,11 @@ public class Measurement {
         this.measurementName.setType(measurementName);
     }
 
-    public int getTime() {
+    public java.sql.Timestamp getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(java.sql.Timestamp time) {
         this.time = time;
     }
 

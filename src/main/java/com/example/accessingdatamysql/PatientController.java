@@ -30,7 +30,7 @@ public class PatientController {
     */
     //Returns all patients of the doctor.
     @GetMapping("/api/v1/Doctors/{doctorId}/patients")
-    public ResponseEntity<List<SimplePatient>> getAllPatients(@PathVariable Long doctorId) {
+    public ResponseEntity<List<Patient>> getAllPatients(@PathVariable Long doctorId) {
         Optional<Doctor> d = doctorRepository.findById(doctorId);
         if(d.isEmpty()){
             return ResponseEntity.notFound().build();
@@ -43,6 +43,7 @@ public class PatientController {
     public ResponseEntity<Patient> getPatient(@PathVariable Long doctorId, @PathVariable Long patientId){
         Optional<Doctor> d = doctorRepository.findById(doctorId);
         Optional<Patient> p = patientRepository.findById(patientId);
+
         if(d.isEmpty() || p.isEmpty()){
             return ResponseEntity.notFound().build();
         }

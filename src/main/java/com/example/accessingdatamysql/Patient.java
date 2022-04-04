@@ -1,8 +1,11 @@
 package com.example.accessingdatamysql;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,18 +16,24 @@ public class Patient {
     @Id
     @Column(name="patientId")
     private Long patientId;
+
     private String patientName;
+
     @Column(unique = false)
     private String email;
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //mapped by name of field
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.MERGE, fetch = FetchType.LAZY) //mapped by name of field
+    @JsonIgnore
     private List<Notes> notes;
     // @OneToMany(mappedBy = "Patient")
     // private Set<Measurement> measurements = new HashSet<>();
 
     @ManyToMany(mappedBy = "patients")
+    @JsonIgnore
     private List<Doctor> doctors;
 
     @OneToMany(mappedBy = "patient")
+    @JsonIgnore
     private List<Measurement> measurements;
 
     public void setPatientId(Long patientId) {
@@ -83,12 +92,30 @@ public class Patient {
         return doctors.stream().map(d -> d.getDoctorId()).collect(Collectors.toList());
     }
 
-    public List<SimpleMeasurement> getMeasurementOfType(String type){
+/*    public List<SimpleMeasurement> getMeasurementOfType(String type){
         return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).map(m -> new SimpleMeasurement(m.getTime(), m.getValue())).collect(Collectors.toList());
 
     }
 
+ */
+    public List<Measurement> getMeasurementOfType(String type){
+        return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).collect(Collectors.toList());
+    }
+
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return patientId.equals(patient.patientId) && patientName.equals(patient.patientName) && Objects.equals(email, patient.email) && Objects.equals(notes, patient.notes) && Objects.equals(doctors, patient.doctors) && Objects.equals(measurements, patient.measurements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(patientId, patientName, email, notes, doctors, measurements);
     }
 }

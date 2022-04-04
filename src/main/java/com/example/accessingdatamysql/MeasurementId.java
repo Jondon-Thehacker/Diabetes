@@ -1,12 +1,11 @@
 package com.example.accessingdatamysql;
 
-import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class MeasurementId implements Serializable {
     private Measurement.MeasurementName measurementName;
-    private int time;
+    private java.sql.Timestamp time;
     private Patient patient;
 
     public MeasurementId (){
@@ -14,7 +13,7 @@ public class MeasurementId implements Serializable {
 
     }
 
-    public MeasurementId (Measurement.MeasurementName measurementName, int time, Patient patient){
+    public MeasurementId (Measurement.MeasurementName measurementName, java.sql.Timestamp time, Patient patient){
         this.measurementName = measurementName;
         this.time = time;
         this.patient = patient;
