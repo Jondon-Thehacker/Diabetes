@@ -111,6 +111,90 @@ paths:
               type: "array"
               items:
                 $ref: "#/definitions/Data"
+  /Doctors/{DoctorID}/{PatientID}/{DataType}/{StartDate}/{EndDate}/{AggregateFunction}:
+    get:
+      summary: "Applies specified aggregate function on the measurement in selected time interval"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      - in: "path"
+        name: "DataType"
+        type: "string"
+        description: "Name of the datatype"
+        required: true
+      - in: "path"
+        name: "StartDate"
+        type: "string"
+        description: "The start date of the requested time interval"
+        required: true
+      - in: "path"
+        name: "EndDate"
+        type: "string"
+        description: "The end date of the requested time interval"
+        required: true
+      - in: "path"
+        name: "AggregateFunction"
+        type: "string"
+        description: "The specified aggregate function"
+        required: true
+      responses:
+        "200":
+          description: "The result of the aggregate function"
+          schema:
+              type: "number"
+
+  /Doctors/{DoctorID}/{PatientID}/{DataType}/{StartDate}/{EndDate}/{AggregateFunction}/{Argument}:
+    get:
+      summary: "Applies specified aggregate function on the measurement in selected time interval"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      - in: "path"
+        name: "DataType"
+        type: "string"
+        description: "Name of the datatype"
+        required: true
+      - in: "path"
+        name: "StartDate"
+        type: "string"
+        description: "The start date of the requested time interval"
+        required: true
+      - in: "path"
+        name: "EndDate"
+        type: "string"
+        description: "The end date of the requested time interval"
+        required: true
+      - in: "path"
+        name: "AggregateFunction"
+        type: "string"
+        description: "The specified aggregate function"
+        required: true
+      - in: "path"
+        name: "Argument"
+        type: "integer"
+        description: "The argument of the function"
+        required: true
+      responses:
+        "200":
+          description: "The result of the aggregate function and argument"
+          schema:
+              type: "number"
 
   /Doctors/{DoctorID}/patients/{PatientID}/Notes:
     post:
@@ -156,7 +240,7 @@ paths:
               items:
                 $ref: "#/definitions/Note"
 
-  /Doctors/{DoctorID}/patients/{PatientID}/Notes/{NoteDate}:
+  /Doctors/{DoctorID}/patients/{PatientID}/Notes/{NoteID}:
     delete:
       summary: "Delete a note"
       parameters:
@@ -171,9 +255,9 @@ paths:
         description: "ID of the specific patient"
         required: true
       - in: "path"
-        name: "NoteDate"
-        type: "string"
-        description: "The date the note was written"
+        name: "NoteID"
+        type: "integer"
+        description: "ID of the note"
         required: true
       responses:
         "204":
@@ -212,3 +296,4 @@ definitions:
         type: "integer"
       patientId:
         type: "integer" #dette skal referere til den specifikke patients id
+      

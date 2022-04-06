@@ -1,6 +1,11 @@
-package com.example.accessingdatamysql;
+package diabetes.controller;
 
-import org.aspectj.weaver.ast.Not;
+import diabetes.model.Doctor;
+import diabetes.model.Notes;
+import diabetes.model.Patient;
+import diabetes.repositories.DoctorRepository;
+import diabetes.repositories.NotesRepository;
+import diabetes.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,13 +53,35 @@ public class NotesController {
         notes.setPatient(p.get());
         notes.setDoctor(d.get());
         d.get().getPatientById(patientId).addNote(notes);
-        //System.out.println(p.get().getPatientName());
-        //p.get().addNote(note);
-        //d.get().addNote(note);
-
 
         return ResponseEntity.ok(notesRepository.save(notes));
-
     }
 
+    //Delete a note from a specific date
+    @DeleteMapping("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}")
+    public ResponseEntity<?> deleteSpecificNote(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable Long noteId){
+        Optional<Doctor> d = doctorRepository.findById(doctorId);
+        Optional<Patient> p = patientRepository.findById(patientId);
+        Optional<Notes> n = notesRepository.findById(noteId);
+
+        if(d.isEmpty() || p.isEmpty() || n.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        notesRepository.deleteById(noteId);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+

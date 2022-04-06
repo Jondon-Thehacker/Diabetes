@@ -1,9 +1,8 @@
-package com.example.accessingdatamysql;
+package diabetes.model;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Entity
 @IdClass(NotesId.class)
@@ -26,17 +25,20 @@ public class Notes {
     @JoinColumn(name = "doctorId")
     private Doctor doctor;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Notes notes = (Notes) o;
-        return date.equals(notes.date) && note.equals(notes.note) && patient.equals(notes.patient) && doctor.equals(notes.doctor);
+    @Column(name = "date")
+    private java.sql.Timestamp date;
+
+    //Standard constructor, mainly for testing
+    public Notes(Long noteId, String note, Patient patient, Doctor doctor, java.sql.Timestamp date){
+        this.noteId = noteId;
+        this.note = note;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.date = date;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(date, note, patient, doctor);
+    public Notes(){
+
     }
 
     public java.sql.Timestamp getDate() {
@@ -55,12 +57,13 @@ public class Notes {
         this.note = note;
     }
 
-  /*  public SimplePatient getSimplePatient(){
-        //System.out.println(patient);
-        return new SimplePatient(patient.getPatientId(), patient.getPatientName());
+    public Long getNoteId() {
+        return noteId;
     }
 
-   */
+    public void setNoteId(Long noteId) {
+        noteId = noteId;
+    }
 
     public Patient getPatient() {
         return patient;
@@ -82,5 +85,18 @@ public class Notes {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notes notes = (Notes) o;
+        return Objects.equals(note, notes.note) && noteId.equals(notes.noteId) && patient.equals(notes.patient) && doctor.equals(notes.doctor) && date.equals(notes.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(note, noteId, patient, doctor, date);
     }
 }

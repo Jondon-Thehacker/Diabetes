@@ -1,6 +1,5 @@
-package com.example.accessingdatamysql;
+package Simple;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 public class SimplePatient  {

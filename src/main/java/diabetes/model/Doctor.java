@@ -1,11 +1,10 @@
-package com.example.accessingdatamysql;
+package diabetes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "doctor")

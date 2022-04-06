@@ -1,4 +1,4 @@
-package com.example.accessingdatamysql;
+package diabetes.model;
 
 import javax.persistence.*;
 import java.io.Serializable;

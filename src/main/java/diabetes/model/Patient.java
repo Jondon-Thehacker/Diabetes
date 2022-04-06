@@ -1,12 +1,14 @@
-package com.example.accessingdatamysql;
+package diabetes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -118,4 +120,8 @@ public class Patient {
     public int hashCode() {
         return Objects.hash(patientId, patientName, email, notes, doctors, measurements);
     }
+
+
 }
+
+

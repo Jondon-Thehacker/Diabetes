@@ -1,16 +1,26 @@
-package com.example.accessingdatamysql;
+package diabetes.model;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 
 @Entity
-@IdClass(MeasurementId.class)
 @Table(name = "measurement")
 public class Measurement {
 
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long measurementId;
+
+    private double value;
+
+    private java.sql.Timestamp time;
+
+    @ManyToOne
+    @JoinColumn(name = "patientId")
+    private Patient patient;
+
     @Column(columnDefinition = "ENUM('BOLUS','BASAL','EXERCISE','MEALS','CGM')")
     @Enumerated(EnumType.STRING)
     private MeasurementName measurementName;
@@ -35,18 +45,34 @@ public class Measurement {
             this.type = type;
         }
     }
-   /* @Id
-    private String measurementName;
-*/
-    private int value;
 
-    @Id
-    private java.sql.Timestamp time;
+    public Measurement(Long MeasurementId, double value, java.sql.Timestamp time, Patient patient, MeasurementName measurementName){
+        this.measurementId = MeasurementId;
+        this.value = value;
+        this.time = time;
+        this.patient = patient;
+        this.measurementName = measurementName;
+    }
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "patientId")
-    private Patient patient;
+    public Measurement(){
+
+    }
+
+    public Long getMeasurementId() {
+        return measurementId;
+    }
+
+    public void setMeasurementId(Long measurementId) {
+        this.measurementId = measurementId;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public void setMeasurementName(MeasurementName measurementName) {
+        this.measurementName = measurementName;
+    }
 
     public String getMeasurementName() {
         return measurementName.getType();

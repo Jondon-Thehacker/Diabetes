@@ -1,6 +1,11 @@
-package com.example.accessingdatamysql;
+package diabetes.controller;
 
-import com.example.accessingdatamysql.*;
+import diabetes.model.Doctor;
+import diabetes.model.Measurement;
+import diabetes.repositories.MeasurementRepository;
+import diabetes.model.Patient;
+import diabetes.repositories.DoctorRepository;
+import diabetes.repositories.PatientRepository;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

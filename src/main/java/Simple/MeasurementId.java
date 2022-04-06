@@ -1,4 +1,7 @@
-package com.example.accessingdatamysql;
+package Simple;
+
+import diabetes.model.Measurement;
+import diabetes.model.Patient;
 
 import java.io.Serializable;
 import java.util.Objects;

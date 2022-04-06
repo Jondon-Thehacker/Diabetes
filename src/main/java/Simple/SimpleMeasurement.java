@@ -1,4 +1,4 @@
-package com.example.accessingdatamysql;
+package Simple;
 
 import java.util.Objects;
 

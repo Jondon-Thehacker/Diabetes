@@ -1,5 +1,9 @@
-package com.example.accessingdatamysql;
+package diabetes.controller;
 
+import diabetes.model.Doctor;
+import diabetes.model.Patient;
+import diabetes.repositories.DoctorRepository;
+import diabetes.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

@@ -1,14 +1,22 @@
-package com.example.accessingdatamysql;
+package Simple;
 
+import diabetes.model.Patient;
+import diabetes.model.Doctor;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-
+@Embeddable
 public class NotesId implements Serializable {
-    private java.sql.Timestamp date;
-    private Patient patient;
-    private Doctor doctor;
+    //private java.sql.Timestamp date;
+    //private Patient patient;
+    //private Doctor doctor;
+
 
     public NotesId(java.sql.Timestamp date, Patient patient, Doctor doctor) {
         this.date = date;
@@ -20,6 +28,18 @@ public class NotesId implements Serializable {
 
     }
 
+    @ManyToOne
+    @JoinColumn(name = "patientId", referencedColumnName = "patientId")
+    private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "doctorId", referencedColumnName = "doctorId")
+    private Doctor doctor;
+
+    @Column(name = "date")
+    private java.sql.Timestamp date;
+
+
     public Timestamp getDate() {
         return date;
     }
@@ -27,7 +47,6 @@ public class NotesId implements Serializable {
     public void setDate(Timestamp date) {
         this.date = date;
     }
-
 
     public Patient getPatient() {
         return patient;
@@ -44,6 +63,7 @@ public class NotesId implements Serializable {
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
+
 
 
     @Override

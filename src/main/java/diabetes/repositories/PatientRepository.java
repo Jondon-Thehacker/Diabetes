@@ -1,6 +1,6 @@
-package com.example.accessingdatamysql;
+package diabetes.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import diabetes.model.Patient;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
