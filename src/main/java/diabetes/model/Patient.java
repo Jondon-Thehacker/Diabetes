@@ -105,17 +105,106 @@ public class Patient {
         return doctors.stream().map(d -> d.getDoctorId()).collect(Collectors.toList());
     }
 
+    public void setDoctors(List<Doctor> doctors) {
+        this.doctors = doctors;
+    }
+
     public List<Measurement> getMeasurementOfTypeAndDate(String type, String startDate, String endDate){
 
         return measurements.stream().filter(m -> m.getMeasurementName().equals(type) && isBetween(m.getTime(), startDate, endDate)).collect(Collectors.toList());
+    }
+
+    public boolean isBetween(java.sql.Timestamp potential, String start, String end){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime potentialDate = potential.toLocalDateTime();
+        LocalDateTime startDate = LocalDateTime.parse(start, formatter);
+        LocalDateTime endDate = LocalDateTime.parse(end, formatter);
+
+        return potentialDate.isBefore(endDate) && potentialDate.isAfter(startDate);
     }
 
     public List<Measurement> getMeasurementOfType(String type){
         return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).collect(Collectors.toList());
     }
 
-    public void setDoctors(List<Doctor> doctors) {
-        this.doctors = doctors;
+    public double applyAggregateFunction(String dataType, String startDate, String endDate, String aggregateFunction) {
+        List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,startDate,endDate);
+        double result = -1;
+
+        try {
+            switch (aggregateFunction) {
+                case "standardDeviation":
+                    result = standardDeviation(measurements);
+                    break;
+                case "average":
+                    result = average(measurements);
+                    break;
+                case "count":
+                    result = count(measurements);
+                    break;
+                case "max":
+                    result = measurements.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get();
+                    break;
+                case "min":
+                    result = measurements.stream().map(v -> v.getValue()).min(Comparator.comparing(Double::valueOf)).get();
+                    break;
+                case "GMI":
+                    result = 3.31 + 0.02392 * average(measurements); // måske 1.627177700 + 0.03484320557*avg ?
+                    break;
+                case "countAbove":
+                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv > 180).count();
+                    break;
+                case "countBelow":
+                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 70).count();
+                    break;
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Unsupported aggregate function");
+        }
+
+        return result;
+    }
+
+    private double count(List<Measurement> measurements) {
+        return measurements.stream().map(v -> v.getValue()).count();
+    }
+
+    private double average(List<Measurement> measurements) {
+        double sum = measurements.stream().map(v -> v.getValue()).reduce((double) 0, (s, e) -> s + e );
+        double count = count(measurements);
+
+        return sum/count;
+    }
+
+    private double standardDeviation(List<Measurement> measurements) {
+        double average = average(measurements);
+        double count = count(measurements);
+
+        double x = measurements.stream().map(v -> v.getValue()).reduce((double) 0, (s, e) -> (double) s + (e-average)*(e-average));
+
+        return Math.sqrt(x/count);
+    }
+
+    public double aggregateFunctionArgument(String dataType, String startDate, String endDate, String aggregateFunction, Long argument) {
+        List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType, startDate, endDate);
+
+        double result = -1;
+
+        switch (aggregateFunction) {
+            case "percentile":
+                result = percentile(measurements, argument);
+                break;
+        }
+        return result;
+    }
+    private double percentile(List<Measurement> measurements, Long argument) {
+        double count = count(measurements);
+        List<Double> sortedList = measurements.stream().map(m -> m.getValue()).sorted().collect(Collectors.toList());
+
+        return sortedList.get((int) (Math.ceil(((double) argument)/100 * count))-1);
     }
 
     @Override

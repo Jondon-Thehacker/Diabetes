@@ -5,22 +5,18 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@IdClass(NotesId.class)
 @Table(name = "notes")
-public class Notes {
-
+public class Notes implements Serializable {
     @Id
-    @Column(name = "date")
-    private java.sql.Timestamp date;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long noteId;
 
     private String note;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patient patient;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "doctorId")
     private Doctor doctor;

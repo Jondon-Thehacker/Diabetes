@@ -21,7 +21,4 @@ public class DoctorController {
     private MeasurementRepository measurementRepository;
 
 
-    //Returns all the data of the chosen type within the specified date interval
-
-
 }

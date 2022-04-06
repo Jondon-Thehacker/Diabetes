@@ -8,7 +8,6 @@ import java.util.Objects;
 @Table(name = "measurement")
 public class Measurement {
 
-
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long measurementId;
@@ -33,6 +32,7 @@ public class Measurement {
         CGM("CGM");
 
         private String type;
+
         MeasurementName(String type) {
             this.type = type;
         }
@@ -90,7 +90,7 @@ public class Measurement {
         this.time = time;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
