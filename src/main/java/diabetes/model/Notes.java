@@ -1,7 +1,7 @@
 package diabetes.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -72,12 +72,6 @@ public class Notes {
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
-/*
-    public SimpleDoctor getSimpleDoctor() {
-        return new SimpleDoctor(doctor.getDoctorId(), doctor.getDoctorName());
-    }
-
- */
 
     public Doctor getDoctor() {
         return doctor;

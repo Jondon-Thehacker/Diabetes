@@ -34,6 +34,20 @@ public class Doctor {
     @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private User user;
 
+    //standard constructor, mainly for testing
+    public Doctor(Long doctorId, String doctorName, String hospital, String email, List<Patient> patients, List<Notes> notes){
+        this.doctorId = doctorId;
+        this.doctorName = doctorName;
+        this.hospital = hospital;
+        this.email = email;
+        this.patients = patients;
+        this.notes = notes;
+    }
+
+    public Doctor(){
+
+    }
+
     public void setDoctorName(String firstName) {
         this.doctorName = doctorName;
     }
@@ -57,12 +71,6 @@ public class Doctor {
     public String getEmail() {
         return email;
     }
-/*
-    public List<SimplePatient> getPatients(){
-        return this.patients.stream().map(p -> new SimplePatient(p.getPatientId(), p.getPatientName())).collect(Collectors.toList());
-    }
-
- */
 
     public List<Patient> getPatients(){
         return this.patients;

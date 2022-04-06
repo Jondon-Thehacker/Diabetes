@@ -44,8 +44,6 @@ public class NotesController {
         Optional<Doctor> d = doctorRepository.findById(doctorId);
         Optional<Patient> p = patientRepository.findById(patientId);
 
-        System.out.println(d.isEmpty());
-        System.out.println(p.isEmpty());
         if(d.isEmpty() || p.isEmpty()){
             return ResponseEntity.notFound().build();
         }

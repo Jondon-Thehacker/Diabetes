@@ -27,8 +27,6 @@ public class Patient {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.MERGE, fetch = FetchType.LAZY) //mapped by name of field
     @JsonIgnore
     private List<Notes> notes;
-    // @OneToMany(mappedBy = "Patient")
-    // private Set<Measurement> measurements = new HashSet<>();
 
     @ManyToMany(mappedBy = "patients")
     @JsonIgnore
@@ -37,6 +35,19 @@ public class Patient {
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Measurement> measurements;
+
+    public Patient(Long patientId, String patientName, String email, List<Notes> notes, List<Doctor> doctors, List<Measurement> measurements){
+        this.patientId = patientId;
+        this.patientName = patientName;
+        this.email = email;
+        this.notes = notes;
+        this.doctors = doctors;
+        this.measurements = measurements;
+    }
+
+    public Patient(){
+
+    }
 
     public void setPatientId(Long patientId) {
         this.patientId = patientId;
@@ -94,12 +105,11 @@ public class Patient {
         return doctors.stream().map(d -> d.getDoctorId()).collect(Collectors.toList());
     }
 
-/*    public List<SimpleMeasurement> getMeasurementOfType(String type){
-        return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).map(m -> new SimpleMeasurement(m.getTime(), m.getValue())).collect(Collectors.toList());
+    public List<Measurement> getMeasurementOfTypeAndDate(String type, String startDate, String endDate){
 
+        return measurements.stream().filter(m -> m.getMeasurementName().equals(type) && isBetween(m.getTime(), startDate, endDate)).collect(Collectors.toList());
     }
 
- */
     public List<Measurement> getMeasurementOfType(String type){
         return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).collect(Collectors.toList());
     }

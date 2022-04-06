@@ -15,6 +15,15 @@ public class User implements Serializable {
 
     private String password;
 
+    public User(Doctor doctor, String password){
+        this.doctor = doctor;
+        this.password = password;
+    }
+
+    public User(){
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

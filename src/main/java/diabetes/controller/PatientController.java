@@ -21,17 +21,7 @@ public class PatientController {
 
     @Autowired
     private DoctorRepository doctorRepository;
-    /*
-    @PostMapping(path = "/add")
-    public @ResponseBody String addNewPatient(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email) {
 
-        Patient patient = new Patient();
-        patient.setPatientName(firstName);
-        patient.setEmail(lastName);
-        patientRepository.save(patient);
-        return "Patient Created";
-    }
-    */
     //Returns all patients of the doctor.
     @GetMapping("/api/v1/Doctors/{doctorId}/patients")
     public ResponseEntity<List<Patient>> getAllPatients(@PathVariable Long doctorId) {
@@ -53,5 +43,4 @@ public class PatientController {
         }
         return ResponseEntity.ok(d.get().getPatientById(patientId));
     }
-
 }
