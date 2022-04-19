@@ -20,5 +20,4 @@ public class DoctorController {
     @Autowired
     private MeasurementRepository measurementRepository;
 
-
 }
