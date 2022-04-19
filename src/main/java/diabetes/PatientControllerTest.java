@@ -76,7 +76,7 @@ public class PatientControllerTest {
     public void getPatient_success() throws Exception {
         List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
         Optional<Doctor> MockResponse = Optional.ofNullable(new Doctor(1L, "Simon", "Rigshospitalet", "Simon@gmail.com", simonPatients, null));
-        Optional<Patient> MockResponse2 = Optional.ofNullable(new Patient(1L,"Jonathan","Jonathan@gmail.com",null, jonathanDoctors, null));
+        Optional<Patient> MockResponse2 = Optional.ofNullable(Jonathan);
 
         Mockito.when(doctorRepository.findById(Mockito.anyLong()))
                 .thenReturn(MockResponse);
