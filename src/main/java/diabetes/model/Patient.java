@@ -143,6 +143,9 @@ public class Patient {
                 case "count":
                     result = count(measurements);
                     break;
+                case "glucoseVariability":
+                    result = standardDeviation(measurements)/average(measurements);
+                    break;
                 case "max":
                     result = measurements.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get();
                     break;
