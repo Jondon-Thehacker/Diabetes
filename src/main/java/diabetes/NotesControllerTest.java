@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @RunWith(SpringRunner.class)
@@ -144,38 +145,7 @@ public class NotesControllerTest {
 
         MvcResult result = mockMvc.perform(request).andReturn();
 
-        System.out.println("Ran Test");
-        System.out.println("result: " + result.getResponse().getContentAsString());
-
-        String expected_result = "[{" +
-                "\"noteId\":1, " +
-                "\"note\": \"Test1\", " +
-                "\"patient\": {" +
-                "\"patientId\": 1, " +
-                "\"patientName\":\"Jonathan\"," +
-                "\"email\":\"Jonathan@gmail.com\"}" +
-                "}" +
-                ",{" +
-                "\"noteId\":2, " +
-                "\"note\": \"Test2\", " +
-                "\"patient\": {" +
-                "\"patientId\":1," +
-                "\"patientName\":\"Jonathan\"," +
-                "\"email\":\"Jonathan@gmail.com\"" +
-                "}" +
-                "}," +
-                "{" +
-                "\"noteId\":3, " +
-                "\"note\": \"Test3\", "+
-                "\"patient\": {" +
-                "\"patientId\":1," +
-                "\"patientName\":\"Jonathan\"," +
-                "\"email\":\"Jonathan@gmail.com\" }" +
-                "}]";
-
-        JSONAssert.assertEquals(expected_result,
-                result.getResponse().getContentAsString(), false);
-
+        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
     }
 
     @Test

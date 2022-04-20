@@ -1,6 +1,8 @@
 package diabetes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.yaml.snakeyaml.util.EnumUtils;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
