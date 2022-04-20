@@ -58,10 +58,7 @@ export default {
     testAxios() {
       this.axios({
         method: 'get',
-        url: 'http://api.weatherapi.com/v1/current.json',
-        params: {
-          key: "ENTER KEY",
-          q: 'London'},
+        url: 'http://localhost:8080/api/v1/Doctors/4/patients',
       }).then(res => {
         console.log(res.data)
       })
