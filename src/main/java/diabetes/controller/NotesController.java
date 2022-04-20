@@ -52,6 +52,7 @@ public class NotesController {
         notes.setPatient(p.get());
         notes.setDoctor(d.get());
         d.get().getPatientById(patientId).addNote(notes);
+        d.get().addNote(notes);     
 
         return ResponseEntity.ok(notesRepository.save(notes));
     }

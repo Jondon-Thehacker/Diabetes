@@ -33,11 +33,16 @@ public class MeasurementController {
         Optional<Doctor> d = doctorRepository.findById(doctorId);
         Optional<Patient> p = patientRepository.findById(patientId);
 
-
         if(d.isEmpty() || p.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(d.get().getPatientById(patientId).getMeasurementOfType(dataType));
+
+        List<Measurement> result = d.get().getPatientById(patientId).getMeasurementOfType(dataType);
+
+        if (result == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
     //Returns all the data of the chosen type within the specified date interval

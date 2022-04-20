@@ -15,6 +15,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -59,7 +60,6 @@ public class NotesControllerTest {
 
     @Test
     public void getAllPatientNotes_sucess() throws Exception{
-
         List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList(Note1, Note2));
         List<Notes> simonNotes = new ArrayList(Arrays.asList(Note1, Note2));
         List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
@@ -70,54 +70,51 @@ public class NotesControllerTest {
         Note1.setDoctor(Simon);
         Note2.setDoctor(Simon);
 
-        Optional<Doctor> MockResponse = Optional.ofNullable(Simon);
-        Optional<Patient> MockResponse2 = Optional.ofNullable(Jonathan);
-
-
-        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
-                .thenReturn(MockResponse);
-
-        Mockito.when(patientRepository.findById(Mockito.anyLong()))
-                .thenReturn(MockResponse2);
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
 
         RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes", 1L, 1L);
 
         MvcResult result = mockMvc.perform(request).andReturn();
+        String expected_result = new ObjectMapper().writeValueAsString(Arrays.asList(Note1, Note2));
 
-        System.out.println("Ran Test");
-        System.out.println("result: " + result.getResponse().getContentAsString());
+        JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);
+    }
 
-        String expected_result = "[{" +
-                "\"noteId\":1, " +
-                "\"note\": \"Test1\", " +
-                "\"patient\": {" +
-                                "\"patientId\": 1, " +
-                                "\"patientName\":\"Jonathan\"," +
-                                "\"email\":\"Jonathan@gmail.com\"}" +
-                                "}" +
-                ",{" +
-                "\"noteId\":2, " +
-                "\"note\": \"Test2\", " +
-                "\"patient\": {" +
-                                "\"patientId\":1," +
-                                "\"patientName\":\"Jonathan\"," +
-                                "\"email\":\"Jonathan@gmail.com\"" +
-                                "}" +
-                "}]";
+    @Test
+    public void getAllPatientNotes_empty() throws Exception {
+        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList());
+        List<Notes> simonNotes = new ArrayList(Arrays.asList());
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
 
-        JSONAssert.assertEquals(expected_result,
-                result.getResponse().getContentAsString(), false);
+        Doctor Simon = new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, simonNotes);
+
+        Jonathan.setNotes(jonathanNotes);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes", 1L, 1L);
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        String expected_result = "[]";
+
+        JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);
     }
 
     @Test
     public void createNote_succes() throws Exception{
-        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList(Note1, Note2));
-        List<Notes> simonNotes = new ArrayList(Arrays.asList(Note1, Note2));
-        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList());
+        List<Notes> simonNotes = new ArrayList(Arrays.asList());
         Jonathan.setNotes(jonathanNotes);
+
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
         Doctor Simon = new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, simonNotes);
+
         Note1.setDoctor(Simon);
         Note2.setDoctor(Simon);
+
+        //Optional<Doctor> simonOpt = Optional.ofNullable(Simon);
 
         //simon with notes and two patients
         //Jonathan with 2 notes

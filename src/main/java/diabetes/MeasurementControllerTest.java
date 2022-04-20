@@ -17,17 +17,21 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = MeasurementController.class)
@@ -67,69 +71,17 @@ public class MeasurementControllerTest {
         Jonathan.setMeasurements(jonathanMeasurement);
 
         Optional<Doctor> MockResponse = Optional.ofNullable(new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, null));
-        Optional<Patient> MockResponse2 = Optional.ofNullable(Jonathan);
 
-        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
-                .thenReturn(MockResponse);
-
-        Mockito.when(patientRepository.findById(Mockito.anyLong()))
-                .thenReturn(MockResponse2);
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(MockResponse);
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
 
         RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{DoctorID}/Patients/{PatientID}/Measurements/{DataType}", 1L,2L, "CGM");
 
         MvcResult result = mockMvc.perform(request).andReturn();
 
-        System.out.println("Ran Test");
-        System.out.println(result.getResponse().getContentAsString());
+        String expected_result = new ObjectMapper().writeValueAsString(Arrays.asList(CGM1, CGM2, CGM3, CGM4));
 
-        String expected_result = "[{" +
-                                        "\"measurementId\": 1," +
-                                        "\"value\":10," +
-                                        "\"time\":\"2022-04-14T22:00:00.000+00:00\"," +
-                                        "\"patient\":{" +
-                                        "\"patientId\":2," +
-                                        "\"patientName\":\"Jonathan\"," +
-                                        "\"email\":\"Jonathan@gmail.com\"" +
-                                        "}," +
-                                        "\"measurementName\": \"CGM\"\n" +
-                                        "}," +
-                                        "{" +
-                                        "\"measurementId\":2," +
-                                        "\"value\":20," +
-                                        "\"time\": \"2022-04-15T22:00:00.000+00:00\"," +
-                                        "\"patient\": {" +
-                                        "\"patientId\": 2," +
-                                        "\"patientName\": \"Jonathan\"," +
-                                        "\"email\": \"Jonathan@gmail.com\"" +
-                                        "}," +
-                                        "\"measurementName\": \"CGM\"" +
-                                        "}," +
-                                        "{" +
-                                        "\"measurementId\": 3," +
-                                        "\"value\": 30," +
-                                        "\"time\": \"2022-04-16T22:00:00.000+00:00\"," +
-                                        "\"patient\": {" +
-                                        "\"patientId\": 2," +
-                                        "\"patientName\": \"Jonathan\"," +
-                                        "\"email\": \"Jonathan@gmail.com\"" +
-                                        "}," +
-                                        "\"measurementName\": \"CGM\"" +
-                                        "}," +
-                                        "{" +
-                                        "\"measurementId\": 4," +
-                                        "\"value\":40," +
-                                        "\"time\":\"2022-04-17T22:00:00.000+00:00\"," +
-                                        "\"patient\":{" +
-                                        "\"patientId\":2," +
-                                        "\"patientName\":\"Jonathan\"," +
-                                        "\"email\":\"Jonathan@gmail.com\"" +
-                                        "}," +
-                                        "\"measurementName\":\"CGM\"" +
-                                        "}]";
-
-        JSONAssert.assertEquals(expected_result,
-                result.getResponse().getContentAsString(), false);
-
+        JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);
     }
 
     @Test
