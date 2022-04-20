@@ -127,7 +127,15 @@ public class Patient {
     }
 
     public List<Measurement> getMeasurementOfType(String type){
-        return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).collect(Collectors.toList());
+        if (type == null) {
+            return null;
+        }
+        try {
+            Enum.valueOf(Measurement.MeasurementName.class, type);
+            return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).collect(Collectors.toList());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public double applyAggregateFunction(String dataType, String startDate, String endDate, String aggregateFunction) {
