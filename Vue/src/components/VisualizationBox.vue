@@ -9,10 +9,7 @@
                     </div>
                 </b-col>
                 <b-col class="graph">
-                    <p>Graphs</p>
-                    <div>
-                        <b-img :src="require('@/assets/graph.jpg')" fluid alt="Responsive image"></b-img>
-                    </div>
+                     <graph-view></graph-view>
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
@@ -31,8 +28,12 @@
 </template>
 
 <script>
+import GraphView from './GraphView.vue'
+
 export default {
-    
+    components: {
+        GraphView 
+    }
 }
 </script>
 

@@ -20,7 +20,7 @@
   <div>
     <b-container class="grid-container" fluid>
       <b-row class="top-bar">
-        <b-col>Doctor ID: {{doctorId}}</b-col>
+        <b-col @click="testAxios()">Doctor ID: {{doctorId}}</b-col>
         <b-col cols="8" ><h1>Diabetes Management System</h1></b-col>
         <b-col>Hospital: {{hospital}}</b-col>
       </b-row>
