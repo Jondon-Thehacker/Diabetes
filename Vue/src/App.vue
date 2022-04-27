@@ -34,19 +34,17 @@
       </b-row>
     </b-container>
   </div>
-  <GraphView/>
+  
 </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import PatientList from './components/PatientList.vue'
 import PatientInfoBox from './components/PatientInfoBox.vue'
-import GraphView from './components/GraphView.vue'
 
 export default {
   name: 'App',
   components: {
-    GraphView,
     PatientList,
     PatientInfoBox
     //HelloWorld
