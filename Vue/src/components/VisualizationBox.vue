@@ -9,7 +9,7 @@
                     </div>
                 </b-col>
                 <b-col class="graph">
-                     <graph-view></graph-view>
+                     <graph-view :width="20" :height="20"></graph-view>
                 </b-col>
             </b-row>
             <b-row class="top-bar2">

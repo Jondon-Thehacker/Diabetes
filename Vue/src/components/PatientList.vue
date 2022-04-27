@@ -1,48 +1,52 @@
 <template>
     <div>
-        <ul>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          <li>Person 3</li>
-          <li>Person 1</li>
-          <li>Person 2</li>
-          
-        </ul>
+        <b-list-group style="max-width: 300px;">
+            <patient-item v-for="(patient,index) in patients" :key="index" :patientName="patient.patientName" :badgeNr="patient.badgeNr" :patientImage="patient.patientName"></patient-item>
+        </b-list-group>
     </div>
 </template>
 
 <script>
+import PatientItem from '../components/PatientItem.vue'
+
+
 export default {
-    
+    data() {
+        return {
+            patients: [
+                {
+                    patientName: "John Doe",
+                    badgeNr: 0
+                },
+                {
+                    patientName: "Simon Stampe Jensen",
+                    badgeNr: 2
+                },
+                {
+                    patientName: "Jonathan Max Michelsen",
+                    badgeNr: 0
+                },
+                {
+                    patientName: "Emil Pontoppidan Rasmussen",
+                    badgeNr: 4
+                },
+                {
+                    patientName: "Emil Løvstrand Mortensen",
+                    badgeNr: 0
+                }
+            ]
+        }
+    },
+    components: {
+        PatientItem
+    }
 }
 </script>
 
 <style>
 
-
-li:hover {
-    background-color: grey;
+.clickable-patient:hover {
+    background-color: lightgray;
 }
     
 </style>
