@@ -3,8 +3,12 @@
         <b-container class="bv-example-row" style="padding: 0" fluid>
             <b-row class="top-bar2">
                 <b-col>Patient Name</b-col>
-                <b-col>Email</b-col>
-                <b-col>data</b-col>
+                <b-col>
+                    <patient-email/>
+                </b-col>
+                <b-col>
+                    <data-drop/>
+                </b-col>
             </b-row>
             <b-row>
                 <b-col>
@@ -19,13 +23,17 @@
 </template>
 
 <script>
+import PatientEmail from './PatientEmail.vue'
 import VisualizationBox from './VisualizationBox.vue'
 import NoteView from './NoteView.vue'
+import DataDrop from './DataDrop.vue'
 
 export default {
     components: {
         VisualizationBox,
-        NoteView
+        NoteView,
+        PatientEmail,
+        DataDrop
     }
 }
 </script>
