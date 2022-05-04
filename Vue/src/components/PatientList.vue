@@ -1,7 +1,11 @@
 <template>
-    <div style="overflow-y: scroll; height: 650px;">
+    <b-form-input v-model="searchString" type="search" placeholder="Search for patient name" style="margin-bottom: 3px"></b-form-input>
+    <div style="overflow-y: scroll; height: 620px;">
         <b-list-group style="max-width: 300px;">
-            <patient-item v-for="(patient,index) in patients" :key="index" :patientName="patient.patientName" :badgeNr="patient.badgeNr" :patientImage="patient.patientName"></patient-item>
+            <patient-item v-for="(patient,index) in filteredPatientList" :key="index" 
+                        :patientName="patient.patientName" 
+                        :badgeNr="patient.badgeNr" 
+                        :patientImage="patient.patientName"></patient-item>
         </b-list-group>
     </div>
 </template>
@@ -13,6 +17,7 @@ import PatientItem from '../components/PatientItem.vue'
 export default {
     data() {
         return {
+            searchString: "",
             patients: [
                 {
                     patientName: "John Doe",
@@ -35,39 +40,39 @@ export default {
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Lorem Ipsum",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Dolor Sit Amet",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Consectetur",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Adipisicing Elit",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Suscipit Tempore",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Vitae Est",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Dicta Totam",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Aliquid Aut Architecto",
                     badgeNr: 0
                 },
                 {
-                    patientName: "Emil Løvstrand Mortensen",
+                    patientName: "Emil Doloribus Deserunt",
                     badgeNr: 0
                 }
             ]
@@ -75,7 +80,12 @@ export default {
     },
     components: {
         PatientItem
+    },
+    computed: {
+        filteredPatientList(){
+            return this.patients.filter(p => p.patientName.toLowerCase().includes(this.searchString.toLowerCase()))
     }
+} 
 }
 </script>
 

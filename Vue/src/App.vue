@@ -85,10 +85,12 @@ export default {
 .p-list {
   background-color: rgb(129, 196, 200);
   margin-left: 0px;
+  padding-right: 0px !important;
+  padding-left:3px !important;
 }
 
 .no-marg {
-  margin: 0;
+  margin: 0 ;
   padding: 0;
 }
 
