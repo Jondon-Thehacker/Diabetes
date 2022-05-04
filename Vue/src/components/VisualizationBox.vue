@@ -3,10 +3,10 @@
         <b-container class="bv-example-row" style="padding: 0">
             <b-row>
                 <b-col cols="5">
-                        <stackedbar-chart></stackedbar-chart>
+                    <stackedbar-chart height="440"></stackedbar-chart>
                 </b-col>
                 <b-col class="graph">
-                     <line-chart></line-chart>
+                     <line-chart height="440"></line-chart>
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
