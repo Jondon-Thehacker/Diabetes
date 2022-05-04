@@ -2,14 +2,11 @@
     <div>
         <b-container class="bv-example-row" style="padding: 0">
             <b-row>
-                <b-col cols="4">
-                    <p>Bar Charts</p>
-                    <div>
-                        <b-img :src="require('@/assets/barCharts.jpg')" fluid alt="Responsive image"></b-img>
-                    </div>
+                <b-col cols="5">
+                        <stackedbar-chart></stackedbar-chart>
                 </b-col>
                 <b-col class="graph">
-                     <graph-view></graph-view>
+                     <line-chart></line-chart>
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
@@ -28,18 +25,21 @@
 </template>
 
 <script>
-import GraphView from './GraphView.vue'
+import LineChart from './LineChart.vue'
+import StackedbarChart from './StackedbarChart.vue'
 
 export default {
     components: {
-        GraphView 
+        LineChart,
+        StackedbarChart
+
     }
 }
 </script>
 
 <style >
-.graph {
+/*.graph {
     min-height: 500px;
-}
+}*/
     
 </style>

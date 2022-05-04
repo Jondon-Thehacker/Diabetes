@@ -1,12 +1,16 @@
 <template>
   <p>Graphs</p>
   <div>
-    <Line :chart-data="chartData" :plugins="plugins" />
+    <Bar 
+      :chart-data="chartData" 
+      :chart-options="chartOptions"
+      :width="width" 
+      :height="height"/>
   </div>
 </template>
 
 <script>
-import { Line } from "vue-chartjs";
+import { Bar } from "vue-chartjs";
 import {
   Chart as Chart,
   ArcElement,
@@ -67,41 +71,53 @@ Chart.register(
 
 export default {
   name: "BarChart",
-  components: { Line },
+  components: { Bar },
+  props: {
+    width: {
+      type: Number,
+      default: 400
+    },
+    height: {
+      type: Number,
+      default: 600
+    }
+  },
   data() {
     return {
       chartData: {
-        labels: [
-          "1990-03-03T23:00:00",
-          "1990-03-04T23:00:00",
-          "1990-03-05T23:00:00",
-          "1990-03-06T23:00:00",
-          "1990-03-07T23:00:00",
-          "1990-03-08T23:00:00",
-          "1990-03-09T23:00:00",
-          "1990-03-10T23:00:00",
-        ],
+        labels: ["1990-03-03T23:00:0 to 1990-03-10T23:00:00"],
         datasets: [
           {
-            label: "CGM Levels",
+            label: "Under normal level",
             backgroundColor: "#f87979",
-            data: [120, 30, 49, 135, 80, 90, 100, 200],
+            data: [30],
+            hoverBorderWidth: 0,
+          },
+          {
+            label: "Normal level",
+            backgroundColor: "#79f88e",
+            data: [40],
+            hoverBorderWidth: 0,
+          },
+          {
+            label: "over normal level",
+            backgroundColor: "#f879f2",
+            data: [30],
+            hoverBorderWidth: 0,
           },
         ],
       },
-      plugins: {
-        autocolors: false,
-        annotation: {
-          annotations: {
-            line1: {
-              type: "line",
-              yMin: 90,
-              yMax: 90,
-              borderColor: "rgb(252, 99, 132)",
-              borderWidth: 3,
-            },
-          },
-        },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            stacked: true,
+             },
+          y: {
+             stacked: true
+      }
+    },
       },
     };
   },
@@ -109,11 +125,11 @@ export default {
 </script>
 
 <style>
-.container {
+/*.container {
   width: 500;
   height: 500;
   margin-left: auto;
   margin-right: auto;
   padding-top: 10%;
-}
+}*/
 </style>
