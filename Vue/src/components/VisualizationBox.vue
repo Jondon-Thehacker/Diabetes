@@ -3,6 +3,7 @@
         <b-container class="bv-example-row" style="padding: 0">
             <b-row>
                 <b-col cols="5">
+                    <interval-modal></interval-modal>
                     <stackedbar-chart height="440"></stackedbar-chart>
                 </b-col>
                 <b-col class="graph">
@@ -27,11 +28,13 @@
 <script>
 import LineChart from './LineChart.vue'
 import StackedbarChart from './StackedbarChart.vue'
+import IntervalModal from './IntervalModal.vue'
 
 export default {
     components: {
         LineChart,
-        StackedbarChart
+        StackedbarChart,
+        IntervalModal
 
     }
 }

@@ -1,5 +1,4 @@
 <template>
-  <p>Bar Chart</p>
   <div>
     <Bar 
       :chart-data="chartData" 

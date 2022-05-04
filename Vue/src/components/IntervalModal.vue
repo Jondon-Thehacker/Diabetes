@@ -1,0 +1,46 @@
+<template>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#intervalModal" style="margin: 5px">
+     Launch demo modal
+    </button>
+
+    <div class="modal fade" id="intervalModal" tabindex="-1" aria-labelledby="intervalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="intervalModalLabel">Choose Time Interval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>From:</p>
+                    <b-form-input v-model="dateFrom" type="date" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input v-model="timeFrom" type="time" style="margin-bottom: 3px"></b-form-input>
+
+                    <p>To:</p>
+                    <b-form-input v-model="dateTo" type="date" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input v-model="timeTo" type="time" style="margin-bottom: 3px"></b-form-input>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    data() {
+        return {
+            dateFrom: null,
+            timeFrom: null,
+            dateTo: null,
+            timeTo: null
+        }
+    },
+}
+</script>
+
+<style>
+
+</style>
