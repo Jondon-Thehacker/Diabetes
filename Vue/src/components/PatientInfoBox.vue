@@ -2,7 +2,7 @@
     <div>
         <b-container class="bv-example-row" style="padding: 0" fluid>
             <b-row class="top-bar2">
-                <b-col>Patient Name</b-col>
+                <b-col style="padding-top: 1rem">Patient Name</b-col>
                 <b-col>
                     <patient-email/>
                 </b-col>

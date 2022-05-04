@@ -2,14 +2,14 @@
     <div>
         <b-container class="bv-example-row" style="padding: 0">
             <b-row>
-                <b-col cols="4">
+                <b-col cols="5">
                     <p>Bar Charts</p>
                     <div>
                         <b-img :src="require('@/assets/barCharts.jpg')" fluid alt="Responsive image"></b-img>
                     </div>
                 </b-col>
                 <b-col class="graph">
-                     <graph-view :width="20" :height="20"></graph-view>
+                     <graph-view width="100px"></graph-view>
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
