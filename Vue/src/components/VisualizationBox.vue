@@ -14,10 +14,10 @@
                 <b-col cols="4">Something</b-col>
                 <b-col>
                     <p>Key Values</p>
-                    <ul>
-                        <li>Something important</li>
-                        <li>More important</li>
-                        <li>Also important</li>
+                    <ul> 
+                        <li>Glucose Management Index</li>
+                        <li>Glucose Variation</li>
+                        <li>Other aggregate functions</li>
                     </ul>
                 </b-col>
             </b-row>
