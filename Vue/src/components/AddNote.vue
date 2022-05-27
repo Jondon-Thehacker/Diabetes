@@ -1,31 +1,29 @@
 <template>
-  <div>
-    <b-button v-b-modal.modal-prevent-closing>Add note</b-button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#noteModal" style="margin: 5px">
+     Select Interval
+    </button>
 
-    <b-modal
-      id="modal-prevent-closing"
-      ref="modal"
-      title="Add a note"
-      @show="resetModal"
-      @hidden="resetModal"
-      @ok="handleOk"
-    >
-      <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-form-group
-          label="Note"
-          label-for="note-input"
-          :state="noteState"
-        >
-          <b-form-textarea
-            id="note-input"
-            v-model="note"
-            :state="noteState"
-            required
-          ></b-form-textarea>
-        </b-form-group>
-      </form>
-    </b-modal>
-  </div>
+    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="noteModalLabel">Choose Time Interval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>From:</p>
+                    <b-form-textarea v-model="note" placeholder="Write a node..."></b-form-textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" @click="handleSave()" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 </template>
 
 <script>
@@ -38,35 +36,8 @@
     },
     
     methods: {
-
-      checkFormValidity() {
-        const valid = this.$refs.form.checkValidity()
-        return valid
-      },
-
-      resetModal() {
-        this.note = ''
-      },
-
-      handleOk(bvModalEvent) {
-        // Prevent modal from closing
-        bvModalEvent.preventDefault()
-        // Trigger submit handler
-        this.handleSubmit()
-      },
-
       handleSubmit() {
-        // Exit when the form isn't valid
-        if (!this.checkFormValidity()) {
-          return
-        }
-
-        // Push the name to submitted names
-        this.submittedNotes.push(this.note)
-        // Hide the modal manually
-        this.$nextTick(() => {
-          this.$bvModal.hide('modal-prevent-closing')
-        })
+       
       }
 
     }

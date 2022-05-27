@@ -20,12 +20,12 @@
   <div>
     <b-container class="grid-container" fluid>
       <b-row class="top-bar">
-        <b-col>Doctor ID: {{doctorId}}</b-col>
-        <b-col cols="8" ><h1>Diabetes Management System</h1></b-col>
-        <b-col>Hospital: {{hospital}}</b-col>
+          <b-col>Doctor ID: {{doctorId}}</b-col>
+          <b-col cols="8" ><h1>Diabetes Management System</h1></b-col>
+          <b-col>Hospital: {{hospital}}</b-col>
       </b-row>
       <b-row>
-        <b-col cols="2" class="p-list">
+        <b-col cols="2" class="p-list shadow">
           <patient-list/>
         </b-col>
         <b-col class="no-marg">
@@ -75,15 +75,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  
   /*margin-top: 10px;*/
 }
 
 .top-bar {
-  background-color: cadetblue;
+  background-color: white;
 }
 
 .p-list {
-  background-color: rgb(129, 196, 200);
+  background-color: whitesmoke;
   margin-left: 0px;
   padding-right: 0px !important;
   padding-left:3px !important;
@@ -93,6 +94,11 @@ export default {
   margin: 0 ;
   padding: 0;
 }
+/*   HIDE SCROLLBAR
+body {
+  overflow: hidden;
+  
+}*/
 
 </style>
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-container class="bv-example-row" style="padding: 0">
+        <b-container class="bv-example-row" style="padding: 1rem 0rem">
             <b-row>
                 <b-col cols="5">
                     <interval-modal></interval-modal>

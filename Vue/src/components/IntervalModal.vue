@@ -1,6 +1,6 @@
 <template>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#intervalModal" style="margin: 5px">
-     Launch demo modal
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#intervalModal" style="margin: 5px">
+     Select Interval
     </button>
 
     <div class="modal fade" id="intervalModal" tabindex="-1" aria-labelledby="intervalModalLabel" aria-hidden="true">
@@ -18,10 +18,11 @@
                     <p>To:</p>
                     <b-form-input v-model="dateTo" type="date" style="margin-bottom: 3px"></b-form-input>
                     <b-form-input v-model="timeTo" type="time" style="margin-bottom: 3px"></b-form-input>
+                    <p>{{dateFrom}} {{timeFrom}} {{dateTo}}{{timeTo}}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" @click="handleSave()" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -36,6 +37,11 @@ export default {
             timeFrom: null,
             dateTo: null,
             timeTo: null
+        }
+    },
+    methods: {
+        handleSave() {
+            console.log(this.dateFrom);
         }
     },
 }

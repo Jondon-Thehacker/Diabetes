@@ -1,7 +1,7 @@
 <template>
     <div> 
         <div class = "patientemail"> Put patient name here </div>
-        <b-button href = "mailto: morerdejlig@gmail.com" class = "patientemail emailbutton"> Email </b-button>
+        <b-button href = "mailto: morerdejlig@gmail.com" class = "emailbutton"> Email </b-button>
     </div> 
 
 </template>
@@ -24,9 +24,7 @@ export default {
     vertical-align: middle;
 }
 .emailbutton{
-    border: none;
     text-align: center;
-    padding: 4px 10px;
-    font-size: 100%;
+    padding: 6px 12px;
 }
 </style>

@@ -1,21 +1,25 @@
 <template>
     <div>
         <b-container class="bv-example-row" style="padding: 0" fluid>
-            <b-row class="top-bar2">
-                <b-col style="padding-top: 1rem">Patient Name</b-col>
+            <b-row class="top-bar2 shadow-sm">
+                <b-col>
+                    <div style="display: inline-block; vertical-align: middle; padding: 1rem">
+                        Patient Name
+                    </div>
+                </b-col>
                 <b-col>
                     <patient-email/>
                 </b-col>
                 <b-col>
                     <data-drop/>
                 </b-col>
+                <b-col>
+                    <note-view/>
+                </b-col>
             </b-row>
             <b-row>
                 <b-col>
                     <visualization-box/>
-                </b-col>
-                <b-col cols="1" class="notes">
-                    <note-view/>
                 </b-col>
             </b-row>
         </b-container>
@@ -43,11 +47,11 @@ export default {
 .notes {
     margin-top: 20px;
     margin-right: 0px;
-    background-color:cornflowerblue;
+    background-color:white;
 }
 
 .top-bar2 {
-    background-color: rgb(66, 117, 119);
+    background-color: whitesmoke;
 }
 
 

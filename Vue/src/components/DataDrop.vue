@@ -1,6 +1,6 @@
 <template>
 <div>
-  <b-dropdown id="dropdown-1" text="Dropdown Button" class="datatypedrop" style="margin-top: 5px">
+  <b-dropdown id="dropdown-1" text="Dropdown Button" class="datatypedrop">
     <b-dropdown-item>BASAL</b-dropdown-item>
     <b-dropdown-item>BOLUS</b-dropdown-item>
     <b-dropdown-item>CGM</b-dropdown-item>
@@ -24,7 +24,7 @@
 
     border: none;
     text-align: center;
-    padding: 4px 10px;
+    padding: 10px;
     font-size: 100%;
     display: inline-block;
 }
