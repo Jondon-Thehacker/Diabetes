@@ -11,6 +11,38 @@ schemes:
 - "http"
 
 paths:
+  /Doctors/{DoctorID}:
+    get:
+      summary: "Returns the specific doctor"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specified doctor"
+        required: true
+      responses:
+        "200":
+          description: "the doctor"
+          schema:
+            type: "object"
+            properties:
+              id: 
+                type: "integer"
+              name:
+                type: "string"
+              hospital:
+                type: "string"
+              mail:
+                type: "string"
+              patients:
+                type: "array"
+                items:
+                  $ref: "#/definitions/Patient"
+              notes:
+                type: "array"
+                items:
+                  $ref: "#/definitions/Note"
+              
   /Doctors/{DoctorID}/patients:
     get:
       summary: "Returns all patients of the doctor"
