@@ -1,7 +1,6 @@
 <template>
-    <div> 
-        <div class = "patientemail"> Put patient name here </div>
-        <b-button href = "mailto: morerdejlig@gmail.com" class = "emailbutton"> Email </b-button>
+    <div class="emaildiv"> 
+        <b-button :href="mailto + patientEmail"> Email </b-button>
     </div> 
 
 </template>
@@ -10,21 +9,24 @@
 
 <script>
 export default {
+    props: {
+        patientEmail: String
+    },
+    data() {
+        return {
+            mailto: "mailto:"
+        }
+    },
+
     
 }
 </script>
 
-
-
-
 <style scoped>
-.patientemail{
-    display: inline-block;
-    padding: 1rem 1rem;
-    vertical-align: middle;
-}
-.emailbutton{
+
+.emaildiv{
     text-align: center;
-    padding: 6px 12px;
+    padding: 10px;
+
 }
 </style>

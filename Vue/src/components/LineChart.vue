@@ -39,6 +39,7 @@ import {
   SubTitle,
 } from "chart.js";
 
+
 import annotationPlugin from "chartjs-plugin-annotation";
 
 Chart.register(
@@ -99,7 +100,7 @@ export default {
           {
             label: "CGM Levels",
             backgroundColor: "#f87979",
-            data: [120, 30, 49, 135, 80, 90, 100, 200],
+            data: [120, 30, 49, 135, 80, 90, 100, 200]
           },
         ],
       },
@@ -130,7 +131,7 @@ export default {
         },
       },
     };
-  },
+  }
 };
 </script>
 
