@@ -18,7 +18,6 @@
                     <p>To:</p>
                     <b-form-input v-model="dateTo" type="date" style="margin-bottom: 3px"></b-form-input>
                     <b-form-input v-model="timeTo" type="time" style="margin-bottom: 3px"></b-form-input>
-                    <p>{{dateFrom}} {{timeFrom}} {{dateTo}}{{timeTo}}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -39,9 +38,13 @@ export default {
             timeTo: null
         }
     },
+    emits: ['timeIntervalEmit'],
+    
     methods: {
         handleSave() {
-            console.log(this.dateFrom);
+            let timeInterval = this.dateFrom + ' ' + this.timeFrom + '/' + this.dateTo + ' ' + this.timeTo
+            this.$emit("timeIntervalEmit", timeInterval)
+            console.log("!!!!!!")
         }
     },
 }

@@ -11,3 +11,4 @@ const app = createApp(App)
 app.config.globalProperties.axios = axios
 app.use(BootstrapVue3)
 app.mount('#app')
+

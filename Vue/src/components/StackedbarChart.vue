@@ -88,19 +88,19 @@ export default {
         datasets: [
           {
             label: "Under normal level",
-            backgroundColor: "#f87979",
+            backgroundColor: "#b77b82",
             data: [30],
             hoverBorderWidth: 0,
           },
           {
             label: "Normal level",
-            backgroundColor: "#79f88e",
+            backgroundColor: "#bbdcd3",
             data: [40],
             hoverBorderWidth: 0,
           },
           {
             label: "over normal level",
-            backgroundColor: "#f879f2",
+            backgroundColor: "#f8de7e",
             data: [30],
             hoverBorderWidth: 0,
           },

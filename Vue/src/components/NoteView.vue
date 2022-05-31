@@ -5,17 +5,20 @@
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
                 <h5 id="offcanvasRightLabel">Notes</h5>
-                <add-note-2 :patientId="patientId" :doctorId="doctorId"/>
+                <add-note-2 @updateNotes="getNotes()" :patientId="patientId" :doctorId="doctorId"/>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
 
             <div class="offcanvas-body"> 
                 
                 <note-item v-for="(note, index) in notes" :key="index"
+                @updateNotes="getNotes()"
+                :doctorId="doctorId"
                 :author="note.doctor.doctorId"
                 :patientId="patientId"
                 :date="note.date"
                 :note="note.note"
+                :noteId="note.noteId"
                 ></note-item>
 
             </div>

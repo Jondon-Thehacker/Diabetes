@@ -1,6 +1,5 @@
 <template>
 <div>
-    <p>{{patientId}}ID </p>
   <b-button v-b-modal.modal-note>Add a note</b-button>
 
   <b-modal id="modal-note" title="Add a note" ok-title="Add note" @ok="handleSubmit">
@@ -19,7 +18,6 @@ export default {
     data() {
         return {
             note: '',
-           // submittedNotes: [] //Push to database instead
         }
     },
     methods: {
@@ -31,12 +29,12 @@ export default {
                 patientId: this.patientId,
             }).then(() => {
                     this.note = '';
-                    console.log("hospital added")
+                    console.log("Note added")
+                    this.$emit("updateNotes")
             })
+            
            
-           // this.submittedNotes.push(this.note);
-           // console.log(this.submittedNotes);
-            this.note = '';
+        
         }
     }
 }
