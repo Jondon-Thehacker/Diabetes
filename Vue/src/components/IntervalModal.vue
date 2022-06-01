@@ -42,9 +42,12 @@ export default {
     
     methods: {
         handleSave() {
-            let timeInterval = this.dateFrom + ' ' + this.timeFrom + '/' + this.dateTo + ' ' + this.timeTo
-            this.$emit("timeIntervalEmit", timeInterval)
-            console.log("!!!!!!")
+            let timeInterval= null
+            if(this.dateFrom != null && this.timeFrom != null && this.dateTo != null && this.timeTo != null){
+                timeInterval = this.dateFrom + ' ' + this.timeFrom + '/' + this.dateTo + ' ' + this.timeTo
+                this.$emit("timeIntervalEmit", timeInterval)
+            }
+            console.log(timeInterval)
         }
     },
 }

@@ -87,7 +87,6 @@ export default {
     patientId: Number,
     measurementType: String,
     timeInterval: String
-
   },
 
   methods: {
@@ -101,26 +100,28 @@ export default {
     },
 
     getDataTimeInterval(){
-        console.log(this.patientId)
-      this.axios({
-        method: 'get',
-          url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/' + this.measurementType + '/' + this.timeInterval,
-       /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + 'Patients/' + '0' + '/Measurements' +'/CGM',*/
-         /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + '0' + '/CGM' + '/2022-01-01 00:00/2022-01-02 00:30',*/
-            }).then(res => {
-              console.log(res.data)
-              this.measurements = res.data
-              /*this.chartData.labels = this.measurements.map(m => m.time)
-              this.chartData.datasets.data = this.measurements.map(m => m.value)*/
-              this.chartData = {datasets:[{
-                                            label: "CGM Levels",
-                                            backgroundColor: "#bbdcd3",
-                                            data: this.measurements.map(m => m.value),
-                                            pointRadius:2
-                                          },], labels: this.measurements.map(m => this.formatDate(m.time))}
-              console.log(this.chartData.datasets.data)
-              console.log(this.chartData.labels)
-            })
+      if(this.patientId != null && this.measurementType != null && this.timeInterval != null) {
+        console.log("timeINterval is: " + this.timeInterval)
+        this.axios({
+          method: 'get',
+            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/' + this.measurementType + '/' + this.timeInterval,
+         /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + 'Patients/' + '0' + '/Measurements' +'/CGM',*/
+           /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + '0' + '/CGM' + '/2022-01-01 00:00/2022-01-02 00:30',*/
+              }).then(res => {
+                console.log(res.data)
+                this.measurements = res.data
+                /*this.chartData.labels = this.measurements.map(m => m.time)
+                this.chartData.datasets.data = this.measurements.map(m => m.value)*/
+                this.chartData = {datasets:[{
+                                              label: this.measurementType,
+                                              backgroundColor: "#bbdcd3",
+                                              data: this.measurements.map(m => m.value),
+                                              pointRadius:2
+                                            },], labels: this.measurements.map(m => this.formatDate(m.time))}
+                console.log(this.chartData.datasets.data)
+                console.log(this.chartData.labels)
+              })
+      }
     }
   
   },
@@ -135,7 +136,7 @@ export default {
     },
 
     timeInterval() {
-      this.getDataTimeInterval
+      this.getDataTimeInterval()
     }
 
   },
@@ -192,11 +193,5 @@ export default {
 </script>
 
 <style>
-/*.container {
-  width: 500;
-  height: 500;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 10%;
-}*/
+
 </style>

@@ -31,6 +31,7 @@ export default {
             patients: []
         }
     },
+     emits: ['patientClickEmit'],
 
     methods: {
 

@@ -166,10 +166,19 @@ public class Patient {
                     result = 3.31 + 0.02392 * average(measurements); // måske 1.627177700 + 0.03484320557*avg ?
                     break;
                 case "countAbove":
-                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv > 180).count();
+                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv > 13.9).count();
                     break;
                 case "countBelow":
-                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 70).count();
+                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 3).count();
+                    break;
+                case "countInRange":
+                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 10 && mv >= 3.9).count();
+                    break;
+                case "countSlightlyAbove":
+                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv <= 13.9 && mv>= 10).count();
+                    break;
+                case "countSlightlyBelow":
+                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 3.9 && mv >= 3).count();
                     break;
             }
 

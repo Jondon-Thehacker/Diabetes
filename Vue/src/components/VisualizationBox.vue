@@ -2,12 +2,12 @@
     <div>
         <b-container class="bv-example-row" style="padding: 1rem 0rem">
             <b-row>
-                <b-col cols="5">
+                <b-col cols="3">
                     <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" ></interval-modal>
-                    <stackedbar-chart height=440></stackedbar-chart>
+                    <stackedbar-chart :height="height" :doctorId="doctorId" :patientId="patientId" :timeInterval="timeInterval"></stackedbar-chart>
                 </b-col>
                 <b-col class="graph">
-                     <line-chart height=440 :doctorId="doctorId" 
+                     <line-chart :height="height" :doctorId="doctorId" 
                      :patientId="patientId" :timeInterval="timeInterval" 
                      :measurementType="measurementType"></line-chart>
                 </b-col>
@@ -39,7 +39,8 @@ import IntervalModal from './IntervalModal.vue'
 export default {
     data() {
         return {
-            timeInterval: ""
+            timeInterval: null,
+            height: 440
         }
     },
 

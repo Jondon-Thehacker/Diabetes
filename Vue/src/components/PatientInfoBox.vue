@@ -35,7 +35,7 @@ import DataDrop from './DataDrop.vue'
 export default {
     data() {
         return {
-            measurementType: ""
+            measurementType: null
         }
     },
 
