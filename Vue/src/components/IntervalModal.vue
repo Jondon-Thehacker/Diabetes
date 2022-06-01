@@ -29,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -44,8 +45,8 @@ export default {
         handleSave() {
             let timeInterval = this.dateFrom + ' ' + this.timeFrom + '/' + this.dateTo + ' ' + this.timeTo
             this.$emit("timeIntervalEmit", timeInterval)
-            console.log("!!!!!!")
-        }
+        },
+        
     },
 }
 </script>

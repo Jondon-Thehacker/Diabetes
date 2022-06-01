@@ -7,24 +7,25 @@
                     <stackedbar-chart height=440></stackedbar-chart>
                 </b-col>
                 <b-col class="graph">
-                     <line-chart height=440 :doctorId="doctorId" 
+                     <line-chart ref="Pont" height=440 :doctorId="doctorId" 
                      :patientId="patientId" :timeInterval="timeInterval" 
                      :measurementType="measurementType"></line-chart>
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
-                <b-col cols="4">Something</b-col>
+                <!--<b-col cols="4">Something</b-col>
                 <b-col>
-                    <p>Key Values for patient  {{patientId}} </p>
-                    <!--<ul> 
+                    <p>Key Values for patient:  {{patientId}} </p>
+                    <ul> 
                         <li>Glucose Management Index</li>
                         <li>Glucose Variation</li>
                         <li>Other aggregate functions</li>
-                    </ul>-->
-                    <!--<key-values :doctorId="doctorId" 
+                    </ul>
+                    
+                </b-col>-->
+                <key-values :doctorId="doctorId" 
                      :patientId="patientId" :timeInterval="timeInterval" 
-                     :measurementType="measurementType"></key-values>-->
-                </b-col>
+                     :measurementType="measurementType"></key-values>
             </b-row>
         </b-container>
     </div>
@@ -34,7 +35,7 @@
 import LineChart from './LineChart.vue'
 import StackedbarChart from './StackedbarChart.vue'
 import IntervalModal from './IntervalModal.vue'
-//import KeyValues from './KeyValues.vue'
+import KeyValues from './KeyValues.vue'
 
 export default {
     data() {
@@ -44,7 +45,9 @@ export default {
     },
 
     mounted(){
-        console.log(this.patientId)
+        console.log(this.patientId)      
+
+
     },
     props: {
         doctorId: Number,
@@ -55,7 +58,7 @@ export default {
         LineChart,
         StackedbarChart,
         IntervalModal,
-        //KeyValues
+        KeyValues
 
     },
     methods: {
