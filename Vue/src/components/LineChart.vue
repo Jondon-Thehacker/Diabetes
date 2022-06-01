@@ -1,7 +1,7 @@
 <template>
   <p> Graph </p>
   <div>
-    <Line 
+    <Line
       :chart-data="chartData"
       :chart-options="chartOptions" 
       :width="width" 
@@ -10,8 +10,9 @@
 </template>
 
 <script>
-
 import { Line } from "vue-chartjs";
+import zoomPlugin from 'chartjs-plugin-zoom';
+
 import {
   Chart as Chart,
   ArcElement,
@@ -37,7 +38,7 @@ import {
   Legend,
   Title,
   Tooltip,
-  SubTitle,
+  SubTitle
 } from "chart.js";
 
 
@@ -68,7 +69,8 @@ Chart.register(
   Title,
   Tooltip,
   SubTitle,
-  annotationPlugin
+  annotationPlugin,
+  zoomPlugin
 );
 
 export default {
@@ -82,7 +84,7 @@ export default {
       type: Number,
       default: 600
     },
-    
+
     doctorId: Number,
     patientId: Number,
     measurementType: String,
@@ -138,7 +140,6 @@ export default {
     timeInterval() {
       this.getDataTimeInterval()
     }
-
   },
   
   computed: {
@@ -146,6 +147,8 @@ export default {
       return {labels: this.measurements.map(m => m.time), data: this.measurements.map(m => m.value)}
     }
   },
+
+
 
   data() {
     return {
@@ -184,7 +187,21 @@ export default {
               },
             },
           },
-          
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
+            limits: {
+              x: {minRange: 50},
+            }
+          },  
         },
       },
     };

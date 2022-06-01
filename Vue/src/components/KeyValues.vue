@@ -1,21 +1,23 @@
-<!--<template>
+<template>
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Standard_Deviation</th>
-        <th scope="col">Glucose_variation</th>
-        <th scope="col">min</th>
-        <th scope="col">max</th>
+        <th scope="col">Glucose Variation</th>
         <th scope="col">GMI</th>
+        <th scope="col">Standard Deviation</th>
+        <th scope="col">Min</th>
+        <th scope="col">Max</th>
+        <th scope="col">Avg</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <th>{{ stddiv }}</th>
-        <td>4</td>
-        <td>3.9</td>
-        <td>12.1</td>
-        <td>5.9</td>
+        <td>{{ gcv }}</td>
+        <td>{{ gmi }}</td>
+        <td>{{ stddiv }}</td>
+        <td>{{ min }}</td>
+        <td>{{ max }}</td>
+        <td>{{ avg }}</td>
       </tr>
     </tbody>
   </table>
@@ -32,11 +34,21 @@ export default {
 
   mounted(){
     this.getStdDiv()
+    this.getGMI()
+    this.getMin()
+    this.getMax()
+    this.getGCV()
+    this.getAVG()
   },
 
   data(){
       return {
-        stddiv: null
+        stddiv: null,
+        gmi: null,
+        min: null,
+        max: null,
+        gcv: null,
+        avg: null
       }
   },
 
@@ -44,13 +56,69 @@ export default {
       getStdDiv(){
         this.axios({
             method: 'get',
-            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/CGM/2022-01-01%2000%3A00/2022-01-01%2000%3A30/standardDeviation'
+            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId +'/' + this.measurementType + '/' + this.timeInterval +'/standardDeviation'
         }).then(res => {
-            console.log(res.data)
-            this.stddiv = res.data
+            this.stddiv = res.data.toPrecision(4)
         })  
+      },
+      getGMI() {
+        this.axios({
+          method: 'get',
+          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/CGM/' + this.timeInterval + '/GMI'
+        }).then(res =>{
+          this.gmi = res.data.toPrecision(4)
+        })
+      },
+      getMin() {
+        this.axios({
+          method: 'get',
+          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/min'
+        }).then(res => {
+          this.min = res.data.toPrecision(2)
+        })
+      },
+      getMax() {
+        this.axios({
+          method: 'get',
+          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/max'
+        }).then(res => {
+          this.max = res.data.toPrecision(2)
+        })
+      },
+      getGCV() {
+        this.axios({
+          method: 'get',
+          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/CGM/' + this.timeInterval + '/glucoseVariability'
+        }).then(res => {
+          this.gcv = res.data.toPrecision(4)
+        })
+      },
+      getAVG(){
+        this.axios({
+          method: 'get',
+          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/average'
+        }).then(res => {
+          this.avg = res.data.toPrecision(2)
+        })
       }
+  },
+
+  watch:{
+    patientId(){
+      this.getStdDiv()
+      this.getAVG()
+      this.getGCV()
+      this.getMin()
+      this.getMax() 
+      this.getGMI()
+    },
+    measurementType() {
+      this.getStdDiv()
+      this.getAVG()
+      this.getMin()
+      this.getMax() 
+    },
   }
 };
 </script>
-<style></style>-->
+<style></style>
