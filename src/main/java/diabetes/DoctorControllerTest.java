@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = DoctorController.class)
-public class PatientControllerTest {
+public class DoctorControllerTest {
 
     @Autowired
     MockMvc mockMvc;
