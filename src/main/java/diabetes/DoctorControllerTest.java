@@ -2,10 +2,10 @@ package diabetes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import diabetes.controller.DoctorController;
-import diabetes.controller.PatientController;
 import diabetes.model.Doctor;
 import diabetes.model.Patient;
 import diabetes.repositories.DoctorRepository;
+import diabetes.repositories.MeasurementRepository;
 import diabetes.repositories.PatientRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -30,23 +31,21 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = DoctorController.class)
 public class DoctorControllerTest {
-
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
     PatientRepository patientRepository;
-
     @MockBean
     DoctorRepository doctorRepository;
 
+    @MockBean
+    MeasurementRepository measurementRepository;
     List<Doctor> doctors = new ArrayList<>();
-
     List<Patient> patients = Arrays.asList(new Patient(1L,"Jonathan","Jonathan@gmail.com",null, doctors, null));
     Doctor testDoc = new Doctor(1L, "Sylvester Stallone", "Rigshospitalet", "sylvesterstallone@gmail.com", patients, null);
-
     @Test
-    public void getDoctor_succes() throws Exception {
+    public void getDoctor_success() throws Exception {
         Mockito.when(doctorRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.ofNullable(testDoc));
 
