@@ -1,5 +1,4 @@
 <template>
-  <p> Graph </p>
   <div>
     <Line
       :chart-data="chartData"

@@ -1,9 +1,14 @@
 <template>
     <div>
         <b-container class="bv-example-row" style="padding: 1rem 0rem">
+            <b-row align-h="center">
+                <div>
+                    <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" style="display: inline-block"></interval-modal>
+                    <data-drop @emitMeasurementType="handleMeasurementTypeEmit" style="display: inline-block"/>
+                </div>
+            </b-row>
             <b-row>
                 <b-col cols="3">
-                    <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" ></interval-modal>
                     <stackedbar-chart :height="height" :doctorId="doctorId" :patientId="patientId" :timeInterval="timeInterval"></stackedbar-chart>
                 </b-col>
                 <b-col class="graph">
@@ -36,12 +41,14 @@ import LineChart from './LineChart.vue'
 import StackedbarChart from './StackedbarChart.vue'
 import IntervalModal from './IntervalModal.vue'
 import KeyValues from './KeyValues.vue'
+import DataDrop from './DataDrop.vue'
 
 export default {
     data() {
         return {
             timeInterval: null,
-            height: 440
+            height: 440,
+            measurementType: null
         }
     },
 
@@ -53,18 +60,22 @@ export default {
     props: {
         doctorId: Number,
         patientId: Number,
-        measurementType: String
+        
     },
     components: {
         LineChart,
         StackedbarChart,
         IntervalModal,
-        KeyValues
+        KeyValues,
+        DataDrop
 
     },
     methods: {
         handleTimeIntervalEmit(value){
             this.timeInterval = value
+        },
+        handleMeasurementTypeEmit(value){
+            this.measurementType = value
         }
     }
 }
@@ -74,5 +85,6 @@ export default {
 /*.graph {
     min-height: 500px;
 }*/
+
     
 </style>

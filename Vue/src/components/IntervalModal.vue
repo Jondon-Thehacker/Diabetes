@@ -1,5 +1,5 @@
 <template>
-    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#intervalModal" style="margin: 5px">
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#intervalModal" style="margin: 5px; max-width: 150px">
      Select Interval
     </button>
 

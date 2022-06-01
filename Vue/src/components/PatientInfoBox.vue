@@ -11,7 +11,7 @@
                     <patient-email :patientEmail="patientEmail"></patient-email>
                 </b-col>
                 <b-col>
-                    <data-drop @emitMeasurementType="handleMeasurementTypeEmit"/>
+                    <!--<data-drop @emitMeasurementType="handleMeasurementTypeEmit"/>-->
                 </b-col>
                 <b-col>
                     <note-view :patientName = "patientName" :patientId = "patientId" :doctorId = "doctorId"/>
@@ -30,7 +30,7 @@
 import PatientEmail from './PatientEmail.vue'
 import VisualizationBox from './VisualizationBox.vue'
 import NoteView from './NoteView.vue'
-import DataDrop from './DataDrop.vue'
+//import DataDrop from './DataDrop.vue'
 
 export default {
     data() {
@@ -50,13 +50,13 @@ export default {
         VisualizationBox,
         NoteView,
         PatientEmail,
-        DataDrop
+       // DataDrop
     },
 
     methods: {
-        handleMeasurementTypeEmit(value){
+        /*handleMeasurementTypeEmit(value){
             this.measurementType = value
-        }
+        }*/
     }
 }
 </script>
