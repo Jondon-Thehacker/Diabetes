@@ -3,22 +3,27 @@
         <b-container class="bv-example-row" style="padding: 1rem 0rem">
             <b-row>
                 <b-col cols="5">
-                    <interval-modal></interval-modal>
-                    <stackedbar-chart height="440"></stackedbar-chart>
+                    <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" ></interval-modal>
+                    <stackedbar-chart height=440></stackedbar-chart>
                 </b-col>
                 <b-col class="graph">
-                     <line-chart height="440"></line-chart>
+                     <line-chart height=440 :doctorId="doctorId" 
+                     :patientId="patientId" :timeInterval="timeInterval" 
+                     :measurementType="measurementType"></line-chart>
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
                 <b-col cols="4">Something</b-col>
                 <b-col>
-                    <p>Key Values</p>
-                    <ul> 
+                    <p>Key Values for patient  {{patientId}} </p>
+                    <!--<ul> 
                         <li>Glucose Management Index</li>
                         <li>Glucose Variation</li>
                         <li>Other aggregate functions</li>
-                    </ul>
+                    </ul>-->
+                    <!--<key-values :doctorId="doctorId" 
+                     :patientId="patientId" :timeInterval="timeInterval" 
+                     :measurementType="measurementType"></key-values>-->
                 </b-col>
             </b-row>
         </b-container>
@@ -29,13 +34,34 @@
 import LineChart from './LineChart.vue'
 import StackedbarChart from './StackedbarChart.vue'
 import IntervalModal from './IntervalModal.vue'
+//import KeyValues from './KeyValues.vue'
 
 export default {
+    data() {
+        return {
+            timeInterval: ""
+        }
+    },
+
+    mounted(){
+        console.log(this.patientId)
+    },
+    props: {
+        doctorId: Number,
+        patientId: Number,
+        measurementType: String
+    },
     components: {
         LineChart,
         StackedbarChart,
-        IntervalModal
+        IntervalModal,
+        //KeyValues
 
+    },
+    methods: {
+        handleTimeIntervalEmit(value){
+            this.timeInterval = value
+        }
     }
 }
 </script>

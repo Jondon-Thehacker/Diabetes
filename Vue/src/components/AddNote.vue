@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#noteModal" style="margin: 5px">
      Select Interval
     </button>
@@ -42,4 +42,4 @@
 
     }
   }
-</script>
+</script>-->

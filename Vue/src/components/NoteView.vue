@@ -1,29 +1,69 @@
 <template>
     <div class="note-button">
-        <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="margin: 0; position: relative; top: 40%">Toggle notes</button>
+        <button @click="getNotes" class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="margin: 0; position: relative; top: 40%">Toggle notes</button>
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
                 <h5 id="offcanvasRightLabel">Notes</h5>
-                <add-note-2/>
+                <add-note-2 @updateNotes="getNotes()" :patientId="patientId" :doctorId="doctorId"/>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body">
-                <hr><br> Note 2 <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat voluptates quos reprehenderit porro perferendis totam ab laudantium culpa autem ipsam voluptate, fugiat doloribus nam nesciunt. Quod laudantium numquam officiis eum.
-                <hr><br> Note 3 <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat voluptates quos reprehenderit porro perferendis totam ab laudantium culpa autem ipsam voluptate, fugiat doloribus nam nesciunt. Quod laudantium numquam officiis eum.
-                <hr><br> Note 4 <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat voluptates quos reprehenderit porro perferendis totam ab laudantium culpa autem ipsam voluptate, fugiat doloribus nam nesciunt. Quod laudantium numquam officiis eum.
-                <hr><br> Note 5 <br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat voluptates quos reprehenderit porro perferendis totam ab laudantium culpa autem ipsam voluptate, fugiat doloribus nam nesciunt. Quod laudantium numquam officiis eum.    
+
+            <div class="offcanvas-body"> 
+                
+                <note-item v-for="(note, index) in notes" :key="index"
+                @updateNotes="getNotes()"
+                :doctorId="doctorId"
+                :author="note.doctor.doctorId"
+                :patientId="patientId"
+                :date="note.date"
+                :note="note.note"
+                :noteId="note.noteId"
+                ></note-item>
+
             </div>
+
         </div>
     </div>
 </template>
 
 <script>
 import AddNote2 from './AddNote2.vue'
+import NoteItem from './NoteItem.vue'
+
 export default {
-  components: { AddNote2 },
-    
+    props: {
+        patientId: Number,
+        doctorId: Number,
+        patientName: String
+    },
+
+    components: {
+        AddNote2,
+        NoteItem
+    },
+
+    data(){
+        return{
+            notes: [],/*
+            author: "",
+            note: ""*/
+        }
+    },
+
+    methods: {
+        getNotes() {
+            this.axios({
+                method: 'get',
+                url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes',
+            }).then(res => {
+                console.log(res.data)
+                this.notes = res.data
+            })  
+        }
+    }
 }
+
 </script>
 
 <style scoped>
