@@ -56,6 +56,7 @@ export default {
     }
   },
   methods: {
+
     testAxios() {
       this.axios({
         method: 'get',

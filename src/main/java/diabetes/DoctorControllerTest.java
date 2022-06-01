@@ -1,5 +1,7 @@
 package diabetes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import diabetes.controller.DoctorController;
 import diabetes.controller.PatientController;
 import diabetes.model.Doctor;
 import diabetes.model.Patient;
@@ -40,13 +42,13 @@ public class PatientControllerTest {
 
     List<Doctor> doctors = new ArrayList<>();
 
-    List<Patient> patients = Arrays.asList(new Patient(1L,"Jonathan","Jonathan@gmail.com",null, jonathanDoctors, null));
+    List<Patient> patients = Arrays.asList(new Patient(1L,"Jonathan","Jonathan@gmail.com",null, doctors, null));
     Doctor testDoc = new Doctor(1L, "Sylvester Stallone", "Rigshospitalet", "sylvesterstallone@gmail.com", patients, null);
 
     @Test
     public void getDoctor_succes() throws Exception {
         Mockito.when(doctorRepository.findById(Mockito.anyLong()))
-                .thenReturn(new Optional.ofNullable(testDoc));
+                .thenReturn(Optional.ofNullable(testDoc));
 
         RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}", 1L);
 
@@ -60,7 +62,7 @@ public class PatientControllerTest {
     @Test
     public void getDoctor_failure() throws Exception {
         Mockito.when(doctorRepository.findById(Mockito.anyLong()))
-                .thenReturn(new Optional.ofNullable(null));
+                .thenReturn(Optional.ofNullable(null));
 
         RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}", 1L);
         MvcResult result = mockMvc.perform(request).andReturn();
