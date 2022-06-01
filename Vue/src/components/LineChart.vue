@@ -103,7 +103,6 @@ export default {
 
     getDataTimeInterval(){
       if(this.patientId != null && this.measurementType != null && this.timeInterval != null) {
-        console.log("timeINterval is: " + this.timeInterval)
         this.axios({
           method: 'get',
             url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/' + this.measurementType + '/' + this.timeInterval,

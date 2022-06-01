@@ -32,15 +32,6 @@ export default {
     timeInterval: String
   },
 
-  mounted(){
-    this.getStdDiv()
-    this.getGMI()
-    this.getMin()
-    this.getMax()
-    this.getGCV()
-    this.getAVG()
-  },
-
   data(){
       return {
         stddiv: null,
@@ -105,19 +96,32 @@ export default {
 
   watch:{
     patientId(){
-      this.getStdDiv()
+      if (this.patientId!=null && this.measurementType!=null && this.timeInterval!=null) {
+        this.getStdDiv()
+        this.getAVG()
+        this.getGCV()
+        this.getMin()
+        this.getMax() 
+        this.getGMI()
+      }
+    },
+    measurementType() {
+      if(this.patientId!=null && this.measurementType!=null && this.timeInterval!=null){
+        this.getStdDiv()
+        this.getAVG()
+        this.getMin()
+        this.getMax() 
+      }
+    },
+    timeInterval(){
+      if(this.patientId!=null && this.measurementType!=null && this.timeInterval!=null){
       this.getAVG()
       this.getGCV()
       this.getMin()
       this.getMax() 
       this.getGMI()
-    },
-    measurementType() {
-      this.getStdDiv()
-      this.getAVG()
-      this.getMin()
-      this.getMax() 
-    },
+      }
+    }
   }
 };
 </script>
