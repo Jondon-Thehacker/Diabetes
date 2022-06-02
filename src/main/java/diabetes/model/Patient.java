@@ -239,10 +239,24 @@ public class Patient {
     }
 
     private String getTime(Long stepSize, int step) {
+        String out = "";
+
         int hr = (stepSize.intValue() * step) / 60;
         int min = (stepSize.intValue() * step) % 60;
 
-        return hr + ":" + min;
+        if (hr < 10) {
+            out = "0" + hr;
+        } else {
+            out = "" + hr;
+        }
+
+        if (min < 10) {
+            out += ":" + "0" + min;
+        } else {
+            out += ":" + min;
+        }
+        
+        return out + ":00";
     }
 
     private double count(List<Measurement> measurements) {
