@@ -71,36 +71,49 @@ export default {
       let time = date.slice(11,16)
       return day + '/' + month + '-' + year + ' ' +  time
     },
+   /* getTimeLabels(){
+        let timeLabels = []
+        let time = "00:00"
+        let minutes, hours
+        while(time != "24:00"){
+            minutes = time.slice(3,5)
+            hours = time.slice(0,2)
+            minutes = minutes + 5
+        }
+    },*/
+  
 
     getDataInTimeInterval(){
       if(this.patientId != null && this.timeInterval != null) {
         
         this.axios({
           method: 'get',
-            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/CGM/' + this.timeInterval,
+            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/CGM/' + this.timeInterval + '/summary/lineChart/5',
               }).then(res => {
                 console.log(res.data)
+                console.log(Object.keys(res.data))
+                console.log(Object.values(res.data))
                 this.measurements = res.data
                 this.chartData = {datasets:[ 
                                             {
-                                              label: this.measurementType,
+                                              label: "1",
                                               backgroundColor: "#06c258",
-                                              data: this.measurements.map(m => m.value+1),
+                                              data: Object.values(res.data).map(m => m.Q1),
                                               pointRadius:2
                                             },
                                             {
-                                              label: this.measurementType,
+                                              label: "2",
                                               backgroundColor: "#059142",
-                                              data: this.measurements.map(m => m.value),
+                                              data: Object.values(res.data).map(m => m.Median),
                                               pointRadius:2
                                             },
                                             {
-                                              label: this.measurementType,
+                                              label: "3",
                                               backgroundColor: "#06c258",
-                                              data: this.measurements.map(m => m.value-1),
+                                              data: Object.values(res.data).map(m => m.Q3),
                                               pointRadius:2
                                             }
-                                            ], labels: this.measurements.map(m => this.formatDate(m.time))}
+                                            ], labels: Object.keys(this.measurements)} //object.keys
                 console.log(this.chartData.datasets.data)
                 console.log(this.chartData.labels)
               })

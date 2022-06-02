@@ -10,7 +10,6 @@
             </div>
 
             <div class="offcanvas-body"> 
-                
                 <note-item v-for="(note, index) in notes" :key="index"
                 @updateNotes="getNotes()"
                 :doctorId="doctorId"
@@ -20,7 +19,6 @@
                 :note="note.note"
                 :noteId="note.noteId"
                 ></note-item>
-
             </div>
 
         </div>

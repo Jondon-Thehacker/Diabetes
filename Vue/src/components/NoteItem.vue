@@ -1,6 +1,7 @@
 <template>
     <hr>
-    <button @click="deleteNote" type="button" class="bi bi-trash delete-note-btn" aria-label="Close" style="min-width:30px;min-height:30px"></button>
+    <button @click="deleteNote" type="button" class="btn-close delete-note-btn" aria-label="Close" style="min-width:30px;min-height:30px">
+    </button>
     <br> DoctorId: {{author}} - {{ formattedDate }} <br> {{note}}
 </template>
 
@@ -19,7 +20,6 @@ export default{
 
     methods: {
         deleteNote(){
-            
             this.axios.delete(
                 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes/' + this.noteId
             ).then(res => {
