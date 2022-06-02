@@ -127,7 +127,6 @@ export default {
     }
   
   },
-
   watch: {
     patientId() {
       this.getDataTimeInterval()
