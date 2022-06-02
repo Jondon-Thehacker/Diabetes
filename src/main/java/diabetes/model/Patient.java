@@ -7,10 +7,7 @@ import org.yaml.snakeyaml.util.EnumUtils;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -188,6 +185,64 @@ public class Patient {
         }
 
         return result;
+    }
+
+    public Map<String, Map<String, Double>> getSummary(String dataType, String startDate, String endDate, String type, Long stepSize) {
+        List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,startDate,endDate);
+        Map<String, Map<String, Double>> out = new HashMap<>();
+
+        String time = "";
+        int i = 0;
+        while(!time.matches("(.*)(?<=([3-9][0-9]|2[4-9]))[[0-9]+:]{6}(.*)")) {
+            time = getTime(stepSize, i);
+
+            Map<String, Double> statistics = new HashMap<String, Double>();
+
+            String finalTime = time;
+            List<Measurement> measurementsAtTime = measurements.stream()
+                                                                .filter(v -> v.getTime()
+                                                                                .toString()
+                                                                                .contains(finalTime))
+                                                                                .collect(Collectors.toList());
+
+            switch (type) {
+                case "barChart" -> {
+                    statistics.put("Above", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv > 13.9).count());
+                    statistics.put("SlightlyAbove", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv <= 13.9 && mv >= 10).count());
+                    statistics.put("InRange", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 10 && mv >= 3.9).count());
+                    statistics.put("SlightlyBelow", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3.9 && mv >= 3).count());
+                    statistics.put("Below", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3).count());
+                    out.put(time, statistics);
+                }
+                case "lineChart" -> {
+                    statistics.put("Q1", percentile(measurementsAtTime, 25L));
+                    statistics.put("Median", percentile(measurementsAtTime, 50L));
+                    statistics.put("Q3", percentile(measurementsAtTime, 75L));
+                    out.put(time, statistics);
+                }
+                case "keyValues" -> {
+                    statistics.put("GV", standardDeviation(measurementsAtTime)/average(measurementsAtTime));
+                    statistics.put("GMI", 3.31 + 0.02392 * average(measurementsAtTime));
+                    statistics.put("Sd", standardDeviation(measurementsAtTime));
+                    statistics.put("Min", measurementsAtTime.stream().map(Measurement::getValue).min(Comparator.comparing(Double::valueOf)).get());
+                    statistics.put("Max", measurementsAtTime.stream().map(Measurement::getValue).max(Comparator.comparing(Double::valueOf)).get());
+                    statistics.put("Average", average(measurementsAtTime));
+
+                    out.put(time, statistics);
+                }
+            }
+
+            i++;
+        }
+
+        return out;
+    }
+
+    private String getTime(Long stepSize, int step) {
+        int hr = (stepSize.intValue() * step) / 60;
+        int min = (stepSize.intValue() * step) % 60;
+
+        return hr + ":" + min;
     }
 
     private double count(List<Measurement> measurements) {

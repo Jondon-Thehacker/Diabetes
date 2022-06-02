@@ -3,7 +3,7 @@ info:
   description: ""
   version: "1.0.0"
   title: "Diabetes Management System"
- 
+
 host: "localhost:8080"
 basePath: "/api/v1"
 
@@ -26,7 +26,7 @@ paths:
           schema:
             type: "object"
             properties:
-              id: 
+              id:
                 type: "integer"
               name:
                 type: "string"
@@ -42,7 +42,7 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/definitions/Note"
-              
+
   /Doctors/{DoctorID}/patients:
     get:
       summary: "Returns all patients of the doctor"
@@ -59,7 +59,7 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/Patient"
-              
+
   /Doctors/{DoctorID}/patients/{patientID}:
     get:
       summary: "Returns the specific patient"
@@ -79,7 +79,7 @@ paths:
           description: "the patient of the doctor"
           schema:
               $ref: "#/definitions/Patient"
-  
+
   /Doctors/{DoctorID}/Patients/{PatientID}/Measurements/{DataType}:
     get:
       summary: "Returns all the data of the chosen type"
@@ -228,6 +228,51 @@ paths:
           schema:
               type: "number"
 
+  /Doctors/{DoctorID}/{PatientID}/{DataType}/{StartDate}/{EndDate}/summary/{StepSize}:
+    get:
+      summary: "Returns summary statistics of interval of specified type"
+      parameters:
+      - in: "path"
+        name: "DoctorID"
+        type: "integer"
+        description: "ID of the specific doctor"
+        required: true
+      - in: "path"
+        name: "PatientID"
+        type: "integer"
+        description: "ID of the specific patient"
+        required: true
+      - in: "path"
+        name: "DataType"
+        type: "string"
+        description: "Name of the datatype"
+        required: true
+      - in: "path"
+        name: "StartDate"
+        type: "string"
+        description: "The start date of the requested time interval"
+        required: true
+      - in: "path"
+        name: "EndDate"
+        type: "string"
+        description: "The end date of the requested time interval"
+        required: true
+      - in: "path"
+        name: "type"
+        type: "string"
+        description: "The type of summary"
+        required: true
+      - in: "path"
+        name: "StepSize"
+        type: integer
+        description: "Sampling step size"
+        required: true
+      responses:
+        "200":
+          description: "Summary statistics of chosen interval of chosen type with chosen step size"
+          schema:
+            type: "object"
+
   /Doctors/{DoctorID}/patients/{PatientID}/Notes:
     post:
       summary: "Posts a note to the given patient"
@@ -328,4 +373,3 @@ definitions:
         type: "integer"
       patientId:
         type: "integer" #dette skal referere til den specifikke patients id
-      
