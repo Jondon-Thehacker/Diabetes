@@ -81,12 +81,7 @@ export default {
               }).then(res => {
                 console.log(res.data)
                 this.measurements = res.data
-                this.chartData = {datasets:[  {
-                                              label: this.measurementType,
-                                              backgroundColor: "#08f26e",
-                                              data: this.measurements.map(m => m.value+2),
-                                              pointRadius:2
-                                            },
+                this.chartData = {datasets:[ 
                                             {
                                               label: this.measurementType,
                                               backgroundColor: "#06c258",
@@ -103,12 +98,6 @@ export default {
                                               label: this.measurementType,
                                               backgroundColor: "#06c258",
                                               data: this.measurements.map(m => m.value-1),
-                                              pointRadius:2
-                                            },
-                                            {
-                                              label: this.measurementType,
-                                              backgroundColor: "#08f26e",
-                                              data: this.measurements.map(m => m.value-2),
                                               pointRadius:2
                                             }
                                             ], labels: this.measurements.map(m => this.formatDate(m.time))}

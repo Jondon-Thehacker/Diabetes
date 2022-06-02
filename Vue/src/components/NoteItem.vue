@@ -1,6 +1,6 @@
 <template>
     <hr>
-    <button @click="deleteNote" type="button" class="btn-close delete-note-btn" aria-label="Close"></button>
+    <button @click="deleteNote" type="button" class="bi bi-trash delete-note-btn" aria-label="Close" style="min-width:30px;min-height:30px"></button>
     <br> DoctorId: {{author}} - {{ formattedDate }} <br> {{note}}
 </template>
 

@@ -189,14 +189,18 @@ public class Patient {
 
     public Map<String, Map<String, Double>> getSummary(String dataType, String startDate, String endDate, String type, Long stepSize) {
         List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,startDate,endDate);
-        Map<String, Map<String, Double>> out = new HashMap<>();
+        Map<String, Map<String, Double>> out = new LinkedHashMap<>();
 
         String time = "";
         int i = 0;
         while(!time.matches("(.*)(?<=([3-9][0-9]|2[4-9]))[[0-9]+:]{6}(.*)")) {
             time = getTime(stepSize, i);
 
-            Map<String, Double> statistics = new HashMap<String, Double>();
+            if (time.equals("24:00:00")) {
+                break;
+            }
+
+            Map<String, Double> statistics = new LinkedHashMap<String, Double>();
 
             String finalTime = time;
             List<Measurement> measurementsAtTime = measurements.stream()
