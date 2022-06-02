@@ -79,7 +79,7 @@ export default {
           method: 'get',
           url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/CGM/' + this.timeInterval + '/GMI'
         }).then(res =>{
-          this.gmi = res.data.toPrecision(3) + ' mmol/L'
+          this.gmi = res.data.toPrecision(3) + ' mmol/mol'
         })
       },
       getMin() {
