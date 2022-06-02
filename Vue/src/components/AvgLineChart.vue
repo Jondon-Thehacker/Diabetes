@@ -53,12 +53,12 @@ export default {
     },
     height: {
       type: Number,
-      default: 600
+      default: 500
     },
 
     doctorId: Number,
     patientId: Number,
-    measurementType: String,
+    //measurementType: String,
     timeInterval: String
   },
 
@@ -73,24 +73,32 @@ export default {
     },
 
     getDataInTimeInterval(){
-      if(this.patientId != null && this.measurementType != null && this.timeInterval != null) {
+      if(this.patientId != null && this.timeInterval != null) {
         
         this.axios({
           method: 'get',
-            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/' + this.measurementType + '/' + this.timeInterval,
-         /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + 'Patients/' + '0' + '/Measurements' +'/CGM',*/
-           /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + '0' + '/CGM' + '/2022-01-01 00:00/2022-01-02 00:30',*/
+            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/CGM/' + this.timeInterval,
               }).then(res => {
                 console.log(res.data)
                 this.measurements = res.data
-                /*this.chartData.labels = this.measurements.map(m => m.time)
-                this.chartData.datasets.data = this.measurements.map(m => m.value)*/
                 this.chartData = {datasets:[{
+                                              label: this.measurementType,
+                                              backgroundColor: "#bbdcd3",
+                                              data: this.measurements.map(m => m.value+1),
+                                              pointRadius:2
+                                            },
+                                            {
                                               label: this.measurementType,
                                               backgroundColor: "#bbdcd3",
                                               data: this.measurements.map(m => m.value),
                                               pointRadius:2
-                                            },], labels: this.measurements.map(m => this.formatDate(m.time))}
+                                            },
+                                            {
+                                              label: this.measurementType,
+                                              backgroundColor: "#bbdcd3",
+                                              data: this.measurements.map(m => m.value-1),
+                                              pointRadius:2
+                                            }], labels: this.measurements.map(m => this.formatDate(m.time))}
                 console.log(this.chartData.datasets.data)
                 console.log(this.chartData.labels)
               })

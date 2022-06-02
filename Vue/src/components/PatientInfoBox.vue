@@ -11,7 +11,7 @@
                     <patient-email :patientEmail="patientEmail"></patient-email>
                 </b-col>
                 <b-col>
-                    <!--<data-drop @emitMeasurementType="handleMeasurementTypeEmit"/>-->
+                    <visualization-options @emitVisualizationOption="handleVisualizationOptionEmit"/>
                 </b-col>
                 <b-col>
                     <note-view :patientName = "patientName" :patientId = "patientId" :doctorId = "doctorId"/>
@@ -19,7 +19,8 @@
             </b-row>
             <b-row>
                 <b-col>
-                    <visualization-box :doctorId="doctorId" :patientId="patientId" :measurementType="measurementType" />
+                    <visualization-box v-if="visualizationOption === 'linechart'" :doctorId="doctorId" :patientId="patientId" />
+                    <visualization-avg-graph v-if="visualizationOption === 'avgLinechart'" :doctorId="doctorId" :patientId="patientId" />
                 </b-col>
             </b-row>
         </b-container>
@@ -30,12 +31,13 @@
 import PatientEmail from './PatientEmail.vue'
 import VisualizationBox from './VisualizationBox.vue'
 import NoteView from './NoteView.vue'
-//import DataDrop from './DataDrop.vue'
+import VisualizationOptions from './VisualizationOptions'
+import VisualizationAvgGraph from './VisualizationAvgGraph'
 
 export default {
     data() {
         return {
-            measurementType: null
+            visualizationOption: "linechart"
         }
     },
 
@@ -47,16 +49,17 @@ export default {
     },
 
     components: {
+        VisualizationOptions,
         VisualizationBox,
         NoteView,
         PatientEmail,
-       // DataDrop
+        VisualizationAvgGraph
     },
 
     methods: {
-        /*handleMeasurementTypeEmit(value){
-            this.measurementType = value
-        }*/
+        handleVisualizationOptionEmit(value){
+            this.visualizationOption = value
+        }
     }
 }
 </script>

@@ -65,7 +65,7 @@ export default {
           method: 'get',
           url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/min'
         }).then(res => {
-          this.min = res.data.toPrecision(2)
+          this.min = res.data.toPrecision(4)
         })
       },
       getMax() {
@@ -73,7 +73,7 @@ export default {
           method: 'get',
           url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/max'
         }).then(res => {
-          this.max = res.data.toPrecision(2)
+          this.max = res.data.toPrecision(4)
         })
       },
       getGCV() {
@@ -89,7 +89,7 @@ export default {
           method: 'get',
           url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/average'
         }).then(res => {
-          this.avg = res.data.toPrecision(2)
+          this.avg = res.data.toPrecision(4)
         })
       }
   },
@@ -109,17 +109,20 @@ export default {
       if(this.patientId!=null && this.measurementType!=null && this.timeInterval!=null){
         this.getStdDiv()
         this.getAVG()
+        this.getGCV()
         this.getMin()
         this.getMax() 
+        this.getGMI() 
       }
     },
     timeInterval(){
       if(this.patientId!=null && this.measurementType!=null && this.timeInterval!=null){
-      this.getAVG()
-      this.getGCV()
-      this.getMin()
-      this.getMax() 
-      this.getGMI()
+        this.getStdDiv()
+        this.getAVG()
+        this.getGCV()
+        this.getMin()
+        this.getMax() 
+        this.getGMI()
       }
     }
   }

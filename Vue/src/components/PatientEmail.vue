@@ -1,6 +1,9 @@
 <template>
-    <div class="emaildiv"> 
-        <b-button :href="mailto + patientEmail"> Email </b-button>
+    <div class="emaildiv">
+       
+        <b-button v-if="patientEmail != null" :href="mailto + patientEmail"> Email </b-button>
+        <b-button v-if="patientEmail === null"> Email </b-button>
+
     </div> 
 
 </template>
@@ -8,17 +11,18 @@
 
 
 <script>
+
+
 export default {
     props: {
         patientEmail: String
     },
     data() {
         return {
-            mailto: "mailto:"
+            mailto: "mailto:",
         }
-    },
+    }
 
-    
 }
 </script>
 

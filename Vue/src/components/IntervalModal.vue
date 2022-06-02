@@ -13,11 +13,11 @@
                 <div class="modal-body">
                     <p>From:</p>
                     <b-form-input v-model="dateFrom" type="date" style="margin-bottom: 3px"></b-form-input>
-                    <b-form-input v-model="timeFrom" type="time" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input v-if="!hideTime" v-model="timeFrom" type="time" style="margin-bottom: 3px"></b-form-input>
 
                     <p>To:</p>
                     <b-form-input v-model="dateTo" type="date" style="margin-bottom: 3px"></b-form-input>
-                    <b-form-input v-model="timeTo" type="time" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input v-if="!hideTime" v-model="timeTo" type="time" style="margin-bottom: 3px"></b-form-input>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -31,6 +31,12 @@
 <script>
 
 export default {
+    props: {
+        hideTime: {
+            type: Boolean,
+            default: false
+        }
+    },
     data() {
         return {
             dateFrom: null,
@@ -46,6 +52,10 @@ export default {
             let timeInterval= null
             if(this.dateFrom != null && this.timeFrom != null && this.dateTo != null && this.timeTo != null){
                 timeInterval = this.dateFrom + ' ' + this.timeFrom + '/' + this.dateTo + ' ' + this.timeTo
+                this.$emit("timeIntervalEmit", timeInterval)
+            }
+            if(this.hideTime && this.dateFrom != null && this.dateTo != null){
+                timeInterval = this.dateFrom + ' 00:00/' + this.dateTo + ' 00:00'
                 this.$emit("timeIntervalEmit", timeInterval)
             }
             console.log(timeInterval)
