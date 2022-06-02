@@ -395,7 +395,7 @@ public class MeasurementControllerTest {
 
     @Test
     public void getCountAbove() throws Exception{
-        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM1, CGM2, CGM3, CGM4));
+        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM0, CGM1, CGM2, CGM3, CGM4));
         List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
         Jonathan.setMeasurements(jonathanMeasurement);
 
@@ -415,7 +415,7 @@ public class MeasurementControllerTest {
         System.out.println("Ran Test");
         System.out.println(result.getResponse().getContentAsString());
 
-        String expected_result = "0.0";
+        String expected_result = "3.0";
 
         JSONAssert.assertEquals(expected_result,
                 result.getResponse().getContentAsString(), false);
@@ -423,6 +423,66 @@ public class MeasurementControllerTest {
 
     @Test
     public void getCountBelow() throws Exception{
+        Measurement CGM0 = new Measurement(1L, 0, new Timestamp(2022-1900, 4-1, 13+1, 0, 0, 0, 0),Jonathan, Measurement.MeasurementName.CGM);
+
+        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM0, CGM1, CGM2, CGM3, CGM4));
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+        Jonathan.setMeasurements(jonathanMeasurement);
+
+        Optional<Doctor> MockResponse = Optional.ofNullable(new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, null));
+        Optional<Patient> MockResponse2 = Optional.ofNullable(Jonathan);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse);
+
+        Mockito.when(patientRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse2);
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","countBelow");
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        System.out.println("Ran Test");
+        System.out.println(result.getResponse().getContentAsString());
+
+        String expected_result = "1.0";
+
+        JSONAssert.assertEquals(expected_result,
+                result.getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    public void getCountSlightlyBelow() throws Exception{
+        Measurement CGM0 = new Measurement(1L, 3, new Timestamp(2022-1900, 4-1, 13+1, 0, 0, 0, 0),Jonathan, Measurement.MeasurementName.CGM);
+
+        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM0, CGM1, CGM2, CGM3, CGM4));
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+        Jonathan.setMeasurements(jonathanMeasurement);
+
+        Optional<Doctor> MockResponse = Optional.ofNullable(new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, null));
+        Optional<Patient> MockResponse2 = Optional.ofNullable(Jonathan);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse);
+
+        Mockito.when(patientRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse2);
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","countSlightlyBelow");
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        System.out.println("Ran Test");
+        System.out.println(result.getResponse().getContentAsString());
+
+        String expected_result = "1.0";
+
+        JSONAssert.assertEquals(expected_result,
+                result.getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    public void getCountSlightlyAbove() throws Exception{
         List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM1, CGM2, CGM3, CGM4));
         List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
         Jonathan.setMeasurements(jonathanMeasurement);
@@ -436,14 +496,44 @@ public class MeasurementControllerTest {
         Mockito.when(patientRepository.findById(Mockito.anyLong()))
                 .thenReturn(MockResponse2);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-14 00:00","2022-04-19 00:00","countBelow");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-14 00:00","2022-04-19 00:00","countSlightlyAbove");
 
         MvcResult result = mockMvc.perform(request).andReturn();
 
         System.out.println("Ran Test");
         System.out.println(result.getResponse().getContentAsString());
 
-        String expected_result = "4.0";
+        String expected_result = "1.0";
+
+        JSONAssert.assertEquals(expected_result,
+                result.getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    public void getCountInRange() throws Exception{
+        Measurement CGM0 = new Measurement(1L, 5, new Timestamp(2022-1900, 4-1, 13+1, 0, 0, 0, 0),Jonathan, Measurement.MeasurementName.CGM);
+
+        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM0, CGM1, CGM2, CGM3, CGM4));
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+        Jonathan.setMeasurements(jonathanMeasurement);
+
+        Optional<Doctor> MockResponse = Optional.ofNullable(new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, null));
+        Optional<Patient> MockResponse2 = Optional.ofNullable(Jonathan);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse);
+
+        Mockito.when(patientRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse2);
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","countInRange");
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        System.out.println("Ran Test");
+        System.out.println(result.getResponse().getContentAsString());
+
+        String expected_result = "1.0";
 
         JSONAssert.assertEquals(expected_result,
                 result.getResponse().getContentAsString(), false);
