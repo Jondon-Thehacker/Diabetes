@@ -1,9 +1,9 @@
 <template>
   <p> Graph </p>
   <div>
-    <Line
+    <Line 
       :chart-data="chartData"
-      :chart-options="chartOptions" 
+      :chart-options="hasLines ? chartOptions : chartOptions2" 
       :width="width" 
       :height="height" />
   </div>
@@ -89,6 +89,7 @@ export default {
     patientId: Number,
     measurementType: String,
     timeInterval: String
+
   },
 
   methods: {
@@ -124,8 +125,14 @@ export default {
                 console.log(this.chartData.labels)
               })
       }
+    },
+    changeChartOptions(){
+      if(this.measurementType != 'CGM'){
+        this.hasLines = !this.hasLines
+      } else {
+        this.hasLines = true
+      }
     }
-  
   },
   watch: {
     patientId() {
@@ -133,6 +140,7 @@ export default {
     },
 
     measurementType() {
+      this.changeChartOptions()
       this.getDataTimeInterval()
     },
 
@@ -151,8 +159,8 @@ export default {
 
   data() {
     return {
+      hasLines: true,
       measurements: [],
-      
       chartData: {
         labels: [],
         datasets: [
@@ -186,6 +194,27 @@ export default {
               },
             },
           },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
+            limits: {
+              x: {minRange: 50},
+            }
+          },  
+        },
+      },
+      chartOptions2: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
           zoom: {
             pan: {
               enabled: true,
