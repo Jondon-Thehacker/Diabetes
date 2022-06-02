@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Entity
@@ -195,6 +197,7 @@ public class Patient {
         int i = 0;
         while(!time.matches("(.*)(?<=([3-9][0-9]|2[4-9]))[[0-9]+:]{6}(.*)")) {
             time = getTime(stepSize, i);
+            String nextTime = getTime(stepSize, i + 1);
 
             if (time.equals("24:00:00")) {
                 break;
@@ -203,11 +206,26 @@ public class Patient {
             Map<String, Double> statistics = new LinkedHashMap<String, Double>();
 
             String finalTime = time;
-            List<Measurement> measurementsAtTime = measurements.stream()
-                                                                .filter(v -> v.getTime()
-                                                                                .toString()
-                                                                                .contains(finalTime))
-                                                                                .collect(Collectors.toList());
+            List<Measurement> measurementsAtTime;
+            if (type.equals("barChart")) {
+                measurementsAtTime = measurements.stream()
+                        .filter(v -> {
+                            Pattern p = Pattern.compile("[0-9][0-9]:[0-9][0-9]:[0-9][0-9]");
+                            Matcher m = p.matcher(v.getTime().toString());
+
+                            if (m.find() && m.group(0).compareTo(finalTime) >= 0 && m.group(0).compareTo(nextTime) < 0 && m.group(0).compareTo("24:00:00") < 0) {
+                                return true;
+                            }
+                            return false;
+                        })
+                        .collect(Collectors.toList());
+            } else {
+                measurementsAtTime = measurements.stream()
+                        .filter(v -> v.getTime()
+                                        .toString()
+                                        .contains(finalTime))
+                        .collect(Collectors.toList());
+            }
 
             switch (type) {
                 case "barChart" -> {
