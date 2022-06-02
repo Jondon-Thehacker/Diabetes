@@ -81,24 +81,37 @@ export default {
               }).then(res => {
                 console.log(res.data)
                 this.measurements = res.data
-                this.chartData = {datasets:[{
+                this.chartData = {datasets:[  {
                                               label: this.measurementType,
-                                              backgroundColor: "#bbdcd3",
+                                              backgroundColor: "#08f26e",
+                                              data: this.measurements.map(m => m.value+2),
+                                              pointRadius:2
+                                            },
+                                            {
+                                              label: this.measurementType,
+                                              backgroundColor: "#06c258",
                                               data: this.measurements.map(m => m.value+1),
                                               pointRadius:2
                                             },
                                             {
                                               label: this.measurementType,
-                                              backgroundColor: "#bbdcd3",
+                                              backgroundColor: "#059142",
                                               data: this.measurements.map(m => m.value),
                                               pointRadius:2
                                             },
                                             {
                                               label: this.measurementType,
-                                              backgroundColor: "#bbdcd3",
+                                              backgroundColor: "#06c258",
                                               data: this.measurements.map(m => m.value-1),
                                               pointRadius:2
-                                            }], labels: this.measurements.map(m => this.formatDate(m.time))}
+                                            },
+                                            {
+                                              label: this.measurementType,
+                                              backgroundColor: "#08f26e",
+                                              data: this.measurements.map(m => m.value-2),
+                                              pointRadius:2
+                                            }
+                                            ], labels: this.measurements.map(m => this.formatDate(m.time))}
                 console.log(this.chartData.datasets.data)
                 console.log(this.chartData.labels)
               })
