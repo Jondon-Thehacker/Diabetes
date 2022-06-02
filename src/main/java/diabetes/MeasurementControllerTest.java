@@ -563,8 +563,10 @@ public class MeasurementControllerTest {
         Mockito.when(patientRepository.findById(Mockito.anyLong()))
                 .thenReturn(MockResponse2);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","countInRange");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","barChart", 5L);
 
         MvcResult result = mockMvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
     }
 }
