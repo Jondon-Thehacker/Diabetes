@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -78,5 +79,17 @@ public class MeasurementController {
         }
         return ResponseEntity.ok(d.get().getPatientById(patientId).aggregateFunctionArgument(dataType,startDate,endDate,aggregateFunction,argument));
 
+    }
+
+    @GetMapping("api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}")
+    public ResponseEntity<Map<String, Map<String, Double>>> getSummaryStatistics(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable String dataType, @PathVariable String startDate, @PathVariable String endDate, @PathVariable String type, @PathVariable Long stepSize) {
+        Optional<Doctor> d = doctorRepository.findById(doctorId);
+        Optional<Patient> p = patientRepository.findById(patientId);
+
+        if(d.isEmpty() || p.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(d.get().getPatientById(patientId).getSummary(dataType, startDate, endDate, type, stepSize));
     }
 }

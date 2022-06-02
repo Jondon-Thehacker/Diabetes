@@ -10,6 +10,7 @@ import diabetes.model.Patient;
 import diabetes.repositories.DoctorRepository;
 import diabetes.repositories.MeasurementRepository;
 import diabetes.repositories.PatientRepository;
+import jdk.jfr.StackTrace;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -537,5 +538,33 @@ public class MeasurementControllerTest {
 
         JSONAssert.assertEquals(expected_result,
                 result.getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    public void getSummary_barChart() throws Exception{
+        List<Measurement> jonathanMeasurement = new ArrayList<>();
+
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+
+        for (int i = 0; i < 1440; i++) {
+            if (i % 5 == 0) {
+                jonathanMeasurement.add(new Measurement(1L, 5, new Timestamp(2022-1900, 4-1, 14+1, i / 60, i % 60, 0, 0),Jonathan, Measurement.MeasurementName.CGM));
+            }
+        }
+
+        Jonathan.setMeasurements(jonathanMeasurement);
+
+        Optional<Doctor> MockResponse = Optional.ofNullable(new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, null));
+        Optional<Patient> MockResponse2 = Optional.ofNullable(Jonathan);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse);
+
+        Mockito.when(patientRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse2);
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","countInRange");
+
+        MvcResult result = mockMvc.perform(request).andReturn();
     }
 }
