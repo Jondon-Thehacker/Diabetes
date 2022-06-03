@@ -102,7 +102,7 @@ export default {
                                               data: Object.values(res.data).map(m => m.Min),
                                               pointRadius: 0,
                                               lineTension: 0.1,
-                                              fill: '1',
+                                              fill: '+1',
                                               borderDash: [5, 15]
                                             },
                                             {
@@ -111,7 +111,7 @@ export default {
                                               data: Object.values(res.data).map(m => m.Q1),
                                               pointRadius: 0,
                                               lineTension: 0.1,
-                                              fill: '1',
+                                              fill: '+1',
                                               borderDash: [5, 5]
                                             },
                                             {
