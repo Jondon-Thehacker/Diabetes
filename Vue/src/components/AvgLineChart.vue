@@ -85,16 +85,8 @@ export default {
                 console.log(Object.keys(res.data).map(m=>m.slice(0,5)))
                 console.log(Object.values(res.data))
                 this.measurements = res.data
-                this.chartData = {datasets:[ 
-                                            {
-                                              label: "Q1",
-                                              backgroundColor: 'rgba(132, 212, 240, 0.4)',
-                                              data: Object.values(res.data).map(m => m.Q1),
-                                              pointRadius: 0,
-                                              lineTension: 0.1,
-                                              fill: '1',
-                                              borderDash: [5, 5]
-                                            },
+                  this.chartData = {
+                      datasets: [
                                             {
                                               label: "Median",
                                               backgroundColor: 'rgba(100, 180, 255, 1)',
@@ -104,13 +96,62 @@ export default {
                                               fill: false
                                             },
                                             {
+                                              label: 'null',
+                                              data: Object.values(res.data).map(m => m.Max),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: {
+                                                      target: { value: 13.9 },
+                                                      above: 'rgba(255, 100, 100, 0.8)',
+                                                      below: 'rgba(0, 0, 0, 0)'
+                                                    }
+                                              },
+                                              {
+                                              label: 'null',
+                                              data: Object.values(res.data).map(m => m.Min),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: {
+                                                      target: { value: 3 },
+                                                      below: 'rgba(255, 100, 100, 0.8)',
+                                                      above: 'rgba(0, 0, 0, 0)'
+                                                    }
+                                            },
+                                            {
+                                              label: "Min",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.2)',
+                                              data: Object.values(res.data).map(m => m.Min),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: '+1',
+                                              borderDash: [5, 15]
+                                            },
+                                            {
+                                              label: "Q1",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.8)',
+                                              data: Object.values(res.data).map(m => m.Q1),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: '-4',
+                                              borderDash: [5, 5]
+                                            },
+                                            {
                                               label: "Q3",
-                                              backgroundColor: 'rgba(132, 212, 240, 0.4)',
+                                              backgroundColor: 'rgba(132, 212, 240, 0.8)',
                                               data: Object.values(res.data).map(m => m.Q3),
                                               pointRadius: 0,
                                               lineTension: 0.1,
-                                              fill: '-1',
+                                              fill: '-5',
                                               borderDash: [5, 5]
+                                            },
+                                            {
+                                              label: "Max",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.2)',
+                                              data: Object.values(res.data).map(m => m.Max),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: '-1',
+                                              borderDash: [5, 15]
                                             }
                                             ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
                 console.log(this.chartData.datasets.data)
@@ -179,6 +220,15 @@ export default {
             },
             limits: {
               x: {minRange: 50},
+            }
+          },
+          legend: {
+            labels: {
+              filter: function (item) {
+                console.log(item.text)
+                  return !(item.text === 'null');
+              }
+
             }
           },  
         },
