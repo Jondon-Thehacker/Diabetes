@@ -187,6 +187,11 @@ export default {
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
+        animations: {
+          y: {
+             from: 10
+             },
+        },
         plugins: {
           autocolors: false,
           annotation: {
