@@ -2,15 +2,16 @@
   <div>
     <Line
       :chart-data="chartData"
-      :chart-options="chartOptions" 
-      :width="width" 
-      :height="height" />
+      :chart-options="hasLines ? chartOptions : chartOptions2"
+      :width="width"
+      :height="height"
+    />
   </div>
 </template>
 
 <script>
 import { Line } from "vue-chartjs";
-import zoomPlugin from 'chartjs-plugin-zoom';
+import zoomPlugin from "chartjs-plugin-zoom";
 
 import {
   Chart as Chart,
@@ -23,9 +24,8 @@ import {
   Legend,
   Title,
   Tooltip,
-  SubTitle
+  SubTitle,
 } from "chart.js";
-
 
 import annotationPlugin from "chartjs-plugin-annotation";
 
@@ -49,56 +49,89 @@ export default {
   props: {
     width: {
       type: Number,
-      default: 600
+      default: 600,
     },
     height: {
       type: Number,
-      default: 600
+      default: 600,
     },
 
     doctorId: Number,
     patientId: Number,
     measurementType: String,
-    timeInterval: String
+    timeInterval: String,
   },
 
   methods: {
-
     formatDate(date) {
-      let year = date.slice(0,4)
-      let day = date.slice(8,10)
-      let month = date.slice(5,7)
-      let time = date.slice(11,16)
-      return day + '/' + month + '-' + year + ' ' +  time
+      let year = date.slice(0, 4);
+      let day = date.slice(8, 10);
+      let month = date.slice(5, 7);
+      let time = date.slice(11, 16);
+      return day + "/" + month + "-" + year + " " + time;
     },
+
 
     getDataInTimeInterval(){
       if(this.patientId != null && this.measurementType != null && this.timeInterval != null) {
-        
         this.axios({
-          method: 'get',
-            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/' + this.measurementType + '/' + this.timeInterval,
-         /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + 'Patients/' + '0' + '/Measurements' +'/CGM',*/
-           /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + '0' + '/CGM' + '/2022-01-01 00:00/2022-01-02 00:30',*/
-              }).then(res => {
-                console.log(res.data)
-                this.measurements = res.data
-                /*this.chartData.labels = this.measurements.map(m => m.time)
+          method: "get",
+          url:
+            "http://localhost:8080/api/v1/Doctors/" +
+            this.doctorId +
+            "/" +
+            this.patientId +
+            "/" +
+            this.measurementType +
+            "/" +
+            this.timeInterval,
+          /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + 'Patients/' + '0' + '/Measurements' +'/CGM',*/
+          /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + '0' + '/CGM' + '/2022-01-01 00:00/2022-01-02 00:30',*/
+        }).then((res) => {
+          console.log(res.data);
+          this.measurements = res.data;
+          /*this.chartData.labels = this.measurements.map(m => m.time)
                 this.chartData.datasets.data = this.measurements.map(m => m.value)*/
-                this.chartData = {datasets:[{
-                                              label: this.measurementType,
-                                              backgroundColor: "#bbdcd3",
-                                              data: this.measurements.map(m => m.value),
-                                              pointRadius:2
-                                            },], labels: this.measurements.map(m => this.formatDate(m.time))}
-                console.log(this.chartData.datasets.data)
-                console.log(this.chartData.labels)
-              })
+          this.chartData = {
+            datasets: [
+              {
+                label: this.measurementType + this.unit(this.measurementType),
+                backgroundColor: "#bbdcd3",
+                data: this.measurements.map((m) => m.value),
+                pointRadius: 2,
+              },
+            ],
+            labels: this.measurements.map((m) => this.formatDate(m.time)),
+          };
+          console.log(this.chartData.datasets.data);
+          console.log(this.chartData.labels);
+        });
       }
-    }
-  
+    },
+    changeChartOptions() {
+      if (this.measurementType != "CGM") {
+        this.hasLines = !this.hasLines;
+      } else {
+        this.hasLines = true;
+      }
+    },
+    unit(m) {
+      switch (m) {
+        case "EXERCISE":
+          return " (%)";
+        case "CGM":
+          return " (mmol/L)";
+        case "MEALS":
+          return " (g CHO)";
+        case "BASAL":
+          return " (mU/min)";
+        case "BOLUS":
+          return " (U)";
+        default:
+          return "";
+      }
+    },
   },
-
   watch: {
     patientId() {
       this.getDataInTimeInterval()
@@ -106,6 +139,7 @@ export default {
 
     measurementType() {
       this.getDataInTimeInterval()
+      this.changeChartOptions();
     },
 
     timeInterval() {
@@ -115,13 +149,13 @@ export default {
   
   data() {
     return {
+      hasLines: true,
       measurements: [],
-      
       chartData: {
         labels: [],
         datasets: [
           {
-            
+
           },
         ],
       },
@@ -151,25 +185,45 @@ export default {
           zoom: {
             pan: {
               enabled: true,
-              mode: 'x',
+              mode: "x",
             },
             zoom: {
               wheel: {
                 enabled: true,
               },
-              mode: 'x',
+              mode: "x",
             },
             limits: {
-              x: {minRange: 50},
-            }
-          },  
+              x: { minRange: 50 },
+            },
+          },
+        },
+      },
+      chartOptions2: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: "x",
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+              },
+              mode: "x",
+            },
+            limits: {
+              x: { minRange: 50 },
+            },
+          },
         },
       },
     };
-  }
+  },
 };
 </script>
 
 <style>
-
 </style>

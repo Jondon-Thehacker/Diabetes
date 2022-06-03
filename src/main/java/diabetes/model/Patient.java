@@ -162,7 +162,8 @@ public class Patient {
                     result = measurements.stream().map(v -> v.getValue()).min(Comparator.comparing(Double::valueOf)).get();
                     break;
                 case "GMI":
-                    result = 3.31 + 0.02392 * average(measurements); // måske 1.627177700 + 0.03484320557*avg ?
+                    //result = 3.31 + 0.02392 * average(measurements); // måske 1.627177700 + 0.03484320557*avg ?
+                    result = 12.71 + 4.70587 * average(measurements);
                     break;
                 case "countAbove":
                     result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv > 13.9).count();
