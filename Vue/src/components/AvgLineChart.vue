@@ -97,21 +97,26 @@ export default {
                 this.chartData = {datasets:[ 
                                             {
                                               label: "Q1",
-                                              backgroundColor: "#06c258",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.4)',
                                               data: Object.values(res.data).map(m => m.Q1),
-                                              pointRadius:2
+                                              pointRadius: 2,
+                                              fill: '1',
+                                              borderDash: [5, 5]
                                             },
                                             {
                                               label: "Median",
                                               backgroundColor: "#059142",
                                               data: Object.values(res.data).map(m => m.Median),
-                                              pointRadius:2
+                                              pointRadius: 2,
+                                              fill: false
                                             },
                                             {
                                               label: "Q3",
-                                              backgroundColor: "#06c258",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.4)',
                                               data: Object.values(res.data).map(m => m.Q3),
-                                              pointRadius:2
+                                              pointRadius: 2,
+                                              fill: '-1',
+                                              borderDash: [5, 5]
                                             }
                                             ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
                 console.log(this.chartData.datasets.data)
