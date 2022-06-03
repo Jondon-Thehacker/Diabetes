@@ -19,8 +19,9 @@
             </b-row>
             <b-row>
                 <b-col>
-                    <visualization-box v-if="visualizationOption === 'linechart'" :doctorId="doctorId" :patientId="patientId" />
-                    <visualization-avg-graph v-if="visualizationOption === 'avgLinechart'" :doctorId="doctorId" :patientId="patientId" />
+                    <visualization-box v-if="visualizationOption === 'General Information'" :doctorId="doctorId" :patientId="patientId" />
+                    <visualization-avg-graph v-if="visualizationOption === 'Average Linechart'" :doctorId="doctorId" :patientId="patientId" />
+                    <!--TIR Barcharts -->
                 </b-col>
             </b-row>
         </b-container>
