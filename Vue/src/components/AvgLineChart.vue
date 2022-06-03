@@ -94,7 +94,17 @@ export default {
                 console.log(Object.keys(res.data).map(m=>m.slice(0,5)))
                 console.log(Object.values(res.data))
                 this.measurements = res.data
-                this.chartData = {datasets:[ 
+                  this.chartData = {
+                      datasets: [
+                                            {
+                                              label: "Min",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.2)',
+                                              data: Object.values(res.data).map(m => m.Min),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: '1',
+                                              borderDash: [5, 15]
+                                            },
                                             {
                                               label: "Q1",
                                               backgroundColor: 'rgba(132, 212, 240, 0.4)',
@@ -120,6 +130,15 @@ export default {
                                               lineTension: 0.1,
                                               fill: '-1',
                                               borderDash: [5, 5]
+                                            },
+                                            {
+                                              label: "Max",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.2)',
+                                              data: Object.values(res.data).map(m => m.Max),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: '-1',
+                                              borderDash: [5, 15]
                                             }
                                             ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
                 console.log(this.chartData.datasets.data)

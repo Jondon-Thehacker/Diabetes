@@ -238,9 +238,11 @@ public class Patient {
                     out.put(time, statistics);
                 }
                 case "lineChart" -> {
+                    statistics.put("Min", measurementsAtTime.stream().map(v -> v.getValue()).min(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Q1", percentile(measurementsAtTime, 25L));
                     statistics.put("Median", percentile(measurementsAtTime, 50L));
                     statistics.put("Q3", percentile(measurementsAtTime, 75L));
+                    statistics.put("Max", measurementsAtTime.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get());
                     out.put(time, statistics);
                 }
                 case "keyValues" -> {
