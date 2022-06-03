@@ -97,13 +97,13 @@ export default {
                   this.chartData = {
                       datasets: [
                                             {
-                                              label: false,
                                               data: Object.values(res.data).map(m => m.Min),
                                               pointRadius: 0,
                                               lineTension: 0.1,
                                               fill: {
                                                       target: { value: 3 },
-                                                      below: 'rgba(255, 100, 100, 0.8)'
+                                                      below: 'rgba(255, 100, 100, 1)',
+                                                      above: 'rgba(0, 0, 0, 0)'
                                                     }
                                             },
                                             {
@@ -151,13 +151,13 @@ export default {
                                               borderDash: [5, 15]
                                             },
                                             {
-                                              label: false,
                                               data: Object.values(res.data).map(m => m.Max),
                                               pointRadius: 0,
                                               lineTension: 0.1,
                                               fill: {
                                                       target: { value: 13.9 },
-                                                      above: 'rgba(255, 100, 100, 0.8)'
+                                                      above: 'rgba(255, 100, 100, 1)',
+                                                      below: 'rgba(0, 0, 0, 0)'
                                                     }
                                               }
                                             ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
