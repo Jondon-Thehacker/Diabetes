@@ -4,7 +4,7 @@
             <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" hideTime></interval-modal>
         </b-row>
         <b-row>
-            <multiple-bar-charts :timeInterval="timeInterval" :doctorId="doctorId" :patientId="patientId"></multiple-bar-charts>
+            <multiple-bar-charts :timeInterval="timeInterval" :doctorId="doctorId" :patientId="patientId" height="500"></multiple-bar-charts>
         </b-row>
 
     </b-container>

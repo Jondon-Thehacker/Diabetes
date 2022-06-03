@@ -62,14 +62,6 @@ export default {
   },
 
   methods: {
-
-    formatDate(date) {
-      let year = date.slice(0,4)
-      let day = date.slice(8,10)
-      let month = date.slice(5,7)
-      let time = date.slice(11,16)
-      return day + '/' + month + '-' + year + ' ' +  time
-    },
    /* getTimeLabels(){
         let timeLabels = []
         let time = "00:00"
