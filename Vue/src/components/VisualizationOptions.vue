@@ -13,7 +13,7 @@
 
       data() {
         return {
-          actualVisualizationOption: "Choose visualization" 
+          actualVisualizationOption: "Choose Visualization" 
         }
       },
       methods: {

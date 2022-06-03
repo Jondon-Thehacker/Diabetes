@@ -21,6 +21,7 @@
                 <b-col>
                     <visualization-box v-if="visualizationOption === 'General Information'" :doctorId="doctorId" :patientId="patientId" />
                     <visualization-avg-graph v-if="visualizationOption === 'Average Linechart'" :doctorId="doctorId" :patientId="patientId" />
+                    <visualization-bar-charts v-if="visualizationOption === 'TIR Barcharts'"></visualization-bar-charts> 
                     <!--TIR Barcharts -->
                 </b-col>
             </b-row>
@@ -34,11 +35,12 @@ import VisualizationBox from './VisualizationBox.vue'
 import NoteView from './NoteView.vue'
 import VisualizationOptions from './VisualizationOptions'
 import VisualizationAvgGraph from './VisualizationAvgGraph'
+import VisualizationBarCharts from './VisualizationBarCharts'
 
 export default {
     data() {
         return {
-            visualizationOption: "linechart"
+            visualizationOption: "General Information"
         }
     },
 
@@ -54,7 +56,8 @@ export default {
         VisualizationBox,
         NoteView,
         PatientEmail,
-        VisualizationAvgGraph
+        VisualizationAvgGraph,
+        VisualizationBarCharts
     },
 
     methods: {

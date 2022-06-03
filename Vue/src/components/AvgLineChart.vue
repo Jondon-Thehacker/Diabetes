@@ -58,7 +58,6 @@ export default {
 
     doctorId: Number,
     patientId: Number,
-    //measurementType: String,
     timeInterval: String
   },
 
