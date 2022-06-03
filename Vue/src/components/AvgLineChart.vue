@@ -99,7 +99,8 @@ export default {
                                               label: "Q1",
                                               backgroundColor: 'rgba(132, 212, 240, 0.4)',
                                               data: Object.values(res.data).map(m => m.Q1),
-                                              pointRadius: 2,
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
                                               fill: '1',
                                               borderDash: [5, 5]
                                             },
@@ -108,13 +109,15 @@ export default {
                                               backgroundColor: "#059142",
                                               data: Object.values(res.data).map(m => m.Median),
                                               pointRadius: 2,
+                                              lineTension: 0.1,
                                               fill: false
                                             },
                                             {
                                               label: "Q3",
                                               backgroundColor: 'rgba(132, 212, 240, 0.4)',
                                               data: Object.values(res.data).map(m => m.Q3),
-                                              pointRadius: 2,
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
                                               fill: '-1',
                                               borderDash: [5, 5]
                                             }
