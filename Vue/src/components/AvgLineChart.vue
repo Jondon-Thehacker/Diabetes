@@ -133,11 +133,7 @@ export default {
     patientId() {
       this.getDataInTimeInterval()
     },
-
-    measurementType() {
-      this.getDataInTimeInterval()
-    },
-
+    
     timeInterval() {
       this.getDataInTimeInterval()
     }

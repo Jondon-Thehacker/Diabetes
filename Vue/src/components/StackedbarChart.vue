@@ -13,24 +13,24 @@
 import { Bar } from "vue-chartjs";
 import {
   Chart as Chart,
-  ArcElement,
-  LineElement,
+ /* ArcElement,
+  LineElement,*/
   BarElement,
-  PointElement,
+ // PointElement,
   BarController,
-  BubbleController,
+/*  BubbleController,
   DoughnutController,
   LineController,
   PieController,
   PolarAreaController,
   RadarController,
-  ScatterController,
+  ScatterController,*/
   CategoryScale,
-  LinearScale,
+  /*LinearScale,
   LogarithmicScale,
   RadialLinearScale,
   TimeScale,
-  TimeSeriesScale,
+  TimeSeriesScale,*/
   Decimation,
   Filler,
   Legend,
@@ -42,24 +42,24 @@ import {
 import annotationPlugin from "chartjs-plugin-annotation";
 
 Chart.register(
-  ArcElement,
-  LineElement,
+ /* ArcElement,
+  LineElement,*/
   BarElement,
-  PointElement,
+ // PointElement,
   BarController,
-  BubbleController,
+ /* BubbleController,
   DoughnutController,
   LineController,
   PieController,
   PolarAreaController,
   RadarController,
-  ScatterController,
+  ScatterController,*/
   CategoryScale,
-  LinearScale,
+ /* LinearScale,
   LogarithmicScale,
   RadialLinearScale,
   TimeScale,
-  TimeSeriesScale,
+  TimeSeriesScale,*/
   Decimation,
   Filler,
   Legend,
@@ -99,21 +99,7 @@ export default {
       let month2 = date.slice(22, 24);
       let time2 = date.slice(28, 33);
       return (
-        day1 +
-        "/" +
-        month1 +
-        "-" +
-        year1 +
-        " " +
-        time1 +
-        " to " +
-        day2 +
-        "/" +
-        month2 +
-        "-" +
-        year2 +
-        " " +
-        time2
+       day1 + "/" + month1 + "-" + year1 + " " + time1 + " to " + day2 + "/" + month2 + "-" + year2 + " " + time2
       );
     },
 
