@@ -91,29 +91,29 @@ export default {
             url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/CGM/' + this.timeInterval + '/summary/lineChart/5',
               }).then(res => {
                 console.log(res.data)
-                console.log(Object.keys(res.data))
+                console.log(Object.keys(res.data).map(m=>m.slice(0,5)))
                 console.log(Object.values(res.data))
                 this.measurements = res.data
                 this.chartData = {datasets:[ 
                                             {
-                                              label: "1",
+                                              label: "Q1",
                                               backgroundColor: "#06c258",
                                               data: Object.values(res.data).map(m => m.Q1),
                                               pointRadius:2
                                             },
                                             {
-                                              label: "2",
+                                              label: "Median",
                                               backgroundColor: "#059142",
                                               data: Object.values(res.data).map(m => m.Median),
                                               pointRadius:2
                                             },
                                             {
-                                              label: "3",
+                                              label: "Q3",
                                               backgroundColor: "#06c258",
                                               data: Object.values(res.data).map(m => m.Q3),
                                               pointRadius:2
                                             }
-                                            ], labels: Object.keys(this.measurements)} //object.keys
+                                            ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
                 console.log(this.chartData.datasets.data)
                 console.log(this.chartData.labels)
               })
