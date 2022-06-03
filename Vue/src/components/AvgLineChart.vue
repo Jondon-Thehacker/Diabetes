@@ -97,6 +97,7 @@ export default {
                   this.chartData = {
                       datasets: [
                                             {
+                                              label: 'null',
                                               data: Object.values(res.data).map(m => m.Min),
                                               pointRadius: 0,
                                               lineTension: 0.1,
@@ -155,6 +156,7 @@ export default {
                                               borderDash: [5, 15]
                                             },
                                             {
+                                              label: 'null',
                                               data: Object.values(res.data).map(m => m.Max),
                                               pointRadius: 0,
                                               lineTension: 0.1,
@@ -239,8 +241,10 @@ export default {
           },  
         },
         legend: {
-                  display: false
-        },
+            filter: function (item, data) {
+                return !item.includes('null');
+            }
+          },
       },
     };
   }
