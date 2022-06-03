@@ -97,6 +97,16 @@ export default {
                   this.chartData = {
                       datasets: [
                                             {
+                                              data: Object.values(res.data).map(m => m.Min),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: {
+                                                      target: { value: 3 },
+                                                      below: 'rgba(255, 100, 100, 1)',
+                                                      above: 'rgba(0, 0, 0, 0)'
+                                                    }
+                                            },
+                                            {
                                               label: "Min",
                                               backgroundColor: 'rgba(132, 212, 240, 0.2)',
                                               data: Object.values(res.data).map(m => m.Min),
@@ -141,13 +151,19 @@ export default {
                                               data: Object.values(res.data).map(m => m.Max),
                                               pointRadius: 0,
                                               lineTension: 0.1,
-                                              fill: {
-                                                  target: { value: 13.9 },
-                                                  above: 'rgba(255, 100, 100, 255)',
-                                                  below: 'rgba(0, 0, 0, 0)'
-                                              },
+                                              fill: '-1',
                                               borderDash: [5, 15]
-                                            }
+                                            },
+                                            {
+                                              data: Object.values(res.data).map(m => m.Max),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: {
+                                                      target: { value: 13.9 },
+                                                      above: 'rgba(255, 100, 100, 1)',
+                                                      below: 'rgba(0, 0, 0, 0)'
+                                                    }
+                                              }
                                             ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
                 console.log(this.chartData.datasets.data)
                 console.log(this.chartData.labels)
