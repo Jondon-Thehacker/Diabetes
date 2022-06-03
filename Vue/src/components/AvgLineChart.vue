@@ -118,7 +118,7 @@ export default {
                                               label: "Median",
                                               backgroundColor: 'rgba(100, 180, 255, 1)',
                                               data: Object.values(res.data).map(m => m.Median),
-                                              pointRadius: 0.5,
+                                              pointRadius: 1.5,
                                               lineTension: 0.1,
                                               fill: false
                                             },
