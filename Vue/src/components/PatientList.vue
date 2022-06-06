@@ -3,7 +3,7 @@
     </b-form-input>
     <div style="overflow-y: scroll; height: 620px;">
         <b-list-group style="max-width: 300px;">
-            <patient-item v-for="(patient, index) in filteredPatientList" :key="index" doctorId
+            <patient-item v-for="(patient, index) in filteredPatientList" :key="index"
                 @patientClick = "handlePatientClickEmit"
                 :patientName="patient.patientName" :patientId="patient.patientId" :patientEmail="patient.email"
                 :badgeNr="patient.badgeNr" 

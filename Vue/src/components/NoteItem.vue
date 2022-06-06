@@ -2,9 +2,9 @@
     <hr>
     <!--<b-button type="button" v-b-modal.delete-modal :src="trashUrl"  class="btn-close delete-note-btn" aria-label="Close">
     </b-button>-->
-    <b-img class="delete-note-btn" width="20" height="20" :src="trashUrl" v-b-modal.delete-modal></b-img>
+    <b-img class="delete-note-btn" width="20" height="20" :src="trashUrl" v-b-modal="'modal-'+this.noteId"></b-img>
  
-    <b-modal id="delete-modal" title="Delete" ok-title="Yes" @ok="deleteNote"> 
+    <b-modal :id="'modal-'+this.noteId" title="Delete" ok-title="Yes" @ok="deleteNote(this.noteId)"> 
     <p class="my-4"> Are you sure you want to delete this note? </p>
     </b-modal>
 
@@ -30,9 +30,10 @@ export default{
     },
 
     methods: {
-        deleteNote(){
+        deleteNote(noteId){
+            console.log()
             this.axios.delete(
-                'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes/' + this.noteId
+                'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes/' + noteId
             ).then(res => {
                 console.log(res.data)
                 this.notes = res.data

@@ -4,7 +4,8 @@
             <b-row align-h="center">
                 <div>
                     <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" style="display: inline-block"></interval-modal>
-                    <data-drop @emitMeasurementType="handleMeasurementTypeEmit" style="display: inline-block"/>
+                    <data-drop @emitOption="handleMeasurementTypeEmit" style="display: inline-block" 
+                        optionName="type" :options="['BASAL','BOLUS','CGM','EXERCISE','MEALS']"/>
                 </div>
             </b-row>
             <b-row>

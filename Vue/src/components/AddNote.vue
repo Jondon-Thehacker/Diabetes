@@ -1,45 +1,41 @@
-<!--<template>
-    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#noteModal" style="margin: 5px">
-     Select Interval
-    </button>
+<template>
+<div>
+  <b-button v-b-modal.modal-note>Add a note</b-button>
 
-    <div class="modal fade" id="noteModal" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="noteModalLabel">Choose Time Interval</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>From:</p>
-                    <b-form-textarea v-model="note" placeholder="Write a node..."></b-form-textarea>
+  <b-modal id="modal-note" title="Add a note" ok-title="Add note" @ok="handleSubmit">
+      <b-form-textarea v-model="note" rows="8" placeholder="Write a note..."></b-form-textarea>
+  </b-modal>
+</div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" @click="handleSave()" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        note: '',
-        submittedNotes: []
-      }
+export default {
+    props: {
+        doctorId: Number,
+        patientId: Number
     },
-    
+    data() {
+        return {
+            note: '',
+        }
+    },
     methods: {
-      handleSubmit() {
-       
-      }
-
+        handleSubmit() {
+            this.axios.post('http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes', {
+                note: this.note,
+                date: new Date(),
+                doctorId: this.doctorId,
+                patientId: this.patientId,
+            }).then(() => {
+                    this.note = '';
+                    console.log("Note added")
+                    this.$emit("updateNotes")
+            })
+            
+           
+        
+        }
     }
-  }
-</script>-->
+}
+</script>

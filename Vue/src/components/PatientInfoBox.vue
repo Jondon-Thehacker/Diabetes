@@ -11,7 +11,8 @@
                     <patient-email :patientEmail="patientEmail"></patient-email>
                 </b-col>
                 <b-col>
-                    <visualization-options @emitVisualizationOption="handleVisualizationOptionEmit"/>
+                    <data-drop @emitOption="handleVisualizationOptionEmit" style="display: inline-block" 
+                        optionName="Visualization" :options="['General Information','Average Linechart','TIR Barcharts']"/>
                 </b-col>
                 <b-col>
                     <note-view :patientName = "patientName" :patientId = "patientId" :doctorId = "doctorId"/>
@@ -33,7 +34,7 @@
 import PatientEmail from './PatientEmail.vue'
 import VisualizationBox from './VisualizationBox.vue'
 import NoteView from './NoteView.vue'
-import VisualizationOptions from './VisualizationOptions'
+import DataDrop from './DataDrop'
 import VisualizationAvgGraph from './VisualizationAvgGraph'
 import VisualizationBarCharts from './VisualizationBarCharts'
 
@@ -52,7 +53,7 @@ export default {
     },
 
     components: {
-        VisualizationOptions,
+        DataDrop,
         VisualizationBox,
         NoteView,
         PatientEmail,
