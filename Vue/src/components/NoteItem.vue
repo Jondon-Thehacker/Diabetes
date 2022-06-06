@@ -1,7 +1,13 @@
 <template>
     <hr>
-    <button @click="deleteNote" type="button" class="btn-close delete-note-btn" aria-label="Close" style="min-width:30px;min-height:30px">
-    </button>
+    <!--<b-button type="button" v-b-modal.delete-modal :src="trashUrl"  class="btn-close delete-note-btn" aria-label="Close">
+    </b-button>-->
+    <b-img class="delete-note-btn" width="20" height="20" :src="trashUrl" v-b-modal.delete-modal></b-img>
+ 
+    <b-modal id="delete-modal" title="Delete" ok-title="Yes" @ok="deleteNote"> 
+    <p class="my-4"> Are you sure you want to delete this note? </p>
+    </b-modal>
+
     <br> DoctorId: {{author}} - {{ formattedDate }} <br> {{note}}
 </template>
 
@@ -16,6 +22,11 @@ export default{
         author: Number,
         date: String,
         note: String
+    },
+    data() {
+        return {
+            trashUrl: require('@/assets/TrashCan.png')
+        }
     },
 
     methods: {
@@ -48,6 +59,14 @@ export default{
 .delete-note-btn {
     float: right;
     padding-right: 0;
+    min-width:30px;
+    min-height:30px;
+    /*background: url("@/assets/TrashCan.png")*/
+}
+
+.delete-note-btn:hover{
+    background-color:rgb(192, 189, 189);
+    border-radius: 5px;
 }
 
 </style>

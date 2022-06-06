@@ -58,19 +58,10 @@ export default {
 
     doctorId: Number,
     patientId: Number,
-    //measurementType: String,
     timeInterval: String
   },
 
   methods: {
-
-    formatDate(date) {
-      let year = date.slice(0,4)
-      let day = date.slice(8,10)
-      let month = date.slice(5,7)
-      let time = date.slice(11,16)
-      return day + '/' + month + '-' + year + ' ' +  time
-    },
    /* getTimeLabels(){
         let timeLabels = []
         let time = "00:00"
@@ -97,28 +88,6 @@ export default {
                   this.chartData = {
                       datasets: [
                                             {
-                                              label: "Min",
-                                              backgroundColor: 'rgba(132, 212, 240, 0.2)',
-                                              data: Object.values(res.data).map(m => m.Min),
-                                              pointRadius: 0,
-                                              lineTension: 0.1,
-                                              fill: {
-                                                  target: { value: 3 },
-                                                  below: 'rgba(255, 100, 100, 255)',
-                                                  above: 'rgba(0, 0, 0, 0)'
-                                              },
-                                              borderDash: [5, 15]
-                                            },
-                                            {
-                                              label: "Q1",
-                                              backgroundColor: 'rgba(132, 212, 240, 0.4)',
-                                              data: Object.values(res.data).map(m => m.Q1),
-                                              pointRadius: 0,
-                                              lineTension: 0.1,
-                                              fill: '+1',
-                                              borderDash: [5, 5]
-                                            },
-                                            {
                                               label: "Median",
                                               backgroundColor: 'rgba(100, 180, 255, 1)',
                                               data: Object.values(res.data).map(m => m.Median),
@@ -127,12 +96,52 @@ export default {
                                               fill: false
                                             },
                                             {
+                                              label: 'null',
+                                              data: Object.values(res.data).map(m => m.Max),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: {
+                                                      target: { value: 13.9 },
+                                                      above: 'rgba(255, 100, 100, 0.8)',
+                                                      below: 'rgba(0, 0, 0, 0)'
+                                                    }
+                                              },
+                                              {
+                                              label: 'null',
+                                              data: Object.values(res.data).map(m => m.Min),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: {
+                                                      target: { value: 3 },
+                                                      below: 'rgba(255, 100, 100, 0.8)',
+                                                      above: 'rgba(0, 0, 0, 0)'
+                                                    }
+                                            },
+                                            {
+                                              label: "Min",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.2)',
+                                              data: Object.values(res.data).map(m => m.Min),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: '+1',
+                                              borderDash: [5, 15]
+                                            },
+                                            {
+                                              label: "Q1",
+                                              backgroundColor: 'rgba(132, 212, 240, 0.8)',
+                                              data: Object.values(res.data).map(m => m.Q1),
+                                              pointRadius: 0,
+                                              lineTension: 0.1,
+                                              fill: '-4',
+                                              borderDash: [5, 5]
+                                            },
+                                            {
                                               label: "Q3",
-                                              backgroundColor: 'rgba(132, 212, 240, 0.4)',
+                                              backgroundColor: 'rgba(132, 212, 240, 0.8)',
                                               data: Object.values(res.data).map(m => m.Q3),
                                               pointRadius: 0,
                                               lineTension: 0.1,
-                                              fill: '-1',
+                                              fill: '-5',
                                               borderDash: [5, 5]
                                             },
                                             {
@@ -141,11 +150,7 @@ export default {
                                               data: Object.values(res.data).map(m => m.Max),
                                               pointRadius: 0,
                                               lineTension: 0.1,
-                                              fill: {
-                                                  target: { value: 13.9 },
-                                                  above: 'rgba(255, 100, 100, 255)',
-                                                  below: 'rgba(0, 0, 0, 0)'
-                                              },
+                                              fill: '-1',
                                               borderDash: [5, 15]
                                             }
                                             ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
@@ -161,11 +166,7 @@ export default {
     patientId() {
       this.getDataInTimeInterval()
     },
-
-    measurementType() {
-      this.getDataInTimeInterval()
-    },
-
+    
     timeInterval() {
       this.getDataInTimeInterval()
     }
@@ -220,10 +221,16 @@ export default {
             limits: {
               x: {minRange: 50},
             }
+          },
+          legend: {
+            labels: {
+              filter: function (item) {
+                console.log(item.text)
+                  return !(item.text === 'null');
+              }
+
+            }
           },  
-        },
-        legend: {
-                  display: false
         },
       },
     };

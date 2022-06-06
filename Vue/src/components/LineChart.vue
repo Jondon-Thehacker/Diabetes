@@ -110,7 +110,7 @@ export default {
     },
     changeChartOptions() {
       if (this.measurementType != "CGM") {
-        this.hasLines = !this.hasLines;
+        this.hasLines = false;
       } else {
         this.hasLines = true;
       }

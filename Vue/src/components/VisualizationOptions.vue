@@ -1,9 +1,9 @@
 <template>
 <div>
   <b-dropdown id="dropdown-2" :text="actualVisualizationOption" class="datatypedrop">
-    <b-dropdown-item @click = "handleVisualizationOption('linechart')">Linechart</b-dropdown-item>
-    <b-dropdown-item @click = "handleVisualizationOption('avgLinechart')">Average Linechart</b-dropdown-item>
-    <b-dropdown-item @click = "handleVisualizationOption('not linechart')">Not linechart</b-dropdown-item>
+    <b-dropdown-item @click = "handleVisualizationOption('General Information')">General information</b-dropdown-item>
+    <b-dropdown-item @click = "handleVisualizationOption('Average Linechart')">Average Linechart</b-dropdown-item>
+    <b-dropdown-item @click = "handleVisualizationOption('TIR Barcharts')">TIR Barcharts</b-dropdown-item>
   </b-dropdown>
 </div>
 </template>
@@ -13,7 +13,7 @@
 
       data() {
         return {
-          actualVisualizationOption: "Choose visualization" 
+          actualVisualizationOption: "Choose Visualization" 
         }
       },
       methods: {
