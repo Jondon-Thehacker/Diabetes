@@ -161,7 +161,9 @@ export default {
     }
   
   },
-
+  mounted() {
+    this.getDataInTimeInterval()
+  },
   watch: {
     patientId() {
       this.getDataInTimeInterval()

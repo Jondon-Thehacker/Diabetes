@@ -19,16 +19,6 @@
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
-                <!--<b-col cols="4">Something</b-col>
-                <b-col>
-                    <p>Key Values for patient:  {{patientId}} </p>
-                    <ul> 
-                        <li>Glucose Management Index</li>
-                        <li>Glucose Variation</li>
-                        <li>Other aggregate functions</li>
-                    </ul>
-                    
-                </b-col>-->
                 <key-values :doctorId="doctorId" 
                      :patientId="patientId" :timeInterval="timeInterval" 
                      :measurementType="measurementType"></key-values>

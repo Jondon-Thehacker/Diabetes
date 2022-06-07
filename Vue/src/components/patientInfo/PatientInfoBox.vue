@@ -21,8 +21,7 @@
             <b-row>
                 <b-col>
                     <visualization-box v-if="visualizationOption === 'General Information'" :doctorId="doctorId" :patientId="patientId" />
-                    <visualization-avg-graph v-if="visualizationOption === 'Average Linechart'" :doctorId="doctorId" :patientId="patientId" />
-                    <visualization-bar-charts v-if="visualizationOption === 'TIR Barcharts'" :doctorId="doctorId" :patientId="patientId"></visualization-bar-charts> 
+                    <visualization-single-chart v-if="visualizationOption != 'General Information'" :doctorId="doctorId" :patientId="patientId" :chartType="visualizationOption" />
                 </b-col>
             </b-row>
         </b-container>
@@ -33,9 +32,9 @@
 import PatientEmail from './PatientEmail.vue'
 import VisualizationBox from '../visualization/VisualizationBox.vue'
 import NoteView from '../notes/NoteView.vue'
-import DataDrop from './DataDrop'
-import VisualizationAvgGraph from '../visualization/VisualizationAvgGraph'
-import VisualizationBarCharts from '../visualization/VisualizationBarCharts'
+import DataDrop from './DataDrop.vue'
+import VisualizationSingleChart from '../visualization/VisualizationSingleChart.vue'
+
 
 export default {
     data() {
@@ -56,8 +55,7 @@ export default {
         VisualizationBox,
         NoteView,
         PatientEmail,
-        VisualizationAvgGraph,
-        VisualizationBarCharts
+        VisualizationSingleChart
     },
 
     methods: {
