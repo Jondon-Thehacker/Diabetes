@@ -1,11 +1,11 @@
 <template>
     <div class="note-button">
-        <button @click="getNotes" class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="margin: 0; position: relative; top: 40%">Toggle notes</button>
+        <button v-if="patientId != null" @click="getNotes" class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="margin: 0; position: relative; top: 40%">Toggle notes</button>
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
                 <h5 id="offcanvasRightLabel">Notes</h5>
-                <add-note-2 @updateNotes="getNotes()" :patientId="patientId" :doctorId="doctorId"/>
+                <add-note @updateNotes="getNotes()" :patientId="patientId" :doctorId="doctorId"/>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
 
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import AddNote2 from './AddNote2.vue'
+import AddNote from './AddNote.vue'
 import NoteItem from './NoteItem.vue'
 
 export default {
@@ -37,7 +37,7 @@ export default {
     },
 
     components: {
-        AddNote2,
+        AddNote,
         NoteItem
     },
 

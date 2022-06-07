@@ -4,7 +4,8 @@
             <b-row align-h="center">
                 <div>
                     <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" style="display: inline-block"></interval-modal>
-                    <data-drop @emitMeasurementType="handleMeasurementTypeEmit" style="display: inline-block"/>
+                    <data-drop @emitOption="handleMeasurementTypeEmit" style="display: inline-block" 
+                        optionName="type" :options="['BASAL','BOLUS','CGM','EXERCISE','MEALS']"/>
                 </div>
             </b-row>
             <b-row>
@@ -18,16 +19,6 @@
                 </b-col>
             </b-row>
             <b-row class="top-bar2">
-                <!--<b-col cols="4">Something</b-col>
-                <b-col>
-                    <p>Key Values for patient:  {{patientId}} </p>
-                    <ul> 
-                        <li>Glucose Management Index</li>
-                        <li>Glucose Variation</li>
-                        <li>Other aggregate functions</li>
-                    </ul>
-                    
-                </b-col>-->
                 <key-values :doctorId="doctorId" 
                      :patientId="patientId" :timeInterval="timeInterval" 
                      :measurementType="measurementType"></key-values>
@@ -39,9 +30,9 @@
 <script>
 import LineChart from './LineChart.vue'
 import StackedbarChart from './StackedbarChart.vue'
-import IntervalModal from './IntervalModal.vue'
+import IntervalModal from '../patientInfo/IntervalModal.vue'
 import KeyValues from './KeyValues.vue'
-import DataDrop from './DataDrop.vue'
+import DataDrop from '../patientInfo/DataDrop.vue'
 
 export default {
     data() {

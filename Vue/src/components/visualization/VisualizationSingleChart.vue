@@ -4,21 +4,24 @@
             <interval-modal @timeIntervalEmit = "handleTimeIntervalEmit" hideTime></interval-modal>
         </b-row>
         <b-row>
-            <multiple-bar-charts :timeInterval="timeInterval" :doctorId="doctorId" :patientId="patientId" height="500"></multiple-bar-charts>
+            <multiple-bar-charts v-if="chartType==='TIR Barcharts'" :timeInterval="timeInterval" :doctorId="doctorId" :patientId="patientId" height="500"></multiple-bar-charts>
+            <avg-line-chart v-if="chartType==='Average Linechart'" :timeInterval="timeInterval" :doctorId="doctorId"   :patientId="patientId" height="500"></avg-line-chart>
         </b-row>
 
     </b-container>
 </template>
 
 <script>
-import IntervalModal from './IntervalModal.vue'
+import IntervalModal from '../patientInfo/IntervalModal.vue'
 import MultipleBarCharts from './MultipleBarCharts.vue'
+import AvgLineChart from './AvgLineChart.vue'
 
 export default {
 
     props:{
         patientId: Number,
-        doctorId: Number
+        doctorId: Number,
+        chartType: String
     },
     data() {
         return {
@@ -27,7 +30,8 @@ export default {
     },
      components: {
         IntervalModal,
-        MultipleBarCharts
+        MultipleBarCharts,
+        AvgLineChart
     },
 
     methods: {

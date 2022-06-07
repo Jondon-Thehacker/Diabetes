@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import LoginScreen from './../components/LoginScreen.vue'
+import LoginScreen from '../components/login/LoginScreen.vue'
 
 Vue.use(Router)
 

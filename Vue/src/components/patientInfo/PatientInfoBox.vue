@@ -11,7 +11,8 @@
                     <patient-email :patientEmail="patientEmail"></patient-email>
                 </b-col>
                 <b-col>
-                    <visualization-options @emitVisualizationOption="handleVisualizationOptionEmit"/>
+                    <data-drop @emitOption="handleVisualizationOptionEmit" style="display: inline-block" 
+                        optionName="Visualization" :options="['General Information','Average Linechart','TIR Barcharts']"/>
                 </b-col>
                 <b-col>
                     <note-view :patientName = "patientName" :patientId = "patientId" :doctorId = "doctorId"/>
@@ -20,9 +21,7 @@
             <b-row>
                 <b-col>
                     <visualization-box v-if="visualizationOption === 'General Information'" :doctorId="doctorId" :patientId="patientId" />
-                    <visualization-avg-graph v-if="visualizationOption === 'Average Linechart'" :doctorId="doctorId" :patientId="patientId" />
-                    <visualization-bar-charts v-if="visualizationOption === 'TIR Barcharts'" :doctorId="doctorId" :patientId="patientId"></visualization-bar-charts> 
-                    <!--TIR Barcharts -->
+                    <visualization-single-chart v-if="visualizationOption != 'General Information'" :doctorId="doctorId" :patientId="patientId" :chartType="visualizationOption" />
                 </b-col>
             </b-row>
         </b-container>
@@ -31,11 +30,11 @@
 
 <script>
 import PatientEmail from './PatientEmail.vue'
-import VisualizationBox from './VisualizationBox.vue'
-import NoteView from './NoteView.vue'
-import VisualizationOptions from './VisualizationOptions'
-import VisualizationAvgGraph from './VisualizationAvgGraph'
-import VisualizationBarCharts from './VisualizationBarCharts'
+import VisualizationBox from '../visualization/VisualizationBox.vue'
+import NoteView from '../notes/NoteView.vue'
+import DataDrop from './DataDrop.vue'
+import VisualizationSingleChart from '../visualization/VisualizationSingleChart.vue'
+
 
 export default {
     data() {
@@ -52,12 +51,11 @@ export default {
     },
 
     components: {
-        VisualizationOptions,
+        DataDrop,
         VisualizationBox,
         NoteView,
         PatientEmail,
-        VisualizationAvgGraph,
-        VisualizationBarCharts
+        VisualizationSingleChart
     },
 
     methods: {
