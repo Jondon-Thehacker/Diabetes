@@ -12,12 +12,12 @@
                 </div>
                 <div class="modal-body">
                     <p>From:</p>
-                    <b-form-input v-model="dateFrom" type="date" style="margin-bottom: 3px"></b-form-input>
-                    <b-form-input v-if="!hideTime" v-model="timeFrom" type="time" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input id="startDate" v-model="dateFrom" type="date" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input id="startTime" v-if="!hideTime" v-model="timeFrom" type="time" style="margin-bottom: 3px"></b-form-input>
 
                     <p>To:</p>
-                    <b-form-input v-model="dateTo" type="date" style="margin-bottom: 3px"></b-form-input>
-                    <b-form-input v-if="!hideTime" v-model="timeTo" type="time" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input id="endDate" v-model="dateTo" type="date" style="margin-bottom: 3px"></b-form-input>
+                    <b-form-input id="endTime" v-if="!hideTime" v-model="timeTo" type="time" style="margin-bottom: 3px"></b-form-input>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
