@@ -23,7 +23,7 @@ describe('Tests.cy.js', () => {
       
     })
       cy.contains('Choose Visualization ').click()
-      cy.contains('General information').click()
+      cy.contains('General Information').click()
       cy.contains('Choose type').click()
       cy.contains('CGM').click()
       cy.contains('Select Interval').click()
@@ -63,7 +63,7 @@ describe('Tests.cy.js', () => {
 
 
   it('WriteMessagesToOwnPatients', () => {
-    
+    let patient = ''
     cy.visit('http://localhost:8081/')
 
     cy.request({
@@ -71,12 +71,16 @@ describe('Tests.cy.js', () => {
       url: 'http://localhost:8080/api/v1/Doctors/0/patients'
     }).then(({body})=> {
       cy.contains(body[0].patientName).click()
-
+      patient = body[0].patientName
     }) 
 
     cy.contains('Toggle notes').click()
-      
+    cy.contains('Add a note').click()
+    cy.get('#writeNote').type('Looks good '+ patient)
+
   })
+
+  
   
 
 })
