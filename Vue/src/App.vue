@@ -41,8 +41,8 @@
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
-import PatientList from "./components/PatientList.vue";
-import PatientInfoBox from "./components/PatientInfoBox.vue";
+import PatientList from "./components/patientList/PatientList.vue";
+import PatientInfoBox from "./components/patientInfo/PatientInfoBox.vue";
 
 export default {
   name: "App",

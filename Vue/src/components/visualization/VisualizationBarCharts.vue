@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import IntervalModal from './IntervalModal.vue'
+import IntervalModal from '../patientInfo/IntervalModal.vue'
 import MultipleBarCharts from './MultipleBarCharts.vue'
 
 export default {

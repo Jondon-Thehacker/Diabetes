@@ -40,9 +40,9 @@
 <script>
 import LineChart from './LineChart.vue'
 import StackedbarChart from './StackedbarChart.vue'
-import IntervalModal from './IntervalModal.vue'
+import IntervalModal from '../patientInfo/IntervalModal.vue'
 import KeyValues from './KeyValues.vue'
-import DataDrop from './DataDrop.vue'
+import DataDrop from '../patientInfo/DataDrop.vue'
 
 export default {
     data() {

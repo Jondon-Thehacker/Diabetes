@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import IntervalModal from './IntervalModal.vue'
+import IntervalModal from '../patientInfo/IntervalModal.vue'
 import AvgLineChart from './AvgLineChart.vue'
 
 export default {

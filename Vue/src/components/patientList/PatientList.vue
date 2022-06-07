@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import PatientItem from '../components/PatientItem.vue'
+import PatientItem from './PatientItem.vue'
 
 
 export default {
