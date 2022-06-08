@@ -32,3 +32,10 @@ build/
 
 ### VS Code ###
 .vscode/
+.vs/Diabetes/v17/.suo
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+src/.vs/ProjectSettings.json
+src/.vs/slnx.sqlite
+src/.vs/src/v17/.suo
+src/.vs/src/project-colors.json
