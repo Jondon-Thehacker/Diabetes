@@ -1,67 +1,67 @@
-describe('Tests.cy.js', () => {/*
-   it('SelectPatientProfile', () => {
-      cy.visit('http://localhost:8081/')
-  
-      cy.request({
-        method: 'GET',
-        url: 'http://localhost:8080/api/v1/Doctors/0/patients',
-      }).then(({body}) =>{
-        cy.contains(body[0].patientName).click()
-      })
-  
-      cy.contains('Lesley Peacock').click()
-    })
-  
-    it('ViewDataVisualized', () => {
-      cy.visit('http://localhost:8081/')
-  
-      cy.request({
-        method: 'GET',
-        url: 'http://localhost:8080/api/v1/Doctors/0/patients',
-      }).then(({body}) =>{
-        cy.contains(body[0].patientName).click()
-        
-      })
-        cy.contains('Choose Visualization ').click()
-        cy.contains('General Information').click()
-        cy.contains('Choose type').click()
-        cy.contains('CGM').click()
-        cy.contains('Select Interval').click()
-        cy.get('.modal-body').should('be.visible')
-  
-        cy.get('#startDate').type('2022-01-01')
-        cy.get('#startTime').type('00:00')
-  
-        cy.get('#endDate').type('2022-01-03')
-        cy.get('#endTime').type('00:00')
-  
-        cy.contains('Save changes').click()
-    })
-    it('ViewList', () => {
-      cy.visit('http://localhost:8081/')
-  
-      let countOfElements = 0
-      cy.get('.list-group-item').then($elements => {
-        countOfElements = $elements.length
-      })
-  
-      cy.request({
-        method: 'GET',
-        url: 'http://localhost:8080/api/v1/Doctors/0/patients'
-      }).then(({body})=> {
-        expect(body).to.have.length(countOfElements)
-      }) 
-  
-      cy.contains('Lesley Peacock')
-      cy.contains('Laryn Bush')
-      cy.contains('Marjory Tuft')
-      cy.contains('Kelsey Ragnvaldsson')
-      cy.contains('Stacia Hunnisett')
-  
-    })*/
+describe('Tests.cy.js', () => {
+  it('The user successfully views a list of his of own patients', () => {
+    cy.visit('http://localhost:8081/')
 
+    let countOfElements = 0
+    cy.get('.list-group-item').then($elements => {
+      countOfElements = $elements.length
+    })
 
-  it('WriteMessagesToOwnPatients', () => {
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8080/api/v1/Doctors/0/patients'
+    }).then(({ body }) => {
+      expect(body).to.have.length(countOfElements)
+    })
+
+    cy.contains('Lesley Peacock')
+    cy.contains('Laryn Bush')
+    cy.contains('Marjory Tuft')
+    cy.contains('Kelsey Ragnvaldsson')
+    cy.contains('Stacia Hunnisett')
+
+  })
+
+  it('The user successfully views a patient\'s profile', () => {
+    cy.visit('http://localhost:8081/')
+
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8080/api/v1/Doctors/0/patients',
+    }).then(({ body }) => {
+      cy.contains(body[0].patientName).click()
+    })
+
+    cy.contains('Lesley Peacock').click()
+  })
+
+  it('The doctors successfully views patient data', () => {
+    cy.visit('http://localhost:8081/')
+
+    cy.request({
+      method: 'GET',
+      url: 'http://localhost:8080/api/v1/Doctors/0/patients',
+    }).then(({ body }) => {
+      cy.contains(body[0].patientName).click()
+    })
+    cy.contains('Choose Visualization ').click()
+    cy.contains('General Information').click()
+    cy.contains('Choose type').click()
+    cy.contains('CGM').click()
+    cy.contains('Select Interval').click()
+    cy.get('.modal-body').should('be.visible')
+
+    cy.get('#startDate').type('2022-01-01')
+    cy.get('#startTime').type('00:00')
+
+    cy.get('#endDate').type('2022-01-03')
+    cy.get('#endTime').type('00:00')
+
+    cy.contains('Save changes').click()
+    
+  })
+
+  it('The doctor successfully posts a note', () => {
 
     cy.visit('http://localhost:8081/')
 
@@ -82,7 +82,7 @@ describe('Tests.cy.js', () => {/*
     })
   })
 
-  it('DeleteNotes', () => {
+  it('The doctor successfully deletes a note', () => {
 
     cy.visit('http://localhost:8081/')
 
@@ -94,12 +94,12 @@ describe('Tests.cy.js', () => {/*
       let patient = body[0].patientName
 
       cy.contains('Toggle notes').click()
-      
+
 
       cy.get('.delete-note-btn').last().click()
       cy.wait(100)
       cy.get('.modal-content').should('be.visible')
-      cy.contains('Yes').last().click({force:true})
+      cy.contains('Yes').last().click({ force: true })
 
       //cy.contains(new RegExp('Testing for patient: ' + patient)).last().get('.delete-note-btn').last().click({force:true})
 
@@ -107,7 +107,7 @@ describe('Tests.cy.js', () => {/*
   })
 
 
-  it('ViewWhatOtherDoctorsWrote', () => {
+  it('The user successfully views a note associated with his own patient', () => {
     cy.visit('http://localhost:8081/')
 
     cy.request({
@@ -122,6 +122,4 @@ describe('Tests.cy.js', () => {/*
       cy.contains('DoctorId: 1')
     })
   })
-
-
 })

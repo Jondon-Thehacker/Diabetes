@@ -1,5 +1,5 @@
 <template>
-    <b-form-input v-model="searchString" type="search" placeholder="Search for patient name" style="margin-bottom: 3px">
+    <b-form-input id="searchPatient" v-model="searchString" type="search" placeholder="Search for patient name" style="margin-bottom: 3px">
     </b-form-input>
     <div style="overflow-y: scroll; height: 620px;">
         <b-list-group style="max-width: 300px;">
