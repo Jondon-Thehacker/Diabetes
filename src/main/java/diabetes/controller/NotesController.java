@@ -51,6 +51,11 @@ public class NotesController {
 
         notes.setPatient(p.get());
         notes.setDoctor(d.get());
+
+        if (d.get().getPatientById(patientId) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         d.get().getPatientById(patientId).addNote(notes);
         d.get().addNote(notes);     
 
