@@ -602,7 +602,7 @@ public class MeasurementControllerTest {
     }
 
     @Test
-    public void getSummary_barChart() throws Exception{
+    public void getSummary_success() throws Exception{
         List<Measurement> jonathanMeasurement = new ArrayList<>();
 
         List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
@@ -625,8 +625,17 @@ public class MeasurementControllerTest {
                 .thenReturn(MockResponse2);
 
         RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","barChart", 5L);
-
         MvcResult result = mockMvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
+
+        request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","lineChart", 5L);
+        result = mockMvc.perform(request).andReturn();
+
+        System.out.println(result.getResponse().getContentAsString());
+
+        request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","keyValues", 5L);
+        result = mockMvc.perform(request).andReturn();
 
         System.out.println(result.getResponse().getContentAsString());
     }
