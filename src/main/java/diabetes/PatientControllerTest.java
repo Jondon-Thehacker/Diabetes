@@ -93,6 +93,14 @@ public class PatientControllerTest {
 
         JSONAssert.assertEquals(expected_result,
                 result.getResponse().getContentAsString(), false);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+
+        request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/patients", 2L);
+
+        result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
     @Test

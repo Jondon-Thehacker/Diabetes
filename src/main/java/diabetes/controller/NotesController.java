@@ -37,6 +37,10 @@ public class NotesController {
             return ResponseEntity.notFound().build();
         }
 
+        if (d.get().getPatientById(patientId) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok(d.get().getPatientById(patientId).getNotes());
     }
 
@@ -70,6 +74,10 @@ public class NotesController {
         Optional<Notes> n = notesRepository.findById(noteId);
 
         if(d.isEmpty() || p.isEmpty() || n.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        if (d.get().getPatientById(patientId) == null) {
             return ResponseEntity.notFound().build();
         }
 

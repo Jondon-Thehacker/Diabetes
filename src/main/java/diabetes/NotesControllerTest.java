@@ -80,6 +80,14 @@ public class NotesControllerTest {
         String expected_result = new ObjectMapper().writeValueAsString(Arrays.asList(Note1, Note2));
 
         JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+
+        request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes", 2L, 1L);
+
+        result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
     @Test
@@ -101,6 +109,26 @@ public class NotesControllerTest {
         String expected_result = "[]";
 
         JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);
+    }
+
+    @Test
+    public void getAllPatientNotes_noAssoc() throws Exception {
+        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList());
+        List<Notes> simonNotes = new ArrayList(Arrays.asList());
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+
+        Doctor Simon = new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, simonNotes);
+        Doctor EmilP = new Doctor(2L, "simon", "rigshospitalet", "simon@gmail.com", Arrays.asList(), Arrays.asList());
+
+        Jonathan.setNotes(jonathanNotes);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(EmilP));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes", 2L, 1L);
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
     @Test
@@ -147,8 +175,121 @@ public class NotesControllerTest {
     }
 
     @Test
+    public void createNote_failure() throws Exception {
+        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList());
+        List<Notes> simonNotes = new ArrayList(Arrays.asList());
+        Jonathan.setNotes(jonathanNotes);
+
+        List<Patient> simonPatients = new ArrayList(Arrays.asList());
+        Doctor Simon = new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, simonNotes);
+
+        Optional<Doctor> MockResponse = Optional.ofNullable(Simon);
+        Optional<Patient> MockResponse2 = Optional.ofNullable(null);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse);
+
+        Mockito.when(patientRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse2);
+
+        String mockNote = "{" +
+                "\"note\": \"Test3\"," +
+                "\"date\": \"1998-04-04\"," +
+                "\"doctorId\": 1," +
+                "\"patientId\": 1" +
+                "}";
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes", 1L, 3L)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mockNote)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+
+        MockResponse2 = Optional.ofNullable(Jonathan);
+        Mockito.when(patientRepository.findById(Mockito.anyLong()))
+                .thenReturn(MockResponse2);
+
+        request = MockMvcRequestBuilders.post("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes", 1L, 1L)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mockNote)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+    }
+
+    @Test
     public void deleteSpecificNote_succes() throws Exception{
         //"/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes
+        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList(Note1, Note2));
+        List<Notes> simonNotes = new ArrayList(Arrays.asList(Note1, Note2));
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+
+        Jonathan.setNotes(jonathanNotes);
+
+        Doctor Simon = new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, simonNotes);
+        Note1.setDoctor(Simon);
+        Note2.setDoctor(Simon);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
+        Mockito.when(notesRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Note1));
+
+        RequestBuilder request = MockMvcRequestBuilders.delete("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}", 1L, 1L, 1L);
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NO_CONTENT.value(), result.getResponse().getStatus());
+    }
+
+    @Test
+    public void deleteSpecificNote_empty() throws Exception{
+        //"/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes
+        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList(Note1, Note2));
+        List<Notes> simonNotes = new ArrayList(Arrays.asList(Note1, Note2));
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+
+        Jonathan.setNotes(jonathanNotes);
+
+        Doctor Simon = new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, simonNotes);
+        Note1.setDoctor(Simon);
+        Note2.setDoctor(Simon);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
+        Mockito.when(notesRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+
+        RequestBuilder request = MockMvcRequestBuilders.delete("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}", 1L, 1L, 3L);
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+    }
+
+    @Test
+    public void deleteSpecificNote_noAssoc() throws Exception {
+        List<Notes> jonathanNotes = new ArrayList<>(Arrays.asList(Note1, Note2));
+        List<Notes> simonNotes = new ArrayList(Arrays.asList(Note1, Note2));
+
+        Jonathan.setNotes(jonathanNotes);
+
+        Doctor Simon = new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", Arrays.asList(), simonNotes);
+        Note1.setDoctor(Simon);
+        Note2.setDoctor(Simon);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
+        Mockito.when(notesRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Note1));
+
+        RequestBuilder request = MockMvcRequestBuilders.delete("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}", 1L, 1L, 1L);
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
 
