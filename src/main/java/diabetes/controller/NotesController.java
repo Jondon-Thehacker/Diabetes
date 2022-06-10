@@ -37,6 +37,10 @@ public class NotesController {
             return ResponseEntity.notFound().build();
         }
 
+        if (d.get().getPatientById(patientId) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok(d.get().getPatientById(patientId).getNotes());
     }
 
@@ -51,6 +55,11 @@ public class NotesController {
 
         notes.setPatient(p.get());
         notes.setDoctor(d.get());
+
+        if (d.get().getPatientById(patientId) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         d.get().getPatientById(patientId).addNote(notes);
         d.get().addNote(notes);     
 
@@ -65,6 +74,10 @@ public class NotesController {
         Optional<Notes> n = notesRepository.findById(noteId);
 
         if(d.isEmpty() || p.isEmpty() || n.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        if (d.get().getPatientById(patientId) == null) {
             return ResponseEntity.notFound().build();
         }
 

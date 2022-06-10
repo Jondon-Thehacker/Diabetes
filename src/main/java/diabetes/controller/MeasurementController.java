@@ -38,11 +38,14 @@ public class MeasurementController {
             return ResponseEntity.notFound().build();
         }
 
+        if (!checkAssoc(d.get(), patientId)) {return ResponseEntity.notFound().build();}
+
         List<Measurement> result = d.get().getPatientById(patientId).getMeasurementOfType(dataType);
 
         if (result == null) {
             return ResponseEntity.badRequest().build();
         }
+
         return ResponseEntity.ok(result);
     }
 
@@ -55,6 +58,9 @@ public class MeasurementController {
         if(d.isEmpty() || p.isEmpty()){
             return ResponseEntity.notFound().build();
         }
+
+        if (!checkAssoc(d.get(), patientId)) {return ResponseEntity.notFound().build();}
+
         return ResponseEntity.ok(d.get().getPatientById(patientId).getMeasurementOfTypeAndDate(dataType, startDate, endDate));
     }
 
@@ -66,6 +72,9 @@ public class MeasurementController {
         if(d.isEmpty() || p.isEmpty()){
             return ResponseEntity.notFound().build();
         }
+
+        if (!checkAssoc(d.get(), patientId)) {return ResponseEntity.notFound().build();}
+
         return ResponseEntity.ok(d.get().getPatientById(patientId).applyAggregateFunction(dataType, startDate, endDate, aggregateFunction));
     }
 
@@ -77,8 +86,10 @@ public class MeasurementController {
         if(d.isEmpty() || p.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(d.get().getPatientById(patientId).aggregateFunctionArgument(dataType,startDate,endDate,aggregateFunction,argument));
 
+        if (!checkAssoc(d.get(), patientId)) {return ResponseEntity.notFound().build();}
+
+        return ResponseEntity.ok(d.get().getPatientById(patientId).aggregateFunctionArgument(dataType,startDate,endDate,aggregateFunction,argument));
     }
 
     @GetMapping("api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}")
@@ -90,6 +101,12 @@ public class MeasurementController {
             return ResponseEntity.notFound().build();
         }
 
+        if (!checkAssoc(d.get(), patientId)) {return ResponseEntity.notFound().build();}
+
         return ResponseEntity.ok(d.get().getPatientById(patientId).getSummary(dataType, startDate, endDate, type, stepSize));
+    }
+
+    public boolean checkAssoc(Doctor d, Long pID) {
+        return d.getPatientById(pID) != null;
     }
 }

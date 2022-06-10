@@ -80,7 +80,52 @@ public class MeasurementControllerTest {
 
         MvcResult result = mockMvc.perform(request).andReturn();
 
-        String expected_result = new ObjectMapper().writeValueAsString(Arrays.asList(CGM1, CGM2, CGM3, CGM4));
+        String expected_result = "[" +
+                                    "{" +
+                                        "\"measurementId\":1," +
+                                        "\"value\":10.0," +
+                                        "\"time\":\"2022-04-14T22:00:00.000+00:00\"," +
+                                        "\"patient\":{" +
+                                            "\"patientId\":2," +
+                                            "\"patientName\":\"Jonathan\"," +
+                                            "\"email\":\"Jonathan@gmail.com\"" +
+                                        "}," +
+                                        "\"measurementName\":\"CGM\"" +
+                                    "}," +
+                                    "{" +
+                                        "\"measurementId\":2," +
+                                        "\"value\":20.0," +
+                                        "\"time\":\"2022-04-15T22:00:00.000+00:00\"," +
+                                        "\"patient\":{" +
+                                            "\"patientId\":2," +
+                                            "\"patientName\":\"Jonathan\"," +
+                                            "\"email\":\"Jonathan@gmail.com\"" +
+                                        "}," +
+                                        "\"measurementName\":\"CGM\"" +
+                                    "}," +
+                                    "{" +
+                                        "\"measurementId\":3," +
+                                        "\"value\":30.0," +
+                                        "\"time\":\"2022-04-16T22:00:00.000+00:00\"," +
+                                        "\"patient\":{" +
+                                            "\"patientId\":2," +
+                                            "\"patientName\":\"Jonathan\"," +
+                                            "\"email\":\"Jonathan@gmail.com\"" +
+                                        "}," +
+                                        "\"measurementName\":\"CGM\"" +
+                                    "}," +
+                                    "{" +
+                                        "\"measurementId\":4," +
+                                        "\"value\":40.0," +
+                                        "\"time\":\"2022-04-17T22:00:00.000+00:00\"," +
+                                        "\"patient\":{" +
+                                            "\"patientId\":2," +
+                                            "\"patientName\":\"Jonathan\"," +
+                                            "\"email\":\"Jonathan@gmail.com\"" +
+                                        "}," +
+                                        "\"measurementName\":\"CGM\"" +
+                                    "}" +
+                                "]";
 
         JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);
     }
@@ -103,6 +148,14 @@ public class MeasurementControllerTest {
         String expected_result = "[]";
 
         JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+
+        request = MockMvcRequestBuilders.get("/api/v1/Doctors/{DoctorID}/Patients/{PatientID}/Measurements/{DataType}", 2L,2L, "CGM");
+
+        result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
     @Test
@@ -187,7 +240,6 @@ public class MeasurementControllerTest {
         Mockito.when(patientRepository.findById(Mockito.anyLong()))
                 .thenReturn(MockResponse2);
 
-
         RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}", 1L,2L, "CGM","2022-04-15 00:00","2022-04-18 00:00");
 
         MvcResult result = mockMvc.perform(request).andReturn();
@@ -196,6 +248,15 @@ public class MeasurementControllerTest {
 
         JSONAssert.assertEquals(expected_result,
                 result.getResponse().getContentAsString(), false);
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong()))
+                .thenReturn(Optional.ofNullable(null));
+
+        request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}", 2L,2L, "CGM","2022-04-15 00:00","2022-04-18 00:00");
+
+        result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 
     @Test
@@ -388,7 +449,7 @@ public class MeasurementControllerTest {
         System.out.println("Ran Test");
         System.out.println(result.getResponse().getContentAsString());
 
-        String expected_result = "3.908";
+        String expected_result = "130.35675";
 
         JSONAssert.assertEquals(expected_result,
                 result.getResponse().getContentAsString(), false);
@@ -568,5 +629,61 @@ public class MeasurementControllerTest {
         MvcResult result = mockMvc.perform(request).andReturn();
 
         System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void getPercentile() throws Exception {
+        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM1, CGM2, CGM3, CGM4));
+        List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
+        Jonathan.setMeasurements(jonathanMeasurement);
+
+        Optional<Doctor> MockResponse = Optional.ofNullable(new Doctor(1L, "simon", "rigshospitalet", "simon@gmail.com", simonPatients, null));
+
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(MockResponse);
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}/{Argument}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","percentile", 50L);
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        String expected_result = new ObjectMapper().writeValueAsString(20.0);
+
+        JSONAssert.assertEquals(result.getResponse().getContentAsString(), expected_result, false);
+    }
+
+    @Test
+    public void getAggregate_empty() throws Exception {
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}", 2L,3L, "CGM","2022-04-14 00:00","2022-04-19 00:00","count");
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+    }
+
+    @Test
+    public void getAggregateWithArgument_empty() throws Exception {
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}/{Argument}", 2L,3L, "CGM","2022-04-13 00:00","2022-04-19 00:00","percentile", 50L);
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
+    }
+
+    @Test
+    public void getSummary_empty() throws Exception {
+        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}", 2L,3L, "CGM","2022-04-13 00:00","2022-04-19 00:00","barChart", 5L);
+
+        MvcResult result = mockMvc.perform(request).andReturn();
+
+        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
     }
 }
