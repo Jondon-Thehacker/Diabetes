@@ -1,7 +1,7 @@
 <template>
     <div class="emaildiv">
        
-        <b-button v-if="patientEmail != null" :href="mailto + patientEmail"> Email </b-button>
+        <b-button id="sendEmail" v-if="patientEmail != null" :href="mailto + patientEmail"> Email </b-button>
         <b-button v-if="patientEmail === null"> Email </b-button>
 
     </div> 

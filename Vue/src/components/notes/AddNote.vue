@@ -3,7 +3,7 @@
   <b-button v-b-modal.modal-note>Add a note</b-button>
 
   <b-modal id="modal-note" title="Add a note" ok-title="Add note" @ok="handleSubmit">
-      <b-form-textarea v-model="note" rows="8" placeholder="Write a note..."></b-form-textarea>
+      <b-form-textarea id="writeNote" v-model="note" rows="8" placeholder="Write a note..."></b-form-textarea>
   </b-modal>
 </div>
 
