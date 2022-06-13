@@ -26,9 +26,14 @@ public class PatientController {
     @GetMapping("/api/v1/Doctors/{doctorId}/patients")
     public ResponseEntity<List<Patient>> getAllPatients(@PathVariable Long doctorId) {
         Optional<Doctor> d = doctorRepository.findById(doctorId);
+
+        //Null check.
         if(d.isEmpty()){
+            //404
             return ResponseEntity.notFound().build();
         }
+
+        //200. Array of patient objects as content.
         return ResponseEntity.ok(d.get().getPatients());
     }
 
@@ -38,9 +43,13 @@ public class PatientController {
         Optional<Doctor> d = doctorRepository.findById(doctorId);
         Optional<Patient> p = patientRepository.findById(patientId);
 
+        //Null check.
         if(d.isEmpty() || p.isEmpty()){
+            //404
             return ResponseEntity.notFound().build();
         }
+
+        //200. Patient object as content.
         return ResponseEntity.ok(d.get().getPatientById(patientId));
     }
 }

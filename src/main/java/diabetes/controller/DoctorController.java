@@ -24,12 +24,17 @@ public class DoctorController {
     @Autowired
     private MeasurementRepository measurementRepository;
 
+    //Returns specified doctor
     @GetMapping("/api/v1/Doctors/{doctorId}")
     public ResponseEntity getDoctor(@PathVariable Long doctorId) {
         Optional<Doctor> d = doctorRepository.findById(doctorId);
+
+        //Null check.
         if(d.isEmpty()){
+            //404
             return ResponseEntity.notFound().build();
         }
+        //200. Doctor object as content
         return ResponseEntity.ok(d.get());
     }
 }
