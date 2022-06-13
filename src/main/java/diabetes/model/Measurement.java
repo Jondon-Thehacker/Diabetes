@@ -8,18 +8,20 @@ import java.util.Objects;
 @Table(name = "measurement")
 public class Measurement {
 
+    //Private key. Auto-incremented.
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long measurementId;
 
     private double value;
-
     private java.sql.Timestamp time;
 
+    //Foreign key.
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patient patient;
 
+    //Measurement type enum. Private key.
     @Column(columnDefinition = "ENUM('BOLUS','BASAL','EXERCISE','MEALS','CGM')")
     @Enumerated(EnumType.STRING)
     private MeasurementName measurementName;
@@ -46,6 +48,7 @@ public class Measurement {
         }
     }
 
+    //Default constructor, mainly used for testing
     public Measurement(Long MeasurementId, double value, java.sql.Timestamp time, Patient patient, MeasurementName measurementName){
         this.measurementId = MeasurementId;
         this.value = value;
@@ -102,6 +105,7 @@ public class Measurement {
         this.patient = patient;
     }
 
+    //Never used.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,6 +114,7 @@ public class Measurement {
         return value == that.value && time == that.time && measurementName.getType().equals(that.measurementName.getType()) && patient.equals(that.patient);
     }
 
+    //Never used.
     @Override
     public int hashCode() {
         return Objects.hash(measurementName.getType(), value, time, patient);

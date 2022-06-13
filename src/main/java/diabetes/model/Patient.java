@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Table(name = "patient")
 public class Patient {
 
+    //Private key.
     @Id
     @Column(name="patientId")
     private Long patientId;
@@ -25,18 +26,22 @@ public class Patient {
     @Column(unique = false)
     private String email;
 
+    //Foreign key.
     @OneToMany(mappedBy = "patient", cascade = CascadeType.MERGE, fetch = FetchType.LAZY) //mapped by name of field
     @JsonIgnore
     private List<Notes> notes;
 
+    //Foreign key.
     @ManyToMany(mappedBy = "patients")
     @JsonIgnore
     private List<Doctor> doctors;
 
+    //Foreign key.
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Measurement> measurements;
 
+    //Default constructor, mainly used for testing
     public Patient(Long patientId, String patientName, String email, List<Notes> notes, List<Doctor> doctors, List<Measurement> measurements){
         this.patientId = patientId;
         this.patientName = patientName;
@@ -102,19 +107,25 @@ public class Patient {
         this.measurements.add(measurement);
     }
 
+    //Return doctors IDs
     public List<Long> getDoctors() {
-        return doctors.stream().map(d -> d.getDoctorId()).collect(Collectors.toList());
+        return doctors.stream()
+                      .map(d -> d.getDoctorId())
+                      .collect(Collectors.toList());
     }
 
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
     }
 
+    //Return measurements in interval matching type
     public List<Measurement> getMeasurementOfTypeAndDate(String type, String startDate, String endDate){
-
-        return measurements.stream().filter(m -> m.getMeasurementName().equals(type) && isBetween(m.getTime(), startDate, endDate)).collect(Collectors.toList());
+        return measurements.stream()
+                           .filter(m -> m.getMeasurementName().equals(type) && isBetween(m.getTime(), startDate, endDate))
+                           .collect(Collectors.toList());
     }
 
+    //Returns true if timestamp is between start-, and end-date.
     public boolean isBetween(java.sql.Timestamp potential, String start, String end){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -125,23 +136,32 @@ public class Patient {
         return potentialDate.isBefore(endDate) && potentialDate.isAfter(startDate);
     }
 
+    //Returns all measurements matching type
     public List<Measurement> getMeasurementOfType(String type){
         if (type == null) {
             return null;
         }
         try {
             Enum.valueOf(Measurement.MeasurementName.class, type);
-            return measurements.stream().filter(m -> m.getMeasurementName().equals(type)).collect(Collectors.toList());
+
+            //Filter measurements by type.
+            return measurements.stream()
+                               .filter(m -> m.getMeasurementName().equals(type))
+                               .collect(Collectors.toList());
         } catch (Exception e) {
             return null;
         }
     }
 
+    //Returns aggregate function value.
     public double applyAggregateFunction(String dataType, String startDate, String endDate, String aggregateFunction) {
+        //Get data in interval of relevant type
         List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,startDate,endDate);
+        //Sentinel value
         double result = -1;
 
         try {
+            //Switch aggregate function, passed as path variable.
             switch (aggregateFunction) {
                 case "standardDeviation":
                     result = standardDeviation(measurements);
@@ -156,29 +176,52 @@ public class Patient {
                     result = standardDeviation(measurements)/average(measurements);
                     break;
                 case "max":
-                    result = measurements.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get();
+                    //Maps measurement value onto compare function max.
+                    result = measurements.stream()
+                                         .map(v -> v.getValue())
+                                         .max(Comparator.comparing(Double::valueOf))
+                                         .get();
                     break;
                 case "min":
-                    result = measurements.stream().map(v -> v.getValue()).min(Comparator.comparing(Double::valueOf)).get();
+                    //Maps measurement value onto compare function min.
+                    result = measurements.stream()
+                                         .map(v -> v.getValue())
+                                         .min(Comparator.comparing(Double::valueOf))
+                                         .get();
                     break;
                 case "GMI":
                     //result = 3.31 + 0.02392 * average(measurements); // måske 1.627177700 + 0.03484320557*avg ?
                     result = 12.71 + 4.70587 * average(measurements);
                     break;
                 case "countAbove":
-                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv > 13.9).count();
+                    result = measurements.stream()
+                                         .map(v -> v.getValue())
+                                         .filter(mv -> mv > 13.9)
+                                         .count();
                     break;
                 case "countBelow":
-                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 3).count();
+                    result = measurements.stream()
+                                         .map(v -> v.getValue())
+                                         .filter(mv -> mv < 3)
+                                         .count();
                     break;
                 case "countInRange":
-                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 10 && mv >= 3.9).count();
+                    result = measurements.stream()
+                                         .map(v -> v.getValue())
+                                         .filter(mv -> mv < 10 && mv >= 3.9)
+                                         .count();
                     break;
                 case "countSlightlyAbove":
-                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv <= 13.9 && mv>= 10).count();
+                    result = measurements.stream()
+                                         .map(v -> v.getValue())
+                                         .filter(mv -> mv <= 13.9 && mv>= 10)
+                                         .count();
                     break;
                 case "countSlightlyBelow":
-                    result = measurements.stream().map(v -> v.getValue()).filter(mv -> mv < 3.9 && mv >= 3).count();
+                    result = measurements.stream()
+                                         .map(v -> v.getValue())
+                                         .filter(mv -> mv < 3.9 && mv >= 3)
+                                         .count();
                     break;
             }
 
@@ -223,8 +266,8 @@ public class Patient {
             } else {
                 measurementsAtTime = measurements.stream()
                         .filter(v -> v.getTime()
-                                        .toString()
-                                        .contains(finalTime))
+                                .toString()
+                                .contains(finalTime))
                         .collect(Collectors.toList());
             }
 
@@ -280,9 +323,94 @@ public class Patient {
         } else {
             out += ":" + min;
         }
-        
+
         return out + ":00";
     }
+
+    //Attempted rewrite without regex. Does not work.
+    /* public Map<String, Map<String, Double>> getSummary(String dataType, String start, String end, String type, Long stepSize) {
+        //Get data in interval of relevant type
+        List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,start,end);
+        //Output object
+        Map<String, Map<String, Double>> out = new LinkedHashMap<>();
+
+        //Specify expected date-time format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        //Convert string values to date-time objects.
+        LocalDateTime time = LocalDateTime.parse(start, formatter);
+        LocalDateTime endDate = LocalDateTime.parse(end, formatter);
+
+        //While in interval.
+        while(time.isBefore(endDate)) {
+            //Summary statistics object.
+            Map<String, Double> statistics = new LinkedHashMap<String, Double>();
+
+            LocalDateTime finalTime = time;
+            List<Measurement> measurementsAtTime;
+            if (type.equals("barChart")) {
+                //Get next time-sample from stepSize.
+                LocalDateTime nextTime = LocalDateTime.from(time).plusMinutes(stepSize);
+
+                if (nextTime.isAfter(endDate) || nextTime.isEqual(endDate)) {
+                    break;
+                }
+
+                //Filters measurements of time between current step (inclusive) and next step (exclusive)
+                measurementsAtTime = measurements.stream()
+                        .filter(v -> {
+                            LocalDateTime m = v.getTime().toLocalDateTime();
+
+                            if (m.isBefore(nextTime) && (m.isAfter(finalTime) || m.isEqual(finalTime))) {
+                                return true;
+                            }
+                            return false;
+                        })
+                        .collect(Collectors.toList());
+            } else {
+                //Filters measurements of time equal to current step (sampling).
+                //Should probably take average of measurements between current step and next step.
+                measurementsAtTime = measurements.stream()
+                        .filter(v -> v.getTime()
+                                      .toLocalDateTime()
+                                      .isEqual(finalTime))
+                        .collect(Collectors.toList());
+            }
+
+            switch (type) {
+                case "barChart" -> {
+                    statistics.put("Above", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv > 13.9).count());
+                    statistics.put("SlightlyAbove", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv <= 13.9 && mv >= 10).count());
+                    statistics.put("InRange", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 10 && mv >= 3.9).count());
+                    statistics.put("SlightlyBelow", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3.9 && mv >= 3).count());
+                    statistics.put("Below", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3).count());
+                    out.put(getTime(time), statistics);
+                }
+                case "lineChart" -> {
+                    statistics.put("Min", measurementsAtTime.stream().map(v -> v.getValue()).min(Comparator.comparing(Double::valueOf)).get());
+                    statistics.put("Q1", percentile(measurementsAtTime, 25L));
+                    statistics.put("Median", percentile(measurementsAtTime, 50L));
+                    statistics.put("Q3", percentile(measurementsAtTime, 75L));
+                    statistics.put("Max", measurementsAtTime.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get());
+                    out.put(getTime(time), statistics);
+                }
+                case "keyValues" -> {
+                    statistics.put("GV", standardDeviation(measurementsAtTime)/average(measurementsAtTime));
+                    statistics.put("GMI", 3.31 + 0.02392 * average(measurementsAtTime));
+                    statistics.put("Sd", standardDeviation(measurementsAtTime));
+                    statistics.put("Min", measurementsAtTime.stream().map(Measurement::getValue).min(Comparator.comparing(Double::valueOf)).get());
+                    statistics.put("Max", measurementsAtTime.stream().map(Measurement::getValue).max(Comparator.comparing(Double::valueOf)).get());
+                    statistics.put("Average", average(measurementsAtTime));
+                    out.put(getTime(time), statistics);
+                }
+            }
+
+            //Increment time by stepSize
+            time = time.plusMinutes(stepSize);
+        }
+
+        return out;
+    }*/
 
     private double count(List<Measurement> measurements) {
         return measurements.stream().map(v -> v.getValue()).count();

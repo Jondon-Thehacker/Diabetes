@@ -7,16 +7,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "notes")
 public class Notes implements Serializable {
+    //Private key. Auto-incremented.
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long noteId;
 
     private String note;
 
+    //Foreign key.
     @ManyToOne
     @JoinColumn(name = "patientId")
     private Patient patient;
 
+    //Foreign key.
     @ManyToOne
     @JoinColumn(name = "doctorId")
     private Doctor doctor;
@@ -77,6 +80,7 @@ public class Notes implements Serializable {
         this.doctor = doctor;
     }
 
+    //Unused
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,6 +89,7 @@ public class Notes implements Serializable {
         return Objects.equals(note, notes.note) && noteId.equals(notes.noteId) && patient.equals(notes.patient) && doctor.equals(notes.doctor) && date.equals(notes.date);
     }
 
+    //Unused
     @Override
     public int hashCode() {
         return Objects.hash(note, noteId, patient, doctor, date);
