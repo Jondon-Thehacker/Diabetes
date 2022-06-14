@@ -5,9 +5,11 @@ import org.yaml.snakeyaml.util.EnumUtils;
 
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -245,23 +247,28 @@ public class Patient {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         //Convert string values to date-time objects.
-        LocalDateTime time = LocalDateTime.parse(start, formatter);
+        LocalDateTime startDate = LocalDateTime.parse(start, formatter);
         LocalDateTime endDate = LocalDateTime.parse(end, formatter);
 
+        //Get time of current step start
+        if (ChronoUnit.HOURS.between(startDate, endDate) >= 24L) {
+            endDate = startDate.plusDays(1L);
+        }
+
         //While in interval.
-        while(time.isBefore(endDate)) {
+        LocalDateTime currentTime = LocalDateTime.from(startDate);
+        while(currentTime.isBefore(endDate)) {
             //Summary statistics object.
             Map<String, Double> statistics = new LinkedHashMap<String, Double>();
 
-            //Get time of current step start
-            LocalTime currentTime = time.toLocalTime();
+            LocalDateTime time = LocalDateTime.from(currentTime);
             List<Measurement> measurementsAtTime;
             if (type.equals("barChart")) {
                 //Get time of current step end
-                LocalDateTime nextTime = LocalDateTime.from(time).plusMinutes(stepSize);
+                LocalDateTime nextTime = LocalDateTime.from(currentTime).plusMinutes(stepSize);
 
                 //Check if end-time of current step exceeds interval
-                if (!nextTime.isBefore(endDate)) {
+                if (nextTime.isAfter(endDate)) {
                     break;
                 }
 
@@ -274,7 +281,7 @@ public class Patient {
                                                            .toLocalTime();
 
                             //If time of measurement is within bounds of current step, add it to the list
-                            if (timeOfMeasurement.isBefore(nextTime.toLocalTime()) && !timeOfMeasurement.isBefore(currentTime)) {
+                            if (timeOfMeasurement.isBefore(nextTime.toLocalTime()) && !timeOfMeasurement.isBefore(time.toLocalTime())) {
                                 return true;
                             }
                             return false;
@@ -287,7 +294,7 @@ public class Patient {
                         .filter(v -> v.getTime()
                                       .toLocalDateTime()
                                       .toLocalTime()
-                                      .equals(currentTime))
+                                      .equals(time.toLocalTime()))
                         .collect(Collectors.toList());
             }
 
@@ -300,7 +307,7 @@ public class Patient {
                     statistics.put("InRange", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 10 && mv >= 3.9).count());
                     statistics.put("SlightlyBelow", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3.9 && mv >= 3).count());
                     statistics.put("Below", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3).count());
-                    out.put(currentTime.toString() + ":00", statistics);
+                    out.put(currentTime.toLocalTime().toString() + ":00", statistics);
                 }
                 case "lineChart" -> {
                     //Put summary statistics in the statistics object
@@ -310,7 +317,7 @@ public class Patient {
                     statistics.put("Median", percentile(measurementsAtTime, 50L));
                     statistics.put("Q3", percentile(measurementsAtTime, 75L));
                     statistics.put("Max", measurementsAtTime.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get());
-                    out.put(currentTime.toString() + ":00", statistics);
+                    out.put(currentTime.toLocalTime().toString() + ":00", statistics);
                 }
                 case "keyValues" -> {
                     //Put summary statistics in the statistics object
@@ -321,12 +328,12 @@ public class Patient {
                     statistics.put("Min", measurementsAtTime.stream().map(Measurement::getValue).min(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Max", measurementsAtTime.stream().map(Measurement::getValue).max(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Average", average(measurementsAtTime));
-                    out.put(currentTime.toString() + ":00", statistics);
+                    out.put(currentTime.toLocalTime().toString() + ":00", statistics);
                 }
             }
 
             //Increment time by stepSize
-            time = time.plusMinutes(stepSize);
+            currentTime = currentTime.plusMinutes(stepSize);
         }
 
         return out;
