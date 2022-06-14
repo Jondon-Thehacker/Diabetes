@@ -6,6 +6,7 @@ import org.yaml.snakeyaml.util.EnumUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -233,102 +234,8 @@ public class Patient {
         return result;
     }
 
-    public Map<String, Map<String, Double>> getSummary(String dataType, String startDate, String endDate, String type, Long stepSize) {
-        List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,startDate,endDate);
-        Map<String, Map<String, Double>> out = new LinkedHashMap<>();
-
-        String time = "";
-        int i = 0;
-        while(!time.matches("(.*)(?<=([3-9][0-9]|2[4-9]))[[0-9]+:]{6}(.*)")) {
-            time = getTime(stepSize, i);
-            String nextTime = getTime(stepSize, i + 1);
-
-            if (time.equals("24:00:00")) {
-                break;
-            }
-
-            Map<String, Double> statistics = new LinkedHashMap<String, Double>();
-
-            String finalTime = time;
-            List<Measurement> measurementsAtTime;
-            if (type.equals("barChart")) {
-                measurementsAtTime = measurements.stream()
-                        .filter(v -> {
-                            Pattern p = Pattern.compile("[0-9][0-9]:[0-9][0-9]:[0-9][0-9]");
-                            Matcher m = p.matcher(v.getTime().toString());
-
-                            if (m.find() && m.group(0).compareTo(finalTime) >= 0 && m.group(0).compareTo(nextTime) < 0 && m.group(0).compareTo("24:00:00") < 0) {
-                                return true;
-                            }
-                            return false;
-                        })
-                        .collect(Collectors.toList());
-            } else {
-                measurementsAtTime = measurements.stream()
-                        .filter(v -> v.getTime()
-                                .toString()
-                                .contains(finalTime))
-                        .collect(Collectors.toList());
-            }
-
-            switch (type) {
-                case "barChart" -> {
-                    statistics.put("Above", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv > 13.9).count());
-                    statistics.put("SlightlyAbove", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv <= 13.9 && mv >= 10).count());
-                    statistics.put("InRange", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 10 && mv >= 3.9).count());
-                    statistics.put("SlightlyBelow", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3.9 && mv >= 3).count());
-                    statistics.put("Below", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3).count());
-                    out.put(time, statistics);
-                }
-                case "lineChart" -> {
-                    statistics.put("Min", measurementsAtTime.stream().map(v -> v.getValue()).min(Comparator.comparing(Double::valueOf)).get());
-                    statistics.put("Q1", percentile(measurementsAtTime, 25L));
-                    statistics.put("Median", percentile(measurementsAtTime, 50L));
-                    statistics.put("Q3", percentile(measurementsAtTime, 75L));
-                    statistics.put("Max", measurementsAtTime.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get());
-                    out.put(time, statistics);
-                }
-                case "keyValues" -> {
-                    statistics.put("GV", standardDeviation(measurementsAtTime)/average(measurementsAtTime));
-                    statistics.put("GMI", 3.31 + 0.02392 * average(measurementsAtTime));
-                    statistics.put("Sd", standardDeviation(measurementsAtTime));
-                    statistics.put("Min", measurementsAtTime.stream().map(Measurement::getValue).min(Comparator.comparing(Double::valueOf)).get());
-                    statistics.put("Max", measurementsAtTime.stream().map(Measurement::getValue).max(Comparator.comparing(Double::valueOf)).get());
-                    statistics.put("Average", average(measurementsAtTime));
-
-                    out.put(time, statistics);
-                }
-            }
-
-            i++;
-        }
-
-        return out;
-    }
-
-    private String getTime(Long stepSize, int step) {
-        String out = "";
-
-        int hr = (stepSize.intValue() * step) / 60;
-        int min = (stepSize.intValue() * step) % 60;
-
-        if (hr < 10) {
-            out = "0" + hr;
-        } else {
-            out = "" + hr;
-        }
-
-        if (min < 10) {
-            out += ":" + "0" + min;
-        } else {
-            out += ":" + min;
-        }
-
-        return out + ":00";
-    }
-
-    //Attempted rewrite without regex. Does not work.
-    /* public Map<String, Map<String, Double>> getSummary(String dataType, String start, String end, String type, Long stepSize) {
+    //Attempted rewrite without regex.
+    public Map<String, Map<String, Double>> getSummary(String dataType, String start, String end, String type, Long stepSize) {
         //Get data in interval of relevant type
         List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,start,end);
         //Output object
@@ -346,22 +253,28 @@ public class Patient {
             //Summary statistics object.
             Map<String, Double> statistics = new LinkedHashMap<String, Double>();
 
-            LocalDateTime finalTime = time;
+            //Get time of current step start
+            LocalTime currentTime = time.toLocalTime();
             List<Measurement> measurementsAtTime;
             if (type.equals("barChart")) {
-                //Get next time-sample from stepSize.
+                //Get time of current step end
                 LocalDateTime nextTime = LocalDateTime.from(time).plusMinutes(stepSize);
 
-                if (nextTime.isAfter(endDate) || nextTime.isEqual(endDate)) {
+                //Check if end-time of current step exceeds interval
+                if (!nextTime.isBefore(endDate)) {
                     break;
                 }
 
                 //Filters measurements of time between current step (inclusive) and next step (exclusive)
                 measurementsAtTime = measurements.stream()
                         .filter(v -> {
-                            LocalDateTime m = v.getTime().toLocalDateTime();
+                            //Get time of measurement bar date
+                            LocalTime timeOfMeasurement = v.getTime()
+                                                           .toLocalDateTime()
+                                                           .toLocalTime();
 
-                            if (m.isBefore(nextTime) && (m.isAfter(finalTime) || m.isEqual(finalTime))) {
+                            //If time of measurement is within bounds of current step, add it to the list
+                            if (timeOfMeasurement.isBefore(nextTime.toLocalTime()) && !timeOfMeasurement.isBefore(currentTime)) {
                                 return true;
                             }
                             return false;
@@ -373,35 +286,42 @@ public class Patient {
                 measurementsAtTime = measurements.stream()
                         .filter(v -> v.getTime()
                                       .toLocalDateTime()
-                                      .isEqual(finalTime))
+                                      .toLocalTime()
+                                      .equals(currentTime))
                         .collect(Collectors.toList());
             }
 
             switch (type) {
                 case "barChart" -> {
+                    //Put summary statistics in the statistics object
+                    //List could be streamed and mapped once to a forEach method, but that would shuffle the key order of the linked HashMap
                     statistics.put("Above", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv > 13.9).count());
                     statistics.put("SlightlyAbove", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv <= 13.9 && mv >= 10).count());
                     statistics.put("InRange", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 10 && mv >= 3.9).count());
                     statistics.put("SlightlyBelow", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3.9 && mv >= 3).count());
                     statistics.put("Below", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3).count());
-                    out.put(getTime(time), statistics);
+                    out.put(currentTime.toString() + ":00", statistics);
                 }
                 case "lineChart" -> {
+                    //Put summary statistics in the statistics object
+                    //List could be streamed and mapped once to a forEach method, but that would shuffle the key order of the linked HashMap
                     statistics.put("Min", measurementsAtTime.stream().map(v -> v.getValue()).min(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Q1", percentile(measurementsAtTime, 25L));
                     statistics.put("Median", percentile(measurementsAtTime, 50L));
                     statistics.put("Q3", percentile(measurementsAtTime, 75L));
                     statistics.put("Max", measurementsAtTime.stream().map(v -> v.getValue()).max(Comparator.comparing(Double::valueOf)).get());
-                    out.put(getTime(time), statistics);
+                    out.put(currentTime.toString() + ":00", statistics);
                 }
                 case "keyValues" -> {
+                    //Put summary statistics in the statistics object
+                    //List could be streamed and mapped once to a forEach method, but that would shuffle the key order of the linked HashMap
                     statistics.put("GV", standardDeviation(measurementsAtTime)/average(measurementsAtTime));
                     statistics.put("GMI", 3.31 + 0.02392 * average(measurementsAtTime));
                     statistics.put("Sd", standardDeviation(measurementsAtTime));
                     statistics.put("Min", measurementsAtTime.stream().map(Measurement::getValue).min(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Max", measurementsAtTime.stream().map(Measurement::getValue).max(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Average", average(measurementsAtTime));
-                    out.put(getTime(time), statistics);
+                    out.put(currentTime.toString() + ":00", statistics);
                 }
             }
 
@@ -410,7 +330,7 @@ public class Patient {
         }
 
         return out;
-    }*/
+    }
 
     private double count(List<Measurement> measurements) {
         return measurements.stream().map(v -> v.getValue()).count();
