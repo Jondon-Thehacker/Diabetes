@@ -178,7 +178,7 @@ public class MeasurementControllerTest {
 
     @Test
     public void getMeasurementsOfDatatypeStartDateEndDate_success() throws Exception{
-        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM1, CGM2, CGM3, CGM4));
+        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM2, CGM3, CGM4));
         List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
         Jonathan.setMeasurements(jonathanMeasurement);
 
