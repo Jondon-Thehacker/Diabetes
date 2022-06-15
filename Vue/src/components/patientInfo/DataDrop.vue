@@ -1,13 +1,5 @@
 <template>
 <div>
-  <!--<b-dropdown id="dropdown-1" :text="actualMeasurementType" class="datatypedrop">
-    <b-dropdown-item @click = "handleMeasurementType('BASAL')">BASAL</b-dropdown-item>
-    <b-dropdown-item @click = "handleMeasurementType('BOLUS')">BOLUS</b-dropdown-item>
-    <b-dropdown-item @click = "handleMeasurementType('CGM')">CGM</b-dropdown-item>
-    <b-dropdown-item @click = "handleMeasurementType('EXERCISE')">Exercise</b-dropdown-item>
-    <b-dropdown-item @click = "handleMeasurementType('MEALS')">Meals</b-dropdown-item>
-  </b-dropdown>-->
-
   <b-dropdown id="dropdown-1" :text="actualOption" class="datatypedrop">
     <b-dropdown-item v-for="(option, index) in options" :key="index"
       @click ="handleOption(option)">
@@ -20,6 +12,7 @@
 <script>
     export default {
       props: {
+        //Array containing the different options available in the dropdown menu
         options: Array,
         optionName: {
           type: String,
@@ -34,14 +27,12 @@
         }
       },
       methods: {
-
+        //Change the current option and emit that to parent
         handleOption(option) {
           this.actualOption = option
           this.$emit("emitOption", this.actualOption)
         }
-
       }
-
     }  
 </script>
 

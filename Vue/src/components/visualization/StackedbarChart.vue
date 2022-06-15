@@ -13,24 +13,9 @@
 import { Bar } from "vue-chartjs";
 import {
   Chart as Chart,
- /* ArcElement,
-  LineElement,*/
   BarElement,
- // PointElement,
   BarController,
-/*  BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,*/
   CategoryScale,
-  /*LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,*/
   Decimation,
   Filler,
   Legend,
@@ -42,24 +27,9 @@ import {
 import annotationPlugin from "chartjs-plugin-annotation";
 
 Chart.register(
- /* ArcElement,
-  LineElement,*/
   BarElement,
- // PointElement,
   BarController,
- /* BubbleController,
-  DoughnutController,
-  LineController,
-  PieController,
-  PolarAreaController,
-  RadarController,
-  ScatterController,*/
   CategoryScale,
- /* LinearScale,
-  LogarithmicScale,
-  RadialLinearScale,
-  TimeScale,
-  TimeSeriesScale,*/
   Decimation,
   Filler,
   Legend,
@@ -103,154 +73,31 @@ export default {
       );
     },
 
-    getGCMAbove() {
-      this.axios({
-        method: "get",
-        url:
-          "http://localhost:8080/api/v1/Doctors/" +
-          this.doctorId +
-          "/" +
-          this.patientId +
-          "/CGM/" +
-          this.timeInterval +
-          "/countAbove",
-      }).then((res) => {
-        console.log(res.data);
-        this.timeAbove = res.data;
-      });
-    },
-
-    getGCMBelow() {
-      this.axios({
-        method: "get",
-        url:
-          "http://localhost:8080/api/v1/Doctors/" +
-          this.doctorId +
-          "/" +
-          this.patientId +
-          "/CGM/" +
-          this.timeInterval +
-          "/countBelow",
-      }).then((res) => {
-        console.log(res.data);
-        this.timeBelow = res.data;
-      });
-    },
-
-    getGCMInRange() {
-      this.axios({
-        method: "get",
-        url:
-          "http://localhost:8080/api/v1/Doctors/" +
-          this.doctorId +
-          "/" +
-          this.patientId +
-          "/CGM/" +
-          this.timeInterval +
-          "/countInRange",
-      }).then((res) => {
-        console.log(res.data);
-        this.timeInRange = res.data;
-      });
-    },
-
-    async getSlightlyAbove() {
-      await this.axios({
-        method: "get",
-        url:
-          "http://localhost:8080/api/v1/Doctors/" +
-          this.doctorId +
-          "/" +
-          this.patientId +
-          "/CGM/" +
-          this.timeInterval +
-          "/countSlightlyAbove",
-      }).then((res) => {
-        console.log(res.data);
-        this.timeInRange = res.data;
-      });
-    },
-
-    async getSlightlyBelow() {
-      await this.axios({
-        method: "get",
-        url:
-          "http://localhost:8080/api/v1/Doctors/" +
-          this.doctorId +
-          "/" +
-          this.patientId +
-          "/CGM/" +
-          this.timeInterval +
-          "/countSlightlyBelow",
-      }).then((res) => {
-        console.log(res.data);
-        this.timeInRange = res.data;
-      });
-    },
-
     async updateBarChart() {
-      if (
-        this.patientId != null &&
-        this.timeInterval != null
-      ) {
+      if (this.patientId != null && this.timeInterval != null) {
         const promiseInRange = this.axios({
           method: "get",
-          url:
-            "http://localhost:8080/api/v1/Doctors/" +
-            this.doctorId +
-            "/" +
-            this.patientId +
-            "/CGM/" +
-            this.timeInterval +
-            "/countInRange",
+          url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/countInRange",
         });
 
         const promiseAbove = this.axios({
           method: "get",
-          url:
-            "http://localhost:8080/api/v1/Doctors/" +
-            this.doctorId +
-            "/" +
-            this.patientId +
-            "/CGM/" +
-            this.timeInterval +
-            "/countAbove",
+          url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/countAbove",
         });
 
         const promiseBelow = this.axios({
           method: "get",
-          url:
-            "http://localhost:8080/api/v1/Doctors/" +
-            this.doctorId +
-            "/" +
-            this.patientId +
-            "/CGM/" +
-            this.timeInterval +
-            "/countBelow",
+          url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/countBelow",
         });
 
         const promiseSlightlyAbove = this.axios({
           method: "get",
-          url:
-            "http://localhost:8080/api/v1/Doctors/" +
-            this.doctorId +
-            "/" +
-            this.patientId +
-            "/CGM/" +
-            this.timeInterval +
-            "/countSlightlyAbove",
+          url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/countSlightlyAbove",
         });
 
         const promiseSlightlyBelow = this.axios({
           method: "get",
-          url:
-            "http://localhost:8080/api/v1/Doctors/" +
-            this.doctorId +
-            "/" +
-            this.patientId +
-            "/CGM/" +
-            this.timeInterval +
-            "/countSlightlyBelow",
+          url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/countSlightlyBelow",
         });
 
         await Promise.all([
@@ -260,17 +107,6 @@ export default {
           promiseSlightlyAbove,
           promiseSlightlyBelow,
         ]).then((values) => {
-          console.log(
-            values[0].data +
-              " " +
-              values[1].data +
-              " " +
-              values[2].data +
-              " " +
-              values[3].data +
-              " " +
-              values[4].data
-          );
           this.timeInRange = values[0].data;
           this.timeAbove = values[1].data;
           this.timeBelow = values[2].data;
@@ -282,31 +118,31 @@ export default {
           labels: [this.formatDate(this.timeInterval)],
           datasets: [
             {
-              label: "x < 3 mmol/l \n",
+              label: "G < 3 mmol/l \n",
               backgroundColor: "#887694",
               data: [this.timeBelow],
               hoverBorderWidth: 0,
             },
             {
-              label: "3 <= x < 3.9 mmol/l \n", 
+              label: "3 <= G < 3.9 mmol/l \n", 
               backgroundColor: "#b77b82",
               data: [this.timeSlighltyBelow],
               hoverBorderWidth: 0,
             },
             {
-              label: "3.9 <= x < 10 mmol/l \n",
+              label: "3.9 <= G < 10 mmol/l \n",
               backgroundColor: "#bbdcd3",
               data: [this.timeInRange],
               hoverBorderWidth: 0,
             },
             {
-              label: "10 <= x < 13.9 mmol/l \n",
+              label: "10 <= G < 13.9 mmol/l \n",
               backgroundColor: "#f8de7e",
               data: [this.timeSlightlyAbove],
               hoverBorderWidth: 0,
             },
             {
-              label: "x > 13.9 mmol/l",
+              label: "G > 13.9 mmol/l",
               backgroundColor: "#e7bd98",
               data: [this.timeAbove],
               hoverBorderWidth: 0,
@@ -343,31 +179,31 @@ export default {
         labels: [],
         datasets: [
           {
-            label: "x < 3 mmol/l",
+            label: "G < 3 mmol/l",
             backgroundColor: "#887694",
             data: [0],
             hoverBorderWidth: 0,
           },
           {
-            label: "3 <= x < 3.9 mmol/l       ",
+            label: "3 <= G < 3.9 mmol/l       ",
             backgroundColor: "#b77b82",
             data: [0],
             hoverBorderWidth: 0,
           },
           {
-            label: "3.9 <= x < 10 mmol/l",
+            label: "3.9 <= G < 10 mmol/l",
             backgroundColor: "#bbdcd3",
             data: [0],
             hoverBorderWidth: 0,
           },
           {
-            label: "10 <= x < 13.9 mmol/l",
+            label: "10 <= G < 13.9 mmol/l",
             backgroundColor: "#f8de7e",
             data: [0],
             hoverBorderWidth: 0,
           },
           {
-            label: "x > 13.9 mmol/l",
+            label: "G > 13.9 mmol/l",
             backgroundColor: "#e7bd98",
             data: [0],
             hoverBorderWidth: 0,

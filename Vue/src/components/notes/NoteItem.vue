@@ -1,7 +1,5 @@
 <template>
     <hr>
-    <!--<b-button type="button" v-b-modal.delete-modal :src="trashUrl"  class="btn-close delete-note-btn" aria-label="Close">
-    </b-button>-->
     <b-img class="delete-note-btn" width="20" height="20" :src="trashUrl" v-b-modal="'modal-'+this.noteId"></b-img>
  
     <b-modal :id="'modal-'+this.noteId" title="Delete" ok-title="Yes" @ok="deleteNote(this.noteId)"> 
@@ -30,12 +28,12 @@ export default{
     },
 
     methods: {
+        //DELETE-call to delete the selected note. Also emits to parent that an update is needed
         deleteNote(noteId){
             console.log()
             this.axios.delete(
                 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes/' + noteId
             ).then(res => {
-                console.log(res.data)
                 this.notes = res.data
                 this.$emit("updateNotes")
             })  
@@ -62,7 +60,6 @@ export default{
     padding-right: 0;
     min-width:30px;
     min-height:30px;
-    /*background: url("@/assets/TrashCan.png")*/
 }
 
 .delete-note-btn:hover{

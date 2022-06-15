@@ -3,6 +3,7 @@
     </b-form-input>
     <div style="overflow-y: scroll; height: 620px;">
         <b-list-group style="max-width: 300px;">
+            <!--Create a PatientItem for each patient in the list, which is filtered based on search-->
             <patient-item v-for="(patient, index) in filteredPatientList" :key="index"
                 @patientClick = "handlePatientClickEmit"
                 :patientName="patient.patientName" :patientId="patient.patientId" :patientEmail="patient.email"
@@ -34,26 +35,27 @@ export default {
      emits: ['patientClickEmit'],
 
     methods: {
-
+        //GET-call to retrieve all patients
         getPatients() {
             this.axios({
                 method: 'get',
                 url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId +'/patients',
             }).then(res => {
-                console.log(res.data)
                 this.patients = res.data
             })
         },
 
-       handlePatientClickEmit(value){
-           this.$emit('patientClickEmit', value)
-       }
+        //Emits the patient information to the parent
+        handlePatientClickEmit(value){
+            this.$emit('patientClickEmit', value)
+        }
 
     },
     components: {
         PatientItem
     },
     computed: {
+        //Filters the list of patients based on the search string
         filteredPatientList() {
             return this.patients.filter(p => p.patientName.toLowerCase().includes(this.searchString.toLowerCase()))
         }

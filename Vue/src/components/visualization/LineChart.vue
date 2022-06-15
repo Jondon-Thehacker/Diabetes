@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--chart options are either with or without the line marking dangerous GCM levels -->
     <Line
       :chart-data="chartData"
       :chart-options="hasLines ? chartOptions : chartOptions2"
@@ -63,6 +64,7 @@ export default {
   },
 
   methods: {
+    //Formats the date to our desired string format
     formatDate(date) {
       let year = date.slice(0, 4);
       let day = date.slice(8, 10);
@@ -71,27 +73,15 @@ export default {
       return day + "/" + month + "-" + year + " " + time;
     },
 
-
+    //GET-call retrieving 
     getDataInTimeInterval(){
       if(this.patientId != null && this.measurementType != null && this.timeInterval != null) {
         this.axios({
           method: "get",
-          url:
-            "http://localhost:8080/api/v1/Doctors/" +
-            this.doctorId +
-            "/" +
-            this.patientId +
-            "/" +
-            this.measurementType +
-            "/" +
-            this.timeInterval,
-          /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + 'Patients/' + '0' + '/Measurements' +'/CGM',*/
-          /* url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + '0' + '/CGM' + '/2022-01-01 00:00/2022-01-02 00:30',*/
+          url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/" + this.measurementType + "/" + this.timeInterval,
         }).then((res) => {
-          console.log(res.data);
-          this.measurements = res.data;
-          /*this.chartData.labels = this.measurements.map(m => m.time)
-                this.chartData.datasets.data = this.measurements.map(m => m.value)*/
+          this.measurements = res.data
+          //Changing the chart data to the retrieved measurements
           this.chartData = {
             datasets: [
               {
@@ -103,11 +93,10 @@ export default {
             ],
             labels: this.measurements.map((m) => this.formatDate(m.time)),
           };
-          console.log(this.chartData.datasets.data);
-          console.log(this.chartData.labels);
         });
       }
     },
+    //Change the chart options to contain two horizontal lines if type is CGM
     changeChartOptions() {
       if (this.measurementType != "CGM") {
         this.hasLines = false;
@@ -115,6 +104,7 @@ export default {
         this.hasLines = true;
       }
     },
+    //Finds the correct unit for a measurement type
     unit(m) {
       switch (m) {
         case "EXERCISE":
@@ -166,6 +156,7 @@ export default {
           autocolors: false,
           annotation: {
             annotations: {
+              //Displays two horizontal lines
               line1: {
                 type: "line",
                 yMin: 3,
@@ -182,6 +173,7 @@ export default {
               },
             },
           },
+          //Enable zoom and pan
           zoom: {
             pan: {
               enabled: true,
@@ -203,6 +195,7 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
+          //Enable zoom and pan
           zoom: {
             pan: {
               enabled: true,
