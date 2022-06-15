@@ -3,7 +3,6 @@
                 @click="handlePatientClick" class="d-flex align-items-center clickable-patient">
                 <b-avatar :badge="badgeNr!=0 ? badgeNr : undefined" badge-variant="danger" :text="findInitials(patientName)"></b-avatar>
                 <span class="m-1 patient-name-span"> {{patientName}} </span>
-                <!--<b-badge v-if="badgeNr != 0"> {{badgeNr}} </b-badge>-->
     </b-list-group-item>
 </template>
 
@@ -22,15 +21,12 @@ export default {
         }
     },
 
-    data() {
-        return {
-            
-        }
-    },
     methods: {
+        //Finds the first letter of firstname and first letter of final lastname
         findInitials(name) {
             return name.match(/(\b\S)?/g).join("").match(/(^\S|\S$)?/g).join("").toUpperCase()
         },
+        //Emits information of the patient wen clicked
         handlePatientClick() {
             this.$emit("patientClick", [this.patientId, this.patientEmail, this.patientName])
         }

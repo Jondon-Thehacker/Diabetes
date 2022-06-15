@@ -21,6 +21,7 @@ export default {
         }
     },
     methods: {
+        //POST-call when doctor submits a new note. Also emits to NoteView that list of notes should be updated
         handleSubmit() {
             this.axios.post('http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes', {
                 note: this.note,

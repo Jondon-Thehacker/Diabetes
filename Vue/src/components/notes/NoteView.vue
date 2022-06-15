@@ -1,6 +1,9 @@
 <template>
     <div class="note-button">
-        <button v-if="patientId != null" @click="getNotes" class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="margin: 0; position: relative; top: 40%">Toggle notes</button>
+        <button v-if="patientId != null" @click="getNotes" class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" 
+        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="margin: 0; position: relative; top: 40%">
+            Toggle notes
+        </button>
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
             <div class="offcanvas-header">
@@ -43,13 +46,12 @@ export default {
 
     data(){
         return{
-            notes: [],/*
-            author: "",
-            note: ""*/
+            notes: []
         }
     },
 
     methods: {
+        //GET-call to retrieve the patient's notes
         getNotes() {
             this.axios({
                 method: 'get',
