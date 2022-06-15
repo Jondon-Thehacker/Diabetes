@@ -61,9 +61,11 @@ export default {
 
     },
     methods: {
+        //Change time interval when emitted from child
         handleTimeIntervalEmit(value){
             this.timeInterval = value
         },
+        //Change measurement type when emitted from child
         handleMeasurementTypeEmit(value){
             this.measurementType = value
         }
@@ -71,10 +73,5 @@ export default {
 }
 </script>
 
-<style >
-/*.graph {
-    min-height: 500px;
-}*/
-
-    
+<style >    
 </style>

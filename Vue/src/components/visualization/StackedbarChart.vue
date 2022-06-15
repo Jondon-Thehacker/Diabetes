@@ -58,6 +58,7 @@ export default {
     },
   },
   methods: {
+    //Formats the date string
     formatDate(date) {
       let year1 = date.slice(0, 4);
       let day1 = date.slice(8, 10);
@@ -72,9 +73,11 @@ export default {
        day1 + "/" + month1 + "-" + year1 + " " + time1 + " to " + day2 + "/" + month2 + "-" + year2 + " " + time2
       );
     },
-
+    //Updates the values displayed in the bar chart
     async updateBarChart() {
+      //Null check
       if (this.patientId != null && this.timeInterval != null) {
+        //Initializing promises for each of the 5 GET-calls
         const promiseInRange = this.axios({
           method: "get",
           url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/countInRange",
@@ -100,6 +103,7 @@ export default {
           url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/countSlightlyBelow",
         });
 
+        //Executing all promises and wait for their responses
         await Promise.all([
           promiseInRange,
           promiseAbove,
@@ -114,6 +118,7 @@ export default {
           this.timeSlighltyBelow = values[4].data;
         });
 
+        //When all responses have been collected, we insert the data in the chart
         this.chartData = {
           labels: [this.formatDate(this.timeInterval)],
           datasets: [
@@ -175,6 +180,7 @@ export default {
       timeSlightlyAbove: 0,
       timeSlighltyBelow: 0,
 
+      //The initial chart data, before selecting any values
       chartData: {
         labels: [],
         datasets: [
@@ -220,6 +226,7 @@ export default {
             reverse: true,
           },
         },
+        //Setting the bar chart to stacked
         scales: {
           x: {
             stacked: true,

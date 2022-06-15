@@ -57,6 +57,7 @@ export default {
     data() {
         return {
           chartData: {
+            //The bar charts are always for the following time intervals:
             labels: ['00-02','02-04','04-06','06-08','08-10','10-12','12-14','14-16','16-18','18-20','20-22','22-24'],
             datasets: [
               {
@@ -101,6 +102,7 @@ export default {
               reverse: true,
             },
           },
+          //Setting the bar chart to stacked
           scales: {
             x: {
               stacked: true,
@@ -115,44 +117,48 @@ export default {
     },
 
     methods: {
-        
+        //GET-call to retrieve data in the given interval
         getDataInTimeInterval() {
         if(this.patientId != null && this.timeInterval != null) {
           this.axios({
               method: "get",
               url: "http://localhost:8080/api/v1/Doctors/" + this.doctorId + "/" + this.patientId + "/CGM/" + this.timeInterval + "/summary/barChart/120",
           }).then((res) => {
-                  console.log(res.data);
                   this.chartData = {
             labels: ['00-02','02-04','04-06','06-08','08-10','10-12','12-14','14-16','16-18','18-20','20-22','22-24'],
             datasets: [
               {
                 label: "G < 3 mmol/l \n",
                 backgroundColor: "#887694",
+                //Extracting the measurements below normal levels
                 data: Object.values(res.data).map(m => m.Below),
                 hoverBorderWidth: 0,
               },
               {
                 label: "3 <= G < 3.9 mmol/l \n", 
                 backgroundColor: "#b77b82",
+                //Extracting the measurements slightly below normal levels
                 data: Object.values(res.data).map(m => m.SlightlyBelow),
                 hoverBorderWidth: 0,
               },
               {
                 label: "3.9 <= G < 10 mmol/l \n",
                 backgroundColor: "#bbdcd3",
+                //Extracting the measurements in range of normal levels
                 data: Object.values(res.data).map(m => m.InRange),
                 hoverBorderWidth: 0,
               },
               {
                 label: "10 <= G < 13.9 mmol/l \n",
                 backgroundColor: "#f8de7e",
+                //Extracting the measurements slightly above normal levels
                 data: Object.values(res.data).map(m => m.SlightlyAbove),
                 hoverBorderWidth: 0,
               },
               {
                 label: "G > 13.9 mmol/l",
                 backgroundColor: "#e7bd98",
+                //Extracting the measurements above normal levels
                 data: Object.values(res.data).map(m => m.Above),
                 hoverBorderWidth: 0,
               },
@@ -175,8 +181,6 @@ export default {
         }
     },
   
-
-    
 }
 </script>
 
