@@ -136,7 +136,7 @@ public class Patient {
         LocalDateTime startDate = LocalDateTime.parse(start, formatter);
         LocalDateTime endDate = LocalDateTime.parse(end, formatter);
 
-        return potentialDate.isBefore(endDate) && potentialDate.isAfter(startDate);
+        return potentialDate.isBefore(endDate) && !potentialDate.isBefore(startDate);
     }
 
     //Returns all measurements matching type
