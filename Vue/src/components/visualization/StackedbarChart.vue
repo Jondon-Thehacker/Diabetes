@@ -124,7 +124,7 @@ export default {
           datasets: [
             {
               label: "G < 3 mmol/l \n",
-              backgroundColor: "#887694",
+              backgroundColor: "#FF160C",
               data: [this.timeBelow],
               hoverBorderWidth: 0,
             },
@@ -186,7 +186,7 @@ export default {
         datasets: [
           {
             label: "G < 3 mmol/l",
-            backgroundColor: "#887694",
+            backgroundColor: "#FF160C",
             data: [0],
             hoverBorderWidth: 0,
           },

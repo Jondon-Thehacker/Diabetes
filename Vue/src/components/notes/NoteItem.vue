@@ -1,6 +1,7 @@
 <template>
     <hr>
-    <b-img class="delete-note-btn" width="20" height="20" :src="trashUrl" v-b-modal="'modal-'+this.noteId"></b-img>
+    <!-- Only show delete button if it is the doctors own note -->
+    <b-img v-if="doctorId === author" class="delete-note-btn" width="20" height="20" :src="trashUrl" v-b-modal="'modal-'+this.noteId"></b-img>
  
     <b-modal :id="'modal-'+this.noteId" title="Delete" ok-title="Yes" @ok="deleteNote(this.noteId)"> 
     <p class="my-4"> Are you sure you want to delete this note? </p>

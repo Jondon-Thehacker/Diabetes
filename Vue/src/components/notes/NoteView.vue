@@ -57,11 +57,11 @@ export default {
                 method: 'get',
                 url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes',
             }).then(res => {
-                console.log(res.data)
-                this.notes = res.data
+                //Reverse the result array, so that newest notes are at the top
+                this.notes = (res.data).reverse()
             })  
         }
-    }
+    },
 }
 
 </script>
