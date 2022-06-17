@@ -1,0 +1,22 @@
+-- Creating Patients
+insert into patient values 
+(0,'LesleyPeacock@hotmail.com','Lesley Peacock'),
+(1,'LarynBush@hotmail.com','Laryn Bush'),
+(2,'MarjoryTuft@hotmail.com','Marjory Tuft'),
+(3,'Kelsey Ragnvaldsson@hotmail.com','Kelsey Ragnvaldsson'),
+(4,'Stacia Hunnisett@hotmail.com','Stacia Hunnisett'),
+(5,'Otto Dickenson@hotmail.com','Otto Dickenson'),
+(6,'Elsa Southgate@hotmail.com','Elsa Southgate'),
+(7,'Bram Mark@hotmail.com','Bram Mark'),
+(8,'Phyllida Rey@hotmail.com','Phyllida Rey'),
+(9,'Trent Black@hotmail.com','Trent Black'),
+(10,'Alise Victorsson@hotmail.com','Alise Victorsson'),
+(11,'Juliana Wild@hotmail.com','Juliana Wild'),
+(12,'Peggie Tyson@gmail.com','Peggie Tyson'),
+(13,'Clare Wilmer@hotmail.com','Clare Wilmer'),
+(14,'Sonny Mills@hotmail.com','Sonny Mills'),
+(15,'Anders Tyson@hotmail.com','Anders Tyson'),
+(16,'Matteus Lindsey@hotmail.com','Matteus Lindsey'),
+(17,'Arthur Thomas@hotmail.com','Arthur Thomas'),
+(18,'Moe Lawson@hotmail.com','Moe Lawson'),
+(19,'Sylvester Bancroft@hotmail.com','Sylvester Bancroft');
