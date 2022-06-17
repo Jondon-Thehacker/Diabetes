@@ -62,41 +62,29 @@ export default {
   },
 
   methods: {
-   /* getTimeLabels(){
-        let timeLabels = []
-        let time = "00:00"
-        let minutes, hours
-        while(time != "24:00"){
-            minutes = time.slice(3,5)
-            hours = time.slice(0,2)
-            minutes = minutes + 5
-        }
-    },*/
-  
-
+    //GET-call to retrieve summary data within time interval
     getDataInTimeInterval(){
       if(this.patientId != null && this.timeInterval != null) {
-        
         this.axios({
           method: 'get',
             url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/CGM/' + this.timeInterval + '/summary/lineChart/5',
               }).then(res => {
-                console.log(res.data)
-                console.log(Object.keys(res.data).map(m=>m.slice(0,5)))
-                console.log(Object.values(res.data))
                 this.measurements = res.data
-                  this.chartData = {
+                this.chartData = {
                       datasets: [
                                             {
                                               label: "Median",
                                               backgroundColor: 'rgba(100, 180, 255, 1)',
+                                              //Extract median from data
                                               data: Object.values(res.data).map(m => m.Median),
                                               pointRadius: 1.5,
                                               lineTension: 0.1,
                                               fill: false
                                             },
                                             {
+                                              //Label is null, since this line is only used to change color of graph to red
                                               label: 'null',
+                                              //Extract max from data
                                               data: Object.values(res.data).map(m => m.Max),
                                               pointRadius: 0,
                                               lineTension: 0.1,
@@ -107,7 +95,9 @@ export default {
                                                     }
                                               },
                                               {
+                                              //Label is null, since this line is only used to change color of graph to red
                                               label: 'null',
+                                              //Extract min from data
                                               data: Object.values(res.data).map(m => m.Min),
                                               pointRadius: 0,
                                               lineTension: 0.1,
@@ -120,6 +110,7 @@ export default {
                                             {
                                               label: "Min",
                                               backgroundColor: 'rgba(132, 212, 240, 0.2)',
+                                              //Extract min from data
                                               data: Object.values(res.data).map(m => m.Min),
                                               pointRadius: 0,
                                               lineTension: 0.1,
@@ -129,6 +120,7 @@ export default {
                                             {
                                               label: "Q1",
                                               backgroundColor: 'rgba(132, 212, 240, 0.8)',
+                                              //Extract first quartile from data
                                               data: Object.values(res.data).map(m => m.Q1),
                                               pointRadius: 0,
                                               lineTension: 0.1,
@@ -138,6 +130,7 @@ export default {
                                             {
                                               label: "Q3",
                                               backgroundColor: 'rgba(132, 212, 240, 0.8)',
+                                              //Extract third quartile from data
                                               data: Object.values(res.data).map(m => m.Q3),
                                               pointRadius: 0,
                                               lineTension: 0.1,
@@ -147,15 +140,15 @@ export default {
                                             {
                                               label: "Max",
                                               backgroundColor: 'rgba(132, 212, 240, 0.2)',
+                                              //Extract max from data
                                               data: Object.values(res.data).map(m => m.Max),
                                               pointRadius: 0,
                                               lineTension: 0.1,
                                               fill: '-1',
                                               borderDash: [5, 15]
                                             }
-                                            ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))} //object.keys
-                console.log(this.chartData.datasets.data)
-                console.log(this.chartData.labels)
+                                             //Set the labels to be the time of the measurement (The keys of the JSON object)
+                                          ], labels: Object.keys(this.measurements).map(m=>m.slice(0,5))}
               })
       }
     }
@@ -178,6 +171,7 @@ export default {
     return {
       measurements: [],
       
+      //Object for initial chart data, before any data is retrieved
       chartData: {
         labels: [],
         datasets: [
@@ -186,12 +180,14 @@ export default {
           },
         ],
       },
+      //Object for different chart options
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
           autocolors: false,
           annotation: {
+            //The two lines that mark the dangerious levels of CGM
             annotations: {
               line1: {
                 type: "line",
@@ -209,6 +205,7 @@ export default {
               },
             },
           },
+          //Enable zoom and pan
           zoom: {
             pan: {
               enabled: true,
@@ -224,6 +221,7 @@ export default {
               x: {minRange: 50},
             }
           },
+          //Remove labels with title "null"
           legend: {
             labels: {
               filter: function (item) {

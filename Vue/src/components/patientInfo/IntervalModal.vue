@@ -48,17 +48,25 @@ export default {
     emits: ['timeIntervalEmit'],
     
     methods: {
+        //Formats and emits the string containing the time interval
         handleSave() {
             let timeInterval= null
+            //Null check to prevent errors
             if(this.dateFrom != null && this.timeFrom != null && this.dateTo != null && this.timeTo != null){
-                timeInterval = this.dateFrom + ' ' + this.timeFrom + '/' + this.dateTo + ' ' + this.timeTo
-                this.$emit("timeIntervalEmit", timeInterval)
+                //Ensure that dateFrom is before dateTo and that both years are between 1000 and 9999
+                if (((this.dateFrom + ' ' + this.timeFrom)<(this.dateTo + ' ' + this.timeTo)) && (this.dateFrom.length === 10 && this.dateTo.length === 10)) {
+                    timeInterval = this.dateFrom + ' ' + this.timeFrom + '/' + this.dateTo + ' ' + this.timeTo
+                    this.$emit("timeIntervalEmit", timeInterval)
+                }
             }
+            //Null check to prevent errors
             if(this.hideTime && this.dateFrom != null && this.dateTo != null){
-                timeInterval = this.dateFrom + ' 00:00/' + this.dateTo + ' 00:00'
-                this.$emit("timeIntervalEmit", timeInterval)
+                //Ensure that dateFrom is before dateTo and that both years are between 1000 and 9999
+                if ((this.dateFrom < this.dateTo) && (this.dateFrom.length === 10 && this.dateTo.length === 10)){
+                    timeInterval = this.dateFrom + ' 00:00/' + this.dateTo + ' 00:00'
+                    this.$emit("timeIntervalEmit", timeInterval)
+                }
             }
-            console.log(timeInterval)
         }
     },
 }

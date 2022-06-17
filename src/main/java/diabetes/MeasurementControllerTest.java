@@ -178,7 +178,7 @@ public class MeasurementControllerTest {
 
     @Test
     public void getMeasurementsOfDatatypeStartDateEndDate_success() throws Exception{
-        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM1, CGM2, CGM3, CGM4));
+        List<Measurement> jonathanMeasurement = new ArrayList<>(Arrays.asList(CGM2, CGM3, CGM4));
         List<Patient> simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));
         Jonathan.setMeasurements(jonathanMeasurement);
 
@@ -624,7 +624,7 @@ public class MeasurementControllerTest {
         Mockito.when(patientRepository.findById(Mockito.anyLong()))
                 .thenReturn(MockResponse2);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}", 1L,2L, "CGM","2022-04-13 00:00","2022-04-19 00:00","barChart", 5L);
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}", 1L,2L, "CGM","2022-04-15 00:00","2022-04-19 00:00","barChart", 120L);
         MvcResult result = mockMvc.perform(request).andReturn();
 
         System.out.println(result.getResponse().getContentAsString());

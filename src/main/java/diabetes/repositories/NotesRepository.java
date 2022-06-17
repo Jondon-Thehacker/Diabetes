@@ -1,7 +1,6 @@
 package diabetes.repositories;
 
 import diabetes.model.Notes;
-import Simple.NotesId;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

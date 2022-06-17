@@ -136,7 +136,7 @@ public class Patient {
         LocalDateTime startDate = LocalDateTime.parse(start, formatter);
         LocalDateTime endDate = LocalDateTime.parse(end, formatter);
 
-        return potentialDate.isBefore(endDate) && potentialDate.isAfter(startDate);
+        return potentialDate.isBefore(endDate) && !potentialDate.isBefore(startDate);
     }
 
     //Returns all measurements matching type
@@ -240,6 +240,11 @@ public class Patient {
     public Map<String, Map<String, Double>> getSummary(String dataType, String start, String end, String type, Long stepSize) {
         //Get data in interval of relevant type
         List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,start,end);
+
+        if (measurements.isEmpty() || stepSize == 0L) {
+            return null;
+        }
+
         //Output object
         Map<String, Map<String, Double>> out = new LinkedHashMap<>();
 
@@ -267,12 +272,17 @@ public class Patient {
                 //Get time of current step end
                 LocalDateTime nextTime = LocalDateTime.from(currentTime).plusMinutes(stepSize);
 
+                if (nextTime.toLocalTime().equals(LocalTime.MIN)) {
+                    nextTime = LocalDateTime.of(currentTime.toLocalDate(), LocalTime.MAX);
+                }
+
                 //Check if end-time of current step exceeds interval
                 if (nextTime.isAfter(endDate)) {
                     break;
                 }
 
                 //Filters measurements of time between current step (inclusive) and next step (exclusive)
+                LocalDateTime finalNextTime = nextTime;
                 measurementsAtTime = measurements.stream()
                         .filter(v -> {
                             //Get time of measurement bar date
@@ -281,7 +291,7 @@ public class Patient {
                                                            .toLocalTime();
 
                             //If time of measurement is within bounds of current step, add it to the list
-                            if (timeOfMeasurement.isBefore(nextTime.toLocalTime()) && !timeOfMeasurement.isBefore(time.toLocalTime())) {
+                            if (timeOfMeasurement.isBefore(finalNextTime.toLocalTime()) && !timeOfMeasurement.isBefore(time.toLocalTime())) {
                                 return true;
                             }
                             return false;
@@ -296,6 +306,11 @@ public class Patient {
                                       .toLocalTime()
                                       .equals(time.toLocalTime()))
                         .collect(Collectors.toList());
+            }
+
+            if (measurementsAtTime.isEmpty()) {
+                currentTime = currentTime.plusMinutes(stepSize);
+                continue;
             }
 
             switch (type) {

@@ -20,8 +20,10 @@
             </b-row>
             <b-row>
                 <b-col>
+                    <!--v-if statement for each possible visualization layout-->
                     <visualization-box v-if="visualizationOption === 'General Information'" :doctorId="doctorId" :patientId="patientId" />
-                    <visualization-single-chart v-if="visualizationOption != 'General Information'" :doctorId="doctorId" :patientId="patientId" :chartType="visualizationOption" />
+                    <visualization-single-chart v-if="visualizationOption != 'General Information'" 
+                    :doctorId="doctorId" :patientId="patientId" :chartType="visualizationOption" />
                 </b-col>
             </b-row>
         </b-container>
@@ -59,6 +61,7 @@ export default {
     },
 
     methods: {
+        //Change visualization layout based on emit from child component
         handleVisualizationOptionEmit(value){
             this.visualizationOption = value
         }

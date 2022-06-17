@@ -1,21 +1,3 @@
-<!--<template>
-    <div>
-        <b-card title="Card Title"
-                img-src="https://picsum.photos/600/300/?image=25"
-                img-alt="Image"
-                img-top
-                tag="article"
-                style="max-width: 20rem;"
-                class="mb-2">
-            <b-card-text>
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-            </b-card-text>
-
-            <b-button @click="testAxios()" variant="primary">Go somewhere</b-button>
-        </b-card>
-    </div>
-</template>-->
-
 <template>
   <div>
     <b-container class="grid-container" fluid>
@@ -40,7 +22,6 @@
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
 import PatientList from "./components/patientList/PatientList.vue";
 import PatientInfoBox from "./components/patientInfo/PatientInfoBox.vue";
 
@@ -52,7 +33,6 @@ export default {
   },
   data() {
     return {
-      //Make a getDoctor method
       doctorId: 0,
       hospital: "Rigshospitalet",
       actualPatientId: null,
@@ -62,19 +42,8 @@ export default {
   },
 
   methods: {
-
-    testAxios() {
-      this.axios({
-        method: "get",
-        url: "http://localhost:8080/api/v1/Doctors/4/patients",
-      }).then((res) => {
-        console.log(res.data);
-      });
-    },
-
+    //Change patient information based on emit from child
     recievePatientData(value) {
-      console.log(value[0]);
-      console.log(value[1]);
       this.actualPatientId = value[0];
       this.actualPatientEmail = value[1];
       this.actualPatientName = value[2];
@@ -90,8 +59,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-
-  /*margin-top: 10px;*/
 }
 
 .top-bar {
@@ -109,11 +76,12 @@ export default {
   margin: 0;
   padding: 0;
 }
-/*   HIDE SCROLLBAR
+
 body {
+  /*Hide Scrollbar*/
   overflow: hidden;
   
-}*/
+}
 </style>
 
 
