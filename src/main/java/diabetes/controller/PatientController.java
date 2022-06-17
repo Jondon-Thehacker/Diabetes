@@ -22,6 +22,7 @@ public class PatientController {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    //Emil Pontoppidan Rasmussen, s204441
     //Returns all patients of the doctor.
     @GetMapping("/api/v1/Doctors/{doctorId}/patients")
     public ResponseEntity<List<Patient>> getAllPatients(@PathVariable Long doctorId) {
@@ -37,6 +38,7 @@ public class PatientController {
         return ResponseEntity.ok(d.get().getPatients());
     }
 
+    //Emil Pontoppidan Rasmussen, s204441
     //Returns the specific patient.
     @GetMapping("/api/v1/Doctors/{doctorId}/patients/{patientId}")
     public ResponseEntity<Patient> getPatient(@PathVariable Long doctorId, @PathVariable Long patientId){

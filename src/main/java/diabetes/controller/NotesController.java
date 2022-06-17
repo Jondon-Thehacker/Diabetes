@@ -27,6 +27,7 @@ public class NotesController {
     @Autowired
     private NotesRepository notesRepository;
 
+    //Simon Stampe Jensen, s204488
     //Returns all notes for a given patient
     @GetMapping("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes")
     public ResponseEntity<List<Notes>> getAllPatientNotes(@PathVariable Long doctorId, @PathVariable Long patientId){
@@ -49,6 +50,7 @@ public class NotesController {
         return ResponseEntity.ok(d.get().getPatientById(patientId).getNotes());
     }
 
+    //Jonathan Max Michelsen, s204437
     @PostMapping("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes")
     public ResponseEntity<Notes> createNote(@RequestBody Notes notes, @PathVariable Long doctorId, @PathVariable Long patientId){
         Optional<Doctor> d = doctorRepository.findById(doctorId);
@@ -79,6 +81,7 @@ public class NotesController {
         return ResponseEntity.ok(notesRepository.save(notes));
     }
 
+    //Emil Pontoppidan Rasmussen, s204441
     //Delete a note from a specific date
     @DeleteMapping("/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}")
     public ResponseEntity<?> deleteSpecificNote(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable Long noteId){
@@ -104,8 +107,6 @@ public class NotesController {
         //204.
         return ResponseEntity.noContent().build();
     }
-
-
 }
 
 

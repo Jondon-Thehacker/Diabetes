@@ -1,3 +1,4 @@
+<!--Emil Pontoppidan Rasmussen, s204441-->
 <template>
     <div class="note-button">
         <button v-if="patientId != null" @click="getNotes" class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" 

@@ -3,7 +3,7 @@ package diabetes.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-
+//Emil Pontoppidan Rasmussen, s204441
 @Entity
 @Table(name = "measurement")
 public class Measurement {
@@ -26,6 +26,7 @@ public class Measurement {
     @Enumerated(EnumType.STRING)
     private MeasurementName measurementName;
 
+    //Simon Stampe Jensen, s204488
     public enum MeasurementName {
         BOLUS("BOLUS"),
         BASAL("BASAL"),
@@ -105,7 +106,7 @@ public class Measurement {
         this.patient = patient;
     }
 
-    //Never used.
+    //Overriding equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,7 +115,7 @@ public class Measurement {
         return value == that.value && time == that.time && measurementName.getType().equals(that.measurementName.getType()) && patient.equals(that.patient);
     }
 
-    //Never used.
+    //Overriding equals and hashCode
     @Override
     public int hashCode() {
         return Objects.hash(measurementName.getType(), value, time, patient);

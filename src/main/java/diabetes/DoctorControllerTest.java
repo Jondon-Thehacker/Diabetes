@@ -28,6 +28,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+//Emil Pontoppidan Rasmussen, s204441 and Simon Stampe Jensen, s204488
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = DoctorController.class)
 public class DoctorControllerTest {

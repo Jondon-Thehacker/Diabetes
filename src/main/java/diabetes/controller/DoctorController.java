@@ -24,6 +24,7 @@ public class DoctorController {
     @Autowired
     private MeasurementRepository measurementRepository;
 
+    //Emil Pontoppdain Rasmussen, s204441
     //Returns specified doctor
     @GetMapping("/api/v1/Doctors/{doctorId}")
     public ResponseEntity getDoctor(@PathVariable Long doctorId) {

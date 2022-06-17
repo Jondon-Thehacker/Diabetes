@@ -1,3 +1,4 @@
+<!--Emil Pontoppidan Rasmussen, s204441-->
 <template>
     <div class="emaildiv">
         <!--Button is only functional when an email is selected-->

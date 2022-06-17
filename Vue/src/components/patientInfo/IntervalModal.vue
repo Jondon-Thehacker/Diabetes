@@ -1,3 +1,4 @@
+<!--Emil Løvstrand Mortensen, s204483-->
 <template>
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#intervalModal" style="margin: 5px; max-width: 150px">
      Select Interval

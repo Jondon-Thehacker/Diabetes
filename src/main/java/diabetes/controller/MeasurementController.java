@@ -27,6 +27,7 @@ public class MeasurementController {
     @Autowired
     private MeasurementRepository measurementRepository;
 
+    //Emil Løvstrand Mortensen, s204483
     //Returns all the data of the chosen type
     @GetMapping("/api/v1/Doctors/{doctorId}/Patients/{patientId}/Measurements/{dataType}")
     public ResponseEntity<List<Measurement>> getDataOfType(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable String dataType){
@@ -55,6 +56,7 @@ public class MeasurementController {
         return ResponseEntity.ok(result);
     }
 
+    //Jonathan Max Michelsen, s204437
     //Returns all the data of the chosen type within the specified date interval
     @GetMapping("api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}")
     public ResponseEntity<List<Measurement>> getDataOfTypeAndDate(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable String dataType, @PathVariable String startDate, @PathVariable String endDate){
@@ -74,6 +76,7 @@ public class MeasurementController {
         return ResponseEntity.ok(d.get().getPatientById(patientId).getMeasurementOfTypeAndDate(dataType, startDate, endDate));
     }
 
+    //Emil Løvstrand Mortensen, s204483
     //Returns aggregate data from measurement interval.
     @GetMapping("api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}")
     public ResponseEntity<Double> getAggregatedData(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable String dataType, @PathVariable String startDate, @PathVariable String endDate, @PathVariable String aggregateFunction){
@@ -93,6 +96,7 @@ public class MeasurementController {
         return ResponseEntity.ok(d.get().getPatientById(patientId).applyAggregateFunction(dataType, startDate, endDate, aggregateFunction));
     }
 
+    //Jonathan Max Michelsen, s204437
     //Returns aggregate data from measurement interval using additional function argument (percentile).
     @GetMapping("api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/{aggregateFunction}/{argument}")
     public ResponseEntity<Double> getAggregatedDataWithArgument(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable String dataType, @PathVariable String startDate, @PathVariable String endDate, @PathVariable String aggregateFunction, @PathVariable Long argument){
@@ -112,6 +116,7 @@ public class MeasurementController {
         return ResponseEntity.ok(d.get().getPatientById(patientId).aggregateFunctionArgument(dataType,startDate,endDate,aggregateFunction,argument));
     }
 
+    //Simon Stampe Jensen, s204488
     //Returns summary statistics from measurement interval using type and step-size.
     @GetMapping("api/v1/Doctors/{doctorId}/{patientId}/{dataType}/{startDate}/{endDate}/summary/{type}/{stepSize}")
     public ResponseEntity<Map<String, Map<String, Double>>> getSummaryStatistics(@PathVariable Long doctorId, @PathVariable Long patientId, @PathVariable String dataType, @PathVariable String startDate, @PathVariable String endDate, @PathVariable String type, @PathVariable Long stepSize) {
@@ -131,6 +136,7 @@ public class MeasurementController {
         return ResponseEntity.ok(d.get().getPatientById(patientId).getSummary(dataType, startDate, endDate, type, stepSize));
     }
 
+    //Simon Stampe Jensen, s204488
     //Checks association between doctor and patient.
     public boolean checkAssoc(Doctor d, Long pID) {
         return d.getPatientById(pID) != null;

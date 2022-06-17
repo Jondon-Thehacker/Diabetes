@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
+//Emil Pontoppidan Rasmussen, s204441
 @Entity
 @Table(name = "doctor")
 public class Doctor {
@@ -80,6 +81,7 @@ public class Doctor {
         return this.patients;
     }
 
+    //Simon Stampe Jensen, s204488
     public Patient getPatientById(Long patientId){
         //Find first patient matching patient ID.
         return this.patients.stream()
@@ -108,7 +110,7 @@ public class Doctor {
         this.notes = notes;
     }
 
-    //This is never used. Consider removing.
+    //Overriding equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,7 +119,6 @@ public class Doctor {
         return doctorId.equals(doctor.doctorId) && doctorName.equals(doctor.doctorName) && hospital.equals(doctor.hospital) && email.equals(doctor.email) && Objects.equals(patients, doctor.patients) && Objects.equals(notes, doctor.notes) && Objects.equals(user, doctor.user);
     }
 
-    //Also never used.
     @Override
     public int hashCode() {
         return Objects.hash(doctorId, doctorName, hospital, email, patients, notes, user);

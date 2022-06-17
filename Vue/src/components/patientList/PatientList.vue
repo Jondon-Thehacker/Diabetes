@@ -1,3 +1,4 @@
+<!--Emil Løvstrand Mortensen, s204483-->
 <template>
     <b-form-input id="searchPatient" v-model="searchString" type="search" placeholder="Search for patient name" style="margin-bottom: 3px">
     </b-form-input>

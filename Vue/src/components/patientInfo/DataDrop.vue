@@ -1,3 +1,4 @@
+<!--Emil Pontoppidan Rasmussen, s204441-->
 <template>
 <div>
   <b-dropdown id="dropdown-1" :text="actualOption" class="datatypedrop">

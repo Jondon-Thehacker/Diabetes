@@ -1,3 +1,4 @@
+<!--Emil Løvstrand Mortensen, s204483 and Simon Stampe Jensen, s204488-->
 <template>
   <div>
     <Line

@@ -1,4 +1,5 @@
-    <template>
+<!--Emil Løvstrand Mortensen, s204483-->
+<template>
     <b-list-group-item
                 @click="handlePatientClick" class="d-flex align-items-center clickable-patient">
                 <b-avatar :badge="badgeNr!=0 ? badgeNr : undefined" badge-variant="danger" :text="findInitials(patientName)"></b-avatar>

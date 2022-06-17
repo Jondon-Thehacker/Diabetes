@@ -34,6 +34,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
+//Jonathan Max Michelsen, s204437 and Simon Stampe Jensen, s204488
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = MeasurementController.class)
 public class MeasurementControllerTest {

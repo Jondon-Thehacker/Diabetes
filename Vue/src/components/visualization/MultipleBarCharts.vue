@@ -1,3 +1,4 @@
+<!--Emil Løvstrand Mortensen, s204483-->
 <template>
    <div>
     <Bar

@@ -1,4 +1,4 @@
-describe('test2.cy.js', () => {
+describe('Test2.cy.js', () => {
   it('The user tries to view a list of his own patients, but there are none', () => {
     cy.visit('http://localhost:8081/')
 

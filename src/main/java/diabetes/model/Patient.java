@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+//Jonathan Max Michelsen, s204437
 @Entity
 @Table(name = "patient")
 public class Patient {
@@ -121,6 +122,7 @@ public class Patient {
         this.doctors = doctors;
     }
 
+    //Simon Stampe Jensen, s204488
     //Return measurements in interval matching type
     public List<Measurement> getMeasurementOfTypeAndDate(String type, String startDate, String endDate){
         return measurements.stream()
@@ -128,6 +130,7 @@ public class Patient {
                            .collect(Collectors.toList());
     }
 
+    //Emil Løvstrand Mortensen, s204483
     //Returns true if timestamp is between start-, and end-date.
     public boolean isBetween(java.sql.Timestamp potential, String start, String end){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -139,6 +142,7 @@ public class Patient {
         return potentialDate.isBefore(endDate) && !potentialDate.isBefore(startDate);
     }
 
+    //Simon Stampe Jensen, s204488
     //Returns all measurements matching type
     public List<Measurement> getMeasurementOfType(String type){
         if (type == null) {
@@ -155,7 +159,7 @@ public class Patient {
             return null;
         }
     }
-
+    //Emil Løvstrand Mortensen, s204483 and Jonathan Max Michelsen, s204437
     //Returns aggregate function value.
     public double applyAggregateFunction(String dataType, String startDate, String endDate, String aggregateFunction) {
         //Get data in interval of relevant type
@@ -236,7 +240,7 @@ public class Patient {
         return result;
     }
 
-    //Attempted rewrite without regex.
+    //Simon Stampe Jensen, s204488
     public Map<String, Map<String, Double>> getSummary(String dataType, String start, String end, String type, Long stepSize) {
         //Get data in interval of relevant type
         List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType,start,end);
@@ -354,10 +358,12 @@ public class Patient {
         return out;
     }
 
+    //Jonathan Max Michelsen, s204437
     private double count(List<Measurement> measurements) {
         return measurements.stream().map(v -> v.getValue()).count();
     }
 
+    //Emil Løvstrand Mortensen, s204483
     private double average(List<Measurement> measurements) {
         double sum = measurements.stream().map(v -> v.getValue()).reduce((double) 0, (s, e) -> s + e );
         double count = count(measurements);
@@ -365,6 +371,7 @@ public class Patient {
         return sum/count;
     }
 
+    //Jonathan Max Michelsen, s204437
     private double standardDeviation(List<Measurement> measurements) {
         double average = average(measurements);
         double count = count(measurements);
@@ -373,7 +380,7 @@ public class Patient {
 
         return Math.sqrt(x/count);
     }
-
+    //Emil Løvstrand Mortensen, s204483
     public double aggregateFunctionArgument(String dataType, String startDate, String endDate, String aggregateFunction, Long argument) {
         List<Measurement> measurements = this.getMeasurementOfTypeAndDate(dataType, startDate, endDate);
 
@@ -386,6 +393,8 @@ public class Patient {
         }
         return result;
     }
+
+    //Simon Stampe Jensen, s204488
     private double percentile(List<Measurement> measurements, Long argument) {
         double count = count(measurements);
         List<Double> sortedList = measurements.stream().map(m -> m.getValue()).sorted().collect(Collectors.toList());
@@ -393,6 +402,7 @@ public class Patient {
         return sortedList.get((int) (Math.ceil(((double) argument)/100 * count))-1);
     }
 
+    //Overriding equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -401,6 +411,7 @@ public class Patient {
         return patientId.equals(patient.patientId) && patientName.equals(patient.patientName) && Objects.equals(email, patient.email) && Objects.equals(notes, patient.notes) && Objects.equals(doctors, patient.doctors) && Objects.equals(measurements, patient.measurements);
     }
 
+    //Overriding equals and hashCode
     @Override
     public int hashCode() {
         return Objects.hash(patientId, patientName, email, notes, doctors, measurements);

@@ -1,3 +1,4 @@
+<!--Emil Pontoppidan Rasmussen, s204441-->
 <template>
 <div>
   <b-button v-b-modal.modal-note>Add a note</b-button>

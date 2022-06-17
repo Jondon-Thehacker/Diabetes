@@ -1,3 +1,4 @@
+<!--Jonathan Max Michelsen, s204437-->
 <template>
   <div>
     <!--chart options are either with or without the line marking dangerous GCM levels -->
@@ -195,6 +196,7 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
+          //Simon Stampe Jensen, s204488
           //Enable zoom and pan
           zoom: {
             pan: {

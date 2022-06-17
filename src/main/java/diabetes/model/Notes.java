@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+//Emil Pontoppidan Rasmussen, s204441
 @Entity
 @Table(name = "notes")
 public class Notes implements Serializable {
@@ -80,7 +81,7 @@ public class Notes implements Serializable {
         this.doctor = doctor;
     }
 
-    //Unused
+    //Overriding equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,7 +90,7 @@ public class Notes implements Serializable {
         return Objects.equals(note, notes.note) && noteId.equals(notes.noteId) && patient.equals(notes.patient) && doctor.equals(notes.doctor) && date.equals(notes.date);
     }
 
-    //Unused
+    //Overriding equals and hashCode
     @Override
     public int hashCode() {
         return Objects.hash(note, noteId, patient, doctor, date);

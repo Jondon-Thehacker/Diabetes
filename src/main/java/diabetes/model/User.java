@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+//Jonathan Max Michelsen, s204437
 @Entity
 @Table(name = "doctor_user")
 public class User implements Serializable {
@@ -24,6 +25,7 @@ public class User implements Serializable {
 
     }
 
+    //Overriding equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -32,6 +34,7 @@ public class User implements Serializable {
         return doctor.equals(user.doctor) && password.equals(user.password);
     }
 
+    //Overriding equals and hashCode
     @Override
     public int hashCode() {
         return Objects.hash(doctor, password);

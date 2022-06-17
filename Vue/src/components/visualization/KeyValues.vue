@@ -1,3 +1,4 @@
+<!--Jonathan Max Michelsen, s204437-->
 <template>
   <table class="table">
     <thead>

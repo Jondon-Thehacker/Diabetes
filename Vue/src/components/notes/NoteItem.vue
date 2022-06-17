@@ -1,3 +1,4 @@
+<!--Emil Pontoppidan Rasmussen, s204441-->
 <template>
     <hr>
     <!-- Only show delete button if it is the doctors own note -->

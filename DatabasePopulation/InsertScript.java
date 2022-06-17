@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.util.Scanner;
-
+//Emil Pontoppidan Rasmussen, s204441
 public class InsertScript {
     private static String[] time;
     private static String[] unformattedTime;
