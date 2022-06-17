@@ -43,11 +43,7 @@ export default {
             measurementType: null
         }
     },
-
-    mounted(){
-        console.log(this.patientId)      
-
-    },
+    
     props: {
         doctorId: Number,
         patientId: Number,

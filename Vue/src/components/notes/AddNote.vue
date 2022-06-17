@@ -31,7 +31,6 @@ export default {
                 patientId: this.patientId,
             }).then(() => {
                     this.note = '';
-                    console.log("Note added")
                     this.$emit("updateNotes")
             })
             
