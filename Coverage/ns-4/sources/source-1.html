@@ -1,0 +1,118 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PatientRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">diabetes.repositories</a>
+</div>
+
+<h1>Coverage Summary for Class: PatientRepository (diabetes.repositories)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$1783363766</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$1783363766$auxiliary$lr1FeebB</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$1783363766$auxiliary$xsin6oFE</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$2088664844</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$2088664844$auxiliary$0sTdkrI6</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$2088664844$auxiliary$m0eKJhwo</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$2140267815</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$2140267815$auxiliary$1cv5K9dz</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$2140267815$auxiliary$wIBxItO8</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$684817959</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$684817959$auxiliary$78Gky6gh</td>
+  </tr>
+  <tr>
+    <td class="name">PatientRepository$MockitoMock$684817959$auxiliary$HSmXWEq8</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package diabetes.repositories;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import diabetes.model.Patient;
+<i class="no-highlight">4</i>&nbsp;import org.springframework.data.repository.CrudRepository;
+<i class="no-highlight">5</i>&nbsp;import org.springframework.stereotype.Repository;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;import java.util.List;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;//Emil Pontoppidan Rasmussen, s204441
+<i class="no-highlight">10</i>&nbsp;@Repository
+<i class="no-highlight">11</i>&nbsp;public interface PatientRepository extends CrudRepository&lt;Patient, Long &gt; {
+<i class="no-highlight">12</i>&nbsp;    List&lt;Patient&gt; findAll();
+<i class="no-highlight">13</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-17 15:17</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,428 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > NotesControllerTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">diabetes</a>
+</div>
+
+<h1>Coverage Summary for Class: NotesControllerTest (diabetes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NotesControllerTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (128/128)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package diabetes;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i class="no-highlight">4</i>&nbsp;import diabetes.controller.NotesController;
+<i class="no-highlight">5</i>&nbsp;import diabetes.controller.PatientController;
+<i class="no-highlight">6</i>&nbsp;import diabetes.model.Doctor;
+<i class="no-highlight">7</i>&nbsp;import diabetes.model.Notes;
+<i class="no-highlight">8</i>&nbsp;import diabetes.model.Patient;
+<i class="no-highlight">9</i>&nbsp;import diabetes.repositories.DoctorRepository;
+<i class="no-highlight">10</i>&nbsp;import diabetes.repositories.NotesRepository;
+<i class="no-highlight">11</i>&nbsp;import diabetes.repositories.PatientRepository;
+<i class="no-highlight">12</i>&nbsp;import org.junit.Test;
+<i class="no-highlight">13</i>&nbsp;import org.junit.runner.RunWith;
+<i class="no-highlight">14</i>&nbsp;import org.mockito.Mockito;
+<i class="no-highlight">15</i>&nbsp;import org.skyscreamer.jsonassert.JSONAssert;
+<i class="no-highlight">16</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i class="no-highlight">17</i>&nbsp;import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+<i class="no-highlight">18</i>&nbsp;import org.springframework.boot.test.mock.mockito.MockBean;
+<i class="no-highlight">19</i>&nbsp;import org.springframework.http.HttpStatus;
+<i class="no-highlight">20</i>&nbsp;import org.springframework.http.MediaType;
+<i class="no-highlight">21</i>&nbsp;import org.springframework.mock.web.MockHttpServletResponse;
+<i class="no-highlight">22</i>&nbsp;import org.springframework.test.context.ContextConfiguration;
+<i class="no-highlight">23</i>&nbsp;import org.springframework.test.context.junit4.SpringRunner;
+<i class="no-highlight">24</i>&nbsp;import org.springframework.test.web.servlet.MockMvc;
+<i class="no-highlight">25</i>&nbsp;import org.springframework.test.web.servlet.MvcResult;
+<i class="no-highlight">26</i>&nbsp;import org.springframework.test.web.servlet.RequestBuilder;
+<i class="no-highlight">27</i>&nbsp;import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">30</i>&nbsp;import java.util.*;
+<i class="no-highlight">31</i>&nbsp;import java.util.List;
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;import static org.junit.Assert.assertEquals;
+<i class="no-highlight">34</i>&nbsp;import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;//Jonathan Max Michelsen, s204437 and Simon Stampe Jensen, s204488
+<i class="no-highlight">37</i>&nbsp;@RunWith(SpringRunner.class)
+<i class="no-highlight">38</i>&nbsp;@WebMvcTest(value = NotesController.class)
+<i class="no-highlight">39</i>&nbsp;@ContextConfiguration (classes = NotesController.class)
+<b class="fc"><i class="no-highlight">40</i>&nbsp;public class NotesControllerTest {</b>
+<i class="no-highlight">41</i>&nbsp;
+<i class="no-highlight">42</i>&nbsp;    @Autowired
+<i class="no-highlight">43</i>&nbsp;    MockMvc mockMvc;
+<i class="no-highlight">44</i>&nbsp;
+<i class="no-highlight">45</i>&nbsp;    @MockBean
+<i class="no-highlight">46</i>&nbsp;    PatientRepository patientRepository;
+<i class="no-highlight">47</i>&nbsp;
+<i class="no-highlight">48</i>&nbsp;    @MockBean
+<i class="no-highlight">49</i>&nbsp;    DoctorRepository doctorRepository;
+<i class="no-highlight">50</i>&nbsp;
+<i class="no-highlight">51</i>&nbsp;    @MockBean
+<i class="no-highlight">52</i>&nbsp;    NotesRepository notesRepository;
+<i class="no-highlight">53</i>&nbsp;
+<b class="fc"><i class="no-highlight">54</i>&nbsp;    List&lt;Doctor&gt; jonathanDoctors = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">55</i>&nbsp;    List&lt;Doctor&gt; emilLDoctors = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">56</i>&nbsp;
+<b class="fc"><i class="no-highlight">57</i>&nbsp;    Patient Jonathan = new Patient(1L,&quot;Jonathan&quot;,&quot;Jonathan@gmail.com&quot;,null, jonathanDoctors, null);</b>
+<b class="fc"><i class="no-highlight">58</i>&nbsp;    Patient EmilL = new Patient(2L,&quot;EmilL&quot;,&quot;EmilL@gmail.com&quot;, null, emilLDoctors, null);</b>
+<i class="no-highlight">59</i>&nbsp;
+<b class="fc"><i class="no-highlight">60</i>&nbsp;    Notes Note1 = new Notes(1L, &quot;Test1&quot;, Jonathan, null, null);</b>
+<b class="fc"><i class="no-highlight">61</i>&nbsp;    Notes Note2 = new Notes(2L, &quot;Test2&quot;, Jonathan, null, null);</b>
+<i class="no-highlight">62</i>&nbsp;
+<i class="no-highlight">63</i>&nbsp;    @Test
+<i class="no-highlight">64</i>&nbsp;    public void getAllPatientNotes_sucess() throws Exception{
+<b class="fc"><i class="no-highlight">65</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList(Note1, Note2));</b>
+<b class="fc"><i class="no-highlight">66</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList(Note1, Note2));</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        List&lt;Patient&gt; simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));</b>
+<i class="no-highlight">68</i>&nbsp;
+<b class="fc"><i class="no-highlight">69</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">70</i>&nbsp;
+<b class="fc"><i class="no-highlight">71</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, simonPatients, simonNotes);</b>
+<b class="fc"><i class="no-highlight">72</i>&nbsp;        Note1.setDoctor(Simon);</b>
+<b class="fc"><i class="no-highlight">73</i>&nbsp;        Note2.setDoctor(Simon);</b>
+<i class="no-highlight">74</i>&nbsp;
+<b class="fc"><i class="no-highlight">75</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));</b>
+<i class="no-highlight">77</i>&nbsp;
+<b class="fc"><i class="no-highlight">78</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.get(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes&quot;, 1L, 1L);</b>
+<i class="no-highlight">79</i>&nbsp;
+<b class="fc"><i class="no-highlight">80</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<b class="fc"><i class="no-highlight">81</i>&nbsp;        String expected_result = new ObjectMapper().writeValueAsString(Arrays.asList(Note1, Note2));</b>
+<i class="no-highlight">82</i>&nbsp;
+<b class="fc"><i class="no-highlight">83</i>&nbsp;        JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);</b>
+<i class="no-highlight">84</i>&nbsp;
+<b class="fc"><i class="no-highlight">85</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));</b>
+<i class="no-highlight">86</i>&nbsp;
+<b class="fc"><i class="no-highlight">87</i>&nbsp;        request = MockMvcRequestBuilders.get(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes&quot;, 2L, 1L);</b>
+<i class="no-highlight">88</i>&nbsp;
+<b class="fc"><i class="no-highlight">89</i>&nbsp;        result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">90</i>&nbsp;
+<b class="fc"><i class="no-highlight">91</i>&nbsp;        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">92</i>&nbsp;    }
+<i class="no-highlight">93</i>&nbsp;
+<i class="no-highlight">94</i>&nbsp;    @Test
+<i class="no-highlight">95</i>&nbsp;    public void getAllPatientNotes_empty() throws Exception {
+<b class="fc"><i class="no-highlight">96</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">97</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">98</i>&nbsp;        List&lt;Patient&gt; simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));</b>
+<i class="no-highlight">99</i>&nbsp;
+<b class="fc"><i class="no-highlight">100</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, simonPatients, simonNotes);</b>
+<i class="no-highlight">101</i>&nbsp;
+<b class="fc"><i class="no-highlight">102</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">103</i>&nbsp;
+<b class="fc"><i class="no-highlight">104</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));</b>
+<b class="fc"><i class="no-highlight">105</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));</b>
+<i class="no-highlight">106</i>&nbsp;
+<b class="fc"><i class="no-highlight">107</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.get(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes&quot;, 1L, 1L);</b>
+<b class="fc"><i class="no-highlight">108</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">109</i>&nbsp;
+<b class="fc"><i class="no-highlight">110</i>&nbsp;        String expected_result = &quot;[]&quot;;</b>
+<i class="no-highlight">111</i>&nbsp;
+<b class="fc"><i class="no-highlight">112</i>&nbsp;        JSONAssert.assertEquals(expected_result, result.getResponse().getContentAsString(), false);</b>
+<i class="no-highlight">113</i>&nbsp;    }
+<i class="no-highlight">114</i>&nbsp;
+<i class="no-highlight">115</i>&nbsp;    @Test
+<i class="no-highlight">116</i>&nbsp;    public void getAllPatientNotes_noAssoc() throws Exception {
+<b class="fc"><i class="no-highlight">117</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">118</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">119</i>&nbsp;        List&lt;Patient&gt; simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));</b>
+<i class="no-highlight">120</i>&nbsp;
+<b class="fc"><i class="no-highlight">121</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, simonPatients, simonNotes);</b>
+<b class="fc"><i class="no-highlight">122</i>&nbsp;        Doctor EmilP = new Doctor(2L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, Arrays.asList(), Arrays.asList());</b>
+<i class="no-highlight">123</i>&nbsp;
+<b class="fc"><i class="no-highlight">124</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">125</i>&nbsp;
+<b class="fc"><i class="no-highlight">126</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(EmilP));</b>
+<b class="fc"><i class="no-highlight">127</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));</b>
+<i class="no-highlight">128</i>&nbsp;
+<b class="fc"><i class="no-highlight">129</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.get(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes&quot;, 2L, 1L);</b>
+<b class="fc"><i class="no-highlight">130</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">131</i>&nbsp;
+<b class="fc"><i class="no-highlight">132</i>&nbsp;        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">133</i>&nbsp;    }
+<i class="no-highlight">134</i>&nbsp;
+<i class="no-highlight">135</i>&nbsp;    @Test
+<i class="no-highlight">136</i>&nbsp;    public void createNote_succes() throws Exception{
+<b class="fc"><i class="no-highlight">137</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">138</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">139</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">140</i>&nbsp;
+<b class="fc"><i class="no-highlight">141</i>&nbsp;        List&lt;Patient&gt; simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));</b>
+<b class="fc"><i class="no-highlight">142</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, simonPatients, simonNotes);</b>
+<i class="no-highlight">143</i>&nbsp;
+<b class="fc"><i class="no-highlight">144</i>&nbsp;        Note1.setDoctor(Simon);</b>
+<b class="fc"><i class="no-highlight">145</i>&nbsp;        Note2.setDoctor(Simon);</b>
+<i class="no-highlight">146</i>&nbsp;
+<i class="no-highlight">147</i>&nbsp;        //Optional&lt;Doctor&gt; simonOpt = Optional.ofNullable(Simon);
+<i class="no-highlight">148</i>&nbsp;
+<i class="no-highlight">149</i>&nbsp;        //simon with notes and two patients
+<i class="no-highlight">150</i>&nbsp;        //Jonathan with 2 notes
+<i class="no-highlight">151</i>&nbsp;
+<b class="fc"><i class="no-highlight">152</i>&nbsp;        Optional&lt;Doctor&gt; MockResponse = Optional.ofNullable(Simon);</b>
+<b class="fc"><i class="no-highlight">153</i>&nbsp;        Optional&lt;Patient&gt; MockResponse2 = Optional.ofNullable(Jonathan);</b>
+<i class="no-highlight">154</i>&nbsp;
+<i class="no-highlight">155</i>&nbsp;        //setting up mock response
+<i class="no-highlight">156</i>&nbsp;
+<b class="fc"><i class="no-highlight">157</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong()))</b>
+<b class="fc"><i class="no-highlight">158</i>&nbsp;                .thenReturn(MockResponse);</b>
+<i class="no-highlight">159</i>&nbsp;
+<b class="fc"><i class="no-highlight">160</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong()))</b>
+<b class="fc"><i class="no-highlight">161</i>&nbsp;                .thenReturn(MockResponse2);</b>
+<i class="no-highlight">162</i>&nbsp;
+<b class="fc"><i class="no-highlight">163</i>&nbsp;        String mockNote = &quot;{&quot; +</b>
+<i class="no-highlight">164</i>&nbsp;                &quot;\&quot;note\&quot;: \&quot;Test3\&quot;,&quot; +
+<i class="no-highlight">165</i>&nbsp;                &quot;\&quot;date\&quot;: \&quot;1998-04-04\&quot;,&quot; +
+<i class="no-highlight">166</i>&nbsp;                &quot;\&quot;doctorId\&quot;: 1,&quot; +
+<i class="no-highlight">167</i>&nbsp;                &quot;\&quot;patientId\&quot;: 1&quot; +
+<i class="no-highlight">168</i>&nbsp;                &quot;}&quot;;
+<i class="no-highlight">169</i>&nbsp;
+<i class="no-highlight">170</i>&nbsp;        //returning mock responses
+<b class="fc"><i class="no-highlight">171</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.post(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes&quot;, 1L, 1L).accept(MediaType.APPLICATION_JSON).content(mockNote).contentType(MediaType.APPLICATION_JSON);</b>
+<i class="no-highlight">172</i>&nbsp;
+<b class="fc"><i class="no-highlight">173</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">174</i>&nbsp;
+<b class="fc"><i class="no-highlight">175</i>&nbsp;        assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">176</i>&nbsp;    }
+<i class="no-highlight">177</i>&nbsp;
+<i class="no-highlight">178</i>&nbsp;    @Test
+<i class="no-highlight">179</i>&nbsp;    public void createNote_failure() throws Exception {
+<b class="fc"><i class="no-highlight">180</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">181</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">182</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">183</i>&nbsp;
+<b class="fc"><i class="no-highlight">184</i>&nbsp;        List&lt;Patient&gt; simonPatients = new ArrayList(Arrays.asList());</b>
+<b class="fc"><i class="no-highlight">185</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, simonPatients, simonNotes);</b>
+<i class="no-highlight">186</i>&nbsp;
+<b class="fc"><i class="no-highlight">187</i>&nbsp;        Optional&lt;Doctor&gt; MockResponse = Optional.ofNullable(Simon);</b>
+<b class="fc"><i class="no-highlight">188</i>&nbsp;        Optional&lt;Patient&gt; MockResponse2 = Optional.ofNullable(null);</b>
+<i class="no-highlight">189</i>&nbsp;
+<b class="fc"><i class="no-highlight">190</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong()))</b>
+<b class="fc"><i class="no-highlight">191</i>&nbsp;                .thenReturn(MockResponse);</b>
+<i class="no-highlight">192</i>&nbsp;
+<b class="fc"><i class="no-highlight">193</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong()))</b>
+<b class="fc"><i class="no-highlight">194</i>&nbsp;                .thenReturn(MockResponse2);</b>
+<i class="no-highlight">195</i>&nbsp;
+<b class="fc"><i class="no-highlight">196</i>&nbsp;        String mockNote = &quot;{&quot; +</b>
+<i class="no-highlight">197</i>&nbsp;                &quot;\&quot;note\&quot;: \&quot;Test3\&quot;,&quot; +
+<i class="no-highlight">198</i>&nbsp;                &quot;\&quot;date\&quot;: \&quot;1998-04-04\&quot;,&quot; +
+<i class="no-highlight">199</i>&nbsp;                &quot;\&quot;doctorId\&quot;: 1,&quot; +
+<i class="no-highlight">200</i>&nbsp;                &quot;\&quot;patientId\&quot;: 1&quot; +
+<i class="no-highlight">201</i>&nbsp;                &quot;}&quot;;
+<i class="no-highlight">202</i>&nbsp;
+<b class="fc"><i class="no-highlight">203</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.post(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes&quot;, 1L, 3L)</b>
+<b class="fc"><i class="no-highlight">204</i>&nbsp;                .accept(MediaType.APPLICATION_JSON)</b>
+<b class="fc"><i class="no-highlight">205</i>&nbsp;                .content(mockNote)</b>
+<b class="fc"><i class="no-highlight">206</i>&nbsp;                .contentType(MediaType.APPLICATION_JSON);</b>
+<i class="no-highlight">207</i>&nbsp;
+<b class="fc"><i class="no-highlight">208</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">209</i>&nbsp;
+<b class="fc"><i class="no-highlight">210</i>&nbsp;        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">211</i>&nbsp;
+<b class="fc"><i class="no-highlight">212</i>&nbsp;        MockResponse2 = Optional.ofNullable(Jonathan);</b>
+<b class="fc"><i class="no-highlight">213</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong()))</b>
+<b class="fc"><i class="no-highlight">214</i>&nbsp;                .thenReturn(MockResponse2);</b>
+<i class="no-highlight">215</i>&nbsp;
+<b class="fc"><i class="no-highlight">216</i>&nbsp;        request = MockMvcRequestBuilders.post(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes&quot;, 1L, 1L)</b>
+<b class="fc"><i class="no-highlight">217</i>&nbsp;                .accept(MediaType.APPLICATION_JSON)</b>
+<b class="fc"><i class="no-highlight">218</i>&nbsp;                .content(mockNote)</b>
+<b class="fc"><i class="no-highlight">219</i>&nbsp;                .contentType(MediaType.APPLICATION_JSON);</b>
+<i class="no-highlight">220</i>&nbsp;
+<b class="fc"><i class="no-highlight">221</i>&nbsp;        result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">222</i>&nbsp;
+<b class="fc"><i class="no-highlight">223</i>&nbsp;        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">224</i>&nbsp;    }
+<i class="no-highlight">225</i>&nbsp;
+<i class="no-highlight">226</i>&nbsp;    @Test
+<i class="no-highlight">227</i>&nbsp;    public void deleteSpecificNote_succes() throws Exception{
+<i class="no-highlight">228</i>&nbsp;        //&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes
+<b class="fc"><i class="no-highlight">229</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList(Note1, Note2));</b>
+<b class="fc"><i class="no-highlight">230</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList(Note1, Note2));</b>
+<b class="fc"><i class="no-highlight">231</i>&nbsp;        List&lt;Patient&gt; simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));</b>
+<i class="no-highlight">232</i>&nbsp;
+<b class="fc"><i class="no-highlight">233</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">234</i>&nbsp;
+<b class="fc"><i class="no-highlight">235</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, simonPatients, simonNotes);</b>
+<b class="fc"><i class="no-highlight">236</i>&nbsp;        Note1.setDoctor(Simon);</b>
+<b class="fc"><i class="no-highlight">237</i>&nbsp;        Note2.setDoctor(Simon);</b>
+<i class="no-highlight">238</i>&nbsp;
+<b class="fc"><i class="no-highlight">239</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));</b>
+<b class="fc"><i class="no-highlight">240</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));</b>
+<b class="fc"><i class="no-highlight">241</i>&nbsp;        Mockito.when(notesRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Note1));</b>
+<i class="no-highlight">242</i>&nbsp;
+<b class="fc"><i class="no-highlight">243</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.delete(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}&quot;, 1L, 1L, 1L);</b>
+<i class="no-highlight">244</i>&nbsp;
+<b class="fc"><i class="no-highlight">245</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">246</i>&nbsp;
+<b class="fc"><i class="no-highlight">247</i>&nbsp;        assertEquals(HttpStatus.NO_CONTENT.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">248</i>&nbsp;    }
+<i class="no-highlight">249</i>&nbsp;
+<i class="no-highlight">250</i>&nbsp;    @Test
+<i class="no-highlight">251</i>&nbsp;    public void deleteSpecificNote_empty() throws Exception{
+<i class="no-highlight">252</i>&nbsp;        //&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes
+<b class="fc"><i class="no-highlight">253</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList(Note1, Note2));</b>
+<b class="fc"><i class="no-highlight">254</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList(Note1, Note2));</b>
+<b class="fc"><i class="no-highlight">255</i>&nbsp;        List&lt;Patient&gt; simonPatients = new ArrayList(Arrays.asList(Jonathan, EmilL));</b>
+<i class="no-highlight">256</i>&nbsp;
+<b class="fc"><i class="no-highlight">257</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">258</i>&nbsp;
+<b class="fc"><i class="no-highlight">259</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, simonPatients, simonNotes);</b>
+<b class="fc"><i class="no-highlight">260</i>&nbsp;        Note1.setDoctor(Simon);</b>
+<b class="fc"><i class="no-highlight">261</i>&nbsp;        Note2.setDoctor(Simon);</b>
+<i class="no-highlight">262</i>&nbsp;
+<b class="fc"><i class="no-highlight">263</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));</b>
+<b class="fc"><i class="no-highlight">264</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));</b>
+<b class="fc"><i class="no-highlight">265</i>&nbsp;        Mockito.when(notesRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(null));</b>
+<i class="no-highlight">266</i>&nbsp;
+<b class="fc"><i class="no-highlight">267</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.delete(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}&quot;, 1L, 1L, 3L);</b>
+<i class="no-highlight">268</i>&nbsp;
+<b class="fc"><i class="no-highlight">269</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">270</i>&nbsp;
+<b class="fc"><i class="no-highlight">271</i>&nbsp;        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">272</i>&nbsp;    }
+<i class="no-highlight">273</i>&nbsp;
+<i class="no-highlight">274</i>&nbsp;    @Test
+<i class="no-highlight">275</i>&nbsp;    public void deleteSpecificNote_noAssoc() throws Exception {
+<b class="fc"><i class="no-highlight">276</i>&nbsp;        List&lt;Notes&gt; jonathanNotes = new ArrayList&lt;&gt;(Arrays.asList(Note1, Note2));</b>
+<b class="fc"><i class="no-highlight">277</i>&nbsp;        List&lt;Notes&gt; simonNotes = new ArrayList(Arrays.asList(Note1, Note2));</b>
+<i class="no-highlight">278</i>&nbsp;
+<b class="fc"><i class="no-highlight">279</i>&nbsp;        Jonathan.setNotes(jonathanNotes);</b>
+<i class="no-highlight">280</i>&nbsp;
+<b class="fc"><i class="no-highlight">281</i>&nbsp;        Doctor Simon = new Doctor(1L, &quot;simon&quot;, &quot;rigshospitalet&quot;, &quot;simon@gmail.com&quot;, Arrays.asList(), simonNotes);</b>
+<b class="fc"><i class="no-highlight">282</i>&nbsp;        Note1.setDoctor(Simon);</b>
+<b class="fc"><i class="no-highlight">283</i>&nbsp;        Note2.setDoctor(Simon);</b>
+<i class="no-highlight">284</i>&nbsp;
+<b class="fc"><i class="no-highlight">285</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Simon));</b>
+<b class="fc"><i class="no-highlight">286</i>&nbsp;        Mockito.when(patientRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Jonathan));</b>
+<b class="fc"><i class="no-highlight">287</i>&nbsp;        Mockito.when(notesRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(Note1));</b>
+<i class="no-highlight">288</i>&nbsp;
+<b class="fc"><i class="no-highlight">289</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.delete(&quot;/api/v1/Doctors/{doctorId}/patients/{patientId}/Notes/{noteId}&quot;, 1L, 1L, 1L);</b>
+<i class="no-highlight">290</i>&nbsp;
+<b class="fc"><i class="no-highlight">291</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">292</i>&nbsp;
+<b class="fc"><i class="no-highlight">293</i>&nbsp;        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">294</i>&nbsp;    }
+<i class="no-highlight">295</i>&nbsp;
+<i class="no-highlight">296</i>&nbsp;
+<i class="no-highlight">297</i>&nbsp;
+<i class="no-highlight">298</i>&nbsp;
+<i class="no-highlight">299</i>&nbsp;
+<i class="no-highlight">300</i>&nbsp;}
+<i class="no-highlight">301</i>&nbsp;
+<i class="no-highlight">302</i>&nbsp;
+<i class="no-highlight">303</i>&nbsp;
+<i class="no-highlight">304</i>&nbsp;
+<i class="no-highlight">305</i>&nbsp;
+<i class="no-highlight">306</i>&nbsp;
+<i class="no-highlight">307</i>&nbsp;
+<i class="no-highlight">308</i>&nbsp;
+<i class="no-highlight">309</i>&nbsp;
+<i class="no-highlight">310</i>&nbsp;
+<i class="no-highlight">311</i>&nbsp;
+<i class="no-highlight">312</i>&nbsp;
+<i class="no-highlight">313</i>&nbsp;
+<i class="no-highlight">314</i>&nbsp;
+<i class="no-highlight">315</i>&nbsp;
+<i class="no-highlight">316</i>&nbsp;
+<i class="no-highlight">317</i>&nbsp;
+<i class="no-highlight">318</i>&nbsp;
+<i class="no-highlight">319</i>&nbsp;
+<i class="no-highlight">320</i>&nbsp;
+<i class="no-highlight">321</i>&nbsp;
+<i class="no-highlight">322</i>&nbsp;
+<i class="no-highlight">323</i>&nbsp;
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-17 15:17</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > DoctorControllerTest</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">diabetes</a>
+</div>
+
+<h1>Coverage Summary for Class: DoctorControllerTest (diabetes)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DoctorControllerTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package diabetes;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i class="no-highlight">4</i>&nbsp;import diabetes.controller.DoctorController;
+<i class="no-highlight">5</i>&nbsp;import diabetes.model.Doctor;
+<i class="no-highlight">6</i>&nbsp;import diabetes.model.Patient;
+<i class="no-highlight">7</i>&nbsp;import diabetes.repositories.DoctorRepository;
+<i class="no-highlight">8</i>&nbsp;import diabetes.repositories.MeasurementRepository;
+<i class="no-highlight">9</i>&nbsp;import diabetes.repositories.PatientRepository;
+<i class="no-highlight">10</i>&nbsp;import org.junit.Test;
+<i class="no-highlight">11</i>&nbsp;import org.junit.runner.RunWith;
+<i class="no-highlight">12</i>&nbsp;import org.mockito.Mockito;
+<i class="no-highlight">13</i>&nbsp;import org.skyscreamer.jsonassert.JSONAssert;
+<i class="no-highlight">14</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i class="no-highlight">15</i>&nbsp;import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+<i class="no-highlight">16</i>&nbsp;import org.springframework.boot.test.mock.mockito.MockBean;
+<i class="no-highlight">17</i>&nbsp;import org.springframework.http.HttpStatus;
+<i class="no-highlight">18</i>&nbsp;import org.springframework.test.context.ContextConfiguration;
+<i class="no-highlight">19</i>&nbsp;import org.springframework.test.context.junit4.SpringRunner;
+<i class="no-highlight">20</i>&nbsp;import org.springframework.test.web.servlet.MockMvc;
+<i class="no-highlight">21</i>&nbsp;import org.springframework.test.web.servlet.MvcResult;
+<i class="no-highlight">22</i>&nbsp;import org.springframework.test.web.servlet.RequestBuilder;
+<i class="no-highlight">23</i>&nbsp;import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">26</i>&nbsp;import java.util.*;
+<i class="no-highlight">27</i>&nbsp;import java.util.List;
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;import static org.junit.Assert.assertEquals;
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;//Emil Pontoppidan Rasmussen, s204441 and Simon Stampe Jensen, s204488
+<i class="no-highlight">32</i>&nbsp;@RunWith(SpringRunner.class)
+<i class="no-highlight">33</i>&nbsp;@WebMvcTest(value = DoctorController.class)
+<b class="fc"><i class="no-highlight">34</i>&nbsp;public class DoctorControllerTest {</b>
+<i class="no-highlight">35</i>&nbsp;    @Autowired
+<i class="no-highlight">36</i>&nbsp;    MockMvc mockMvc;
+<i class="no-highlight">37</i>&nbsp;
+<i class="no-highlight">38</i>&nbsp;    @MockBean
+<i class="no-highlight">39</i>&nbsp;    PatientRepository patientRepository;
+<i class="no-highlight">40</i>&nbsp;    @MockBean
+<i class="no-highlight">41</i>&nbsp;    DoctorRepository doctorRepository;
+<i class="no-highlight">42</i>&nbsp;
+<i class="no-highlight">43</i>&nbsp;    @MockBean
+<i class="no-highlight">44</i>&nbsp;    MeasurementRepository measurementRepository;
+<b class="fc"><i class="no-highlight">45</i>&nbsp;    List&lt;Doctor&gt; doctors = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">46</i>&nbsp;    List&lt;Patient&gt; patients = Arrays.asList(new Patient(1L,&quot;Jonathan&quot;,&quot;Jonathan@gmail.com&quot;,null, doctors, null));</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;    Doctor testDoc = new Doctor(1L, &quot;Sylvester Stallone&quot;, &quot;Rigshospitalet&quot;, &quot;sylvesterstallone@gmail.com&quot;, patients, null);</b>
+<i class="no-highlight">48</i>&nbsp;    @Test
+<i class="no-highlight">49</i>&nbsp;    public void getDoctor_success() throws Exception {
+<b class="fc"><i class="no-highlight">50</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong()))</b>
+<b class="fc"><i class="no-highlight">51</i>&nbsp;                .thenReturn(Optional.ofNullable(testDoc));</b>
+<i class="no-highlight">52</i>&nbsp;
+<b class="fc"><i class="no-highlight">53</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.get(&quot;/api/v1/Doctors/{doctorId}&quot;, 1L);</b>
+<i class="no-highlight">54</i>&nbsp;
+<b class="fc"><i class="no-highlight">55</i>&nbsp;        String expected_result = new ObjectMapper().writeValueAsString(testDoc);</b>
+<b class="fc"><i class="no-highlight">56</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">57</i>&nbsp;
+<b class="fc"><i class="no-highlight">58</i>&nbsp;        JSONAssert.assertEquals(expected_result,</b>
+<b class="fc"><i class="no-highlight">59</i>&nbsp;                result.getResponse().getContentAsString(), false);</b>
+<i class="no-highlight">60</i>&nbsp;    }
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;    @Test
+<i class="no-highlight">63</i>&nbsp;    public void getDoctor_failure() throws Exception {
+<b class="fc"><i class="no-highlight">64</i>&nbsp;        Mockito.when(doctorRepository.findById(Mockito.anyLong()))</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;                .thenReturn(Optional.ofNullable(null));</b>
+<i class="no-highlight">66</i>&nbsp;
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        RequestBuilder request = MockMvcRequestBuilders.get(&quot;/api/v1/Doctors/{doctorId}&quot;, 1L);</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;        MvcResult result = mockMvc.perform(request).andReturn();</b>
+<i class="no-highlight">69</i>&nbsp;
+<b class="fc"><i class="no-highlight">70</i>&nbsp;        assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());</b>
+<i class="no-highlight">71</i>&nbsp;    }
+<i class="no-highlight">72</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-06-17 15:17</div>
+</div>
+</body>
+</html>
