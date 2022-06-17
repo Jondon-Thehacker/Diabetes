@@ -21,8 +21,9 @@
             <b-row>
                 <b-col>
                     <!--v-if statement for each possible visualization layout-->
+                    <p v-if="visualizationOption === ''" class="landing-page">Choose a visualization option...</p>
                     <visualization-box v-if="visualizationOption === 'General Information'" :doctorId="doctorId" :patientId="patientId" />
-                    <visualization-single-chart v-if="visualizationOption != 'General Information'" 
+                    <visualization-single-chart v-if="visualizationOption != 'General Information' && visualizationOption != ''" 
                     :doctorId="doctorId" :patientId="patientId" :chartType="visualizationOption" />
                 </b-col>
             </b-row>
@@ -41,7 +42,7 @@ import VisualizationSingleChart from '../visualization/VisualizationSingleChart.
 export default {
     data() {
         return {
-            visualizationOption: "General Information"
+            visualizationOption: ""
         }
     },
 
@@ -79,6 +80,12 @@ export default {
 
 .top-bar2 {
     background-color: whitesmoke;
+}
+
+.landing-page {
+    padding-top:200px;
+    color: grey;
+    font-size: 20px;
 }
 
 

@@ -31,7 +31,6 @@ export default{
     methods: {
         //DELETE-call to delete the selected note. Also emits to parent that an update is needed
         deleteNote(noteId){
-            console.log()
             this.axios.delete(
                 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/patients/' + this.patientId + '/Notes/' + noteId
             ).then(res => {

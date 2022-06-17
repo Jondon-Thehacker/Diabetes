@@ -225,7 +225,6 @@ export default {
           legend: {
             labels: {
               filter: function (item) {
-                console.log(item.text)
                   return !(item.text === 'null');
               }
 
