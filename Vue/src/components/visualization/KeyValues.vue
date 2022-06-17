@@ -47,188 +47,83 @@ export default {
   },
 
   methods: {
-    //GET-call for retrieving standard deviation and displaying the correct unit
-      getStdDiv(){
+    getKeyValues(){
         this.axios({
-            method: 'get',
-            url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId +'/' + this.measurementType + '/' + this.timeInterval +'/standardDeviation'
+          method: 'get',
+          url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/' + this.measurementType + '/' + this.timeInterval + '/summary/keyValues/5'
         }).then(res => {
-          //Checking if any data is in the time interval
-          if(res.data != "NaN") {
-            switch(this.measurementType){
+          console.log(res.data.keyValues)
+
+          switch(this.measurementType){
               case 'EXERCISE':
-                this.stddiv = res.data.toPrecision(4) + ' %';
+                this.gcv = null
+                this.gmi = null
+                this.avg = res.data.keyValues.Average.toPrecision(4) + ' %';
+                this.stddiv = res.data.keyValues.Sd.toPrecision(4) + ' %';
+                this.min = res.data.keyValues.Min.toPrecision(4) + ' %';
+                this.max = res.data.keyValues.Max.toPrecision(4) + ' %';
                 break;
               case 'CGM':
-                this.stddiv = res.data.toPrecision(4) + ' mmol/L';
+                this.gcv = res.data.keyValues.GV.toPrecision(4) + ' %'
+                this.gmi = res.data.keyValues.GMI.toPrecision(4) + ' mmol/mol'
+                this.avg = res.data.keyValues.Average.toPrecision(4) + ' mmol/L';
+                this.stddiv = res.data.keyValues.Sd.toPrecision(4) + ' mmol/L';
+                this.min = res.data.keyValues.Min.toPrecision(4) + ' mmol/L';
+                this.max = res.data.keyValues.Max.toPrecision(4) + ' mmol/L';
                 break;
               case 'MEALS':
-                this.stddiv = res.data.toPrecision(4) + ' g CHO';
+                this.gcv = null
+                this.gmi = null
+                this.avg = res.data.keyValues.Average.toPrecision(4) + ' g CHO';
+                this.stddiv = res.data.keyValues.Sd.toPrecision(4) + ' g CHO';
+                this.min = res.data.keyValues.Min.toPrecision(4) + ' g CHO';
+                this.max = res.data.keyValues.Max.toPrecision(4) + ' g CHO';
                 break;
               case 'BASAL':
-                this.stddiv = res.data.toPrecision(4) + ' mU/min';
+                this.gcv = null
+                this.gmi = null
+                this.avg = res.data.keyValues.Average.toPrecision(4) + ' mU/min';
+                this.stddiv = res.data.keyValues.Sd.toPrecision(4) + ' mU/min';
+                this.min = res.data.keyValues.Min.toPrecision(4) + ' mU/min';
+                this.max = res.data.keyValues.Max.toPrecision(4) + ' mU/min';
                 break;
               case 'BOLUS':
-                this.stddiv = res.data.toPrecision(4) + ' U';
+                this.gcv = null
+                this.gmi = null
+                this.avg = res.data.keyValues.Average.toPrecision(4) + ' U';
+                this.stddiv = res.data.keyValues.Sd.toPrecision(4) + ' U';
+                this.min = res.data.keyValues.Min.toPrecision(4) + ' U';
+                this.max = res.data.keyValues.Max.toPrecision(4) + ' U';
                 break;
               default:
-                this.stddiv = res.data.toPrecision(4);
+                this.gcv = null
+                this.gmi = null                
+                this.avg = res.data.keyValues.Average.toPrecision(4)
+                this.stddiv = res.data.keyValues.Sd.toPrecision(4)
+                this.min = res.data.keyValues.Min.toPrecision(4)
+                this.max = res.data.keyValues.Max.toPrecision(4)
             }
-
-          }
-        })  
-      },
-      //GET-call for retrieving GMI and displaying the correct unit
-      getGMI() {
-        this.axios({
-          method: 'get',
-          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/CGM/' + this.timeInterval + '/GMI'
-        }).then(res =>{
-          //Checking if any data is in the time interval
-          if(res.data != "NaN"){
-            this.gmi = res.data.toPrecision(4) + ' mmol/mol'
-          }
         })
-      },
-      //GET-call for retrieving minimum value and displaying the correct unit
-      getMin() {
-        this.axios({
-          method: 'get',
-          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/min'
-        }).then(res => {
-          //Checking if any data is in the time interval
-          if(res.data != -1){
-            switch(this.measurementType){
-              case 'EXERCISE':
-                this.min = res.data.toPrecision(4) + ' %';
-                break;
-              case 'CGM':
-                this.min = res.data.toPrecision(4) + ' mmol/L';
-                break;
-              case 'MEALS':
-                this.min = res.data.toPrecision(4) + ' g CHO';
-                break;
-              case 'BASAL':
-                this.min = res.data.toPrecision(4) + ' mU/min';
-                break;
-              case 'BOLUS':
-                this.min = res.data.toPrecision(4) + ' U';
-                break;
-              default:
-                this.min = res.data.toPrecision(4);
-            }
-
-          }
-        })
-      },
-      //GET-call for retrieving maximum value and displaying the correct unit
-      getMax() {
-        this.axios({
-          method: 'get',
-          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/max'
-        }).then(res => {
-          //Checking if any data is in the time interval
-          if(res.data != -1) {
-            switch(this.measurementType){
-              case 'EXERCISE':
-                this.max = res.data.toPrecision(4) + ' %';
-                break;
-              case 'CGM':
-                this.max = res.data.toPrecision(4) + ' mmol/L';
-                break;
-              case 'MEALS':
-                this.max = res.data.toPrecision(4) + ' g CHO';
-                break;
-              case 'BASAL':
-                this.max = res.data.toPrecision(4) + ' mU/min';
-                break;
-              case 'BOLUS':
-                this.max = res.data.toPrecision(4) + ' U';
-                break;
-              default:
-                this.max = res.data.toPrecision(4);
-            }
-
-          }
-        })
-      },
-      //GET-call for retrieving glucose variation and displaying the correct unit
-      getGCV() {
-        this.axios({
-          method: 'get',
-          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/CGM/' + this.timeInterval + '/glucoseVariability'
-        }).then(res => {
-          //Checking if any data is in the time interval
-          if(res.data != "NaN") {
-            this.gcv = res.data.toPrecision(4) + ' mmol/L'
-          }
-        })
-      },
-      //GET-call for retrieving average and displaying the correct unit
-      getAVG(){
-        this.axios({
-          method: 'get',
-          url: 'http://localhost:8080/api/v1/Doctors/'+ this.doctorId +'/'+ this.patientId +'/' + this.measurementType + '/' + this.timeInterval + '/average'
-        }).then(res => {
-          //Checking if any data is in the time interval
-          if (res.data != "NaN") {
-            switch(this.measurementType){
-              case 'EXERCISE':
-                this.avg = res.data.toPrecision(4) + ' %';
-                break;
-              case 'CGM':
-                this.avg = res.data.toPrecision(4) + ' mmol/L';
-                break;
-              case 'MEALS':
-                this.avg = res.data.toPrecision(4) + ' g CHO';
-                break;
-              case 'BASAL':
-                this.avg = res.data.toPrecision(4) + ' mU/min';
-                break;
-              case 'BOLUS':
-                this.avg = res.data.toPrecision(4) + ' U';
-                break;
-              default:
-                this.avg = res.data.toPrecision(4);
-            }
-
-          }
-        })
-      }
+    }
   },
 
   watch:{
     patientId(){
       //Null check
       if (this.patientId!=null && this.measurementType!=null && this.timeInterval!=null) {
-        this.getStdDiv()
-        this.getAVG()
-        this.getGCV()
-        this.getMin()
-        this.getMax() 
-        this.getGMI()
+        this.getKeyValues()
       }
     },
     measurementType() {
       //Null check
       if(this.patientId!=null && this.measurementType!=null && this.timeInterval!=null){
-        this.getStdDiv()
-        this.getAVG()
-        this.getGCV()
-        this.getMin()
-        this.getMax() 
-        this.getGMI() 
+        this.getKeyValues()
       }
     },
     timeInterval(){
       //Null check
       if(this.patientId!=null && this.measurementType!=null && this.timeInterval!=null){
-        this.getStdDiv()
-        this.getAVG()
-        this.getGCV()
-        this.getMin()
-        this.getMax() 
-        this.getGMI()
+        this.getKeyValues()
       }
 
     }

@@ -180,7 +180,7 @@ public class Patient {
                     result = count(measurements);
                     break;
                 case "glucoseVariability":
-                    result = standardDeviation(measurements)/average(measurements);
+                    result = (standardDeviation(measurements)/average(measurements))*100;
                     break;
                 case "max":
                     //Maps measurement value onto compare function max.
@@ -341,13 +341,13 @@ public class Patient {
                 case "keyValues" -> {
                     //Put summary statistics in the statistics object
                     //List could be streamed and mapped once to a forEach method, but that would shuffle the key order of the linked HashMap
-                    statistics.put("GV", standardDeviation(measurements)/average(measurements));
-                    statistics.put("GMI", 3.31 + 0.02392 * average(measurements));
+                    statistics.put("GV", (standardDeviation(measurements)/average(measurements))*100);
+                    statistics.put("GMI", 12.71 + 4.70587 * average(measurements));
                     statistics.put("Sd", standardDeviation(measurements));
                     statistics.put("Min", measurements.stream().map(Measurement::getValue).min(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Max", measurements.stream().map(Measurement::getValue).max(Comparator.comparing(Double::valueOf)).get());
                     statistics.put("Average", average(measurements));
-                    out.put(currentTime.toLocalTime().toString() + ":00", statistics);
+                    out.put("keyValues", statistics);
 
                     currentTime = endDate;
                 }
