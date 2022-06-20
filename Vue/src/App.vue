@@ -77,11 +77,13 @@ export default {
   padding: 0;
 }
 
+
 body {
   /*Hide Scrollbar*/
-  overflow: hidden;
+  /*overflow: hidden;*/
   
 }
+
 </style>
 
 

@@ -52,7 +52,6 @@ export default {
           method: 'get',
           url: 'http://localhost:8080/api/v1/Doctors/' + this.doctorId + '/' + this.patientId + '/' + this.measurementType + '/' + this.timeInterval + '/summary/keyValues/5'
         }).then(res => {
-          console.log(res.data)
           if(res.data != "" && res.data != undefined){
             switch(this.measurementType){
                 case 'EXERCISE':

@@ -197,7 +197,6 @@ public class Patient {
                                          .get();
                     break;
                 case "GMI":
-                    //result = 3.31 + 0.02392 * average(measurements); // måske 1.627177700 + 0.03484320557*avg ?
                     result = 12.71 + 4.70587 * average(measurements);
                     break;
                 case "countAbove":
