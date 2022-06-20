@@ -76,12 +76,12 @@ public class InsertScript {
 
         FileWriter myWriter  = new FileWriter(writeFile);
 
-        int measurementId = 645139 + 1;
+        int measurementId = 0;
 
         myWriter.write("INSERT INTO measurement (measurement_id, measurement_name, time, value, patient_id) VALUES" + "\n");
         for(int i = 0; i < 20; i++){
-            for(int j = 0; j < 8065 - 1; j++){
-                if (i == 19 && j == 8063){
+            for(int j = 0; j < 8065 - 1; j++){ //-1 when extracting other than CGM
+                if (i == 19 && j == 8064 - 1){ //-1 when extracting other than CGM
                     myWriter.write("(" + measurementId + "," + "'" + type + "'" + "," + "'" + time[j] + "'" + "," + measurements[i][j] + "," + i + ")" + ";");
                     measurementId++;
                 }else{
