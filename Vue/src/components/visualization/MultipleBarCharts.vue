@@ -74,13 +74,13 @@ export default {
                 hoverBorderWidth: 0,
               },
               {
-                label: "3.9 <= G < 10 mmol/l",
+                label: "3.9 <= G <= 10 mmol/l",
                 backgroundColor: "#bbdcd3",
                 data: [],
                 hoverBorderWidth: 0,
               },
               {
-                label: "10 <= G < 13.9 mmol/l",
+                label: "10 < G <= 13.9 mmol/l",
                 backgroundColor: "#f8de7e",
                 data: [],
                 hoverBorderWidth: 0,
@@ -143,14 +143,14 @@ export default {
                 hoverBorderWidth: 0,
               },
               {
-                label: "3.9 <= G < 10 mmol/l \n",
+                label: "3.9 <= G <= 10 mmol/l \n",
                 backgroundColor: "#bbdcd3",
                 //Extracting the measurements in range of normal levels
                 data: Object.values(res.data).map(m => m.InRange),
                 hoverBorderWidth: 0,
               },
               {
-                label: "10 <= G < 13.9 mmol/l \n",
+                label: "10 < G <= 13.9 mmol/l \n",
                 backgroundColor: "#f8de7e",
                 //Extracting the measurements slightly above normal levels
                 data: Object.values(res.data).map(m => m.SlightlyAbove),

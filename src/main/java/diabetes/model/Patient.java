@@ -214,13 +214,13 @@ public class Patient {
                 case "countInRange":
                     result = measurements.stream()
                                          .map(v -> v.getValue())
-                                         .filter(mv -> mv < 10 && mv >= 3.9)
+                                         .filter(mv -> mv <= 10 && mv >= 3.9)
                                          .count();
                     break;
                 case "countSlightlyAbove":
                     result = measurements.stream()
                                          .map(v -> v.getValue())
-                                         .filter(mv -> mv <= 13.9 && mv>= 10)
+                                         .filter(mv -> mv <= 13.9 && mv> 10)
                                          .count();
                     break;
                 case "countSlightlyBelow":
@@ -321,8 +321,8 @@ public class Patient {
                     //Put summary statistics in the statistics object
                     //List could be streamed and mapped once to a forEach method, but that would shuffle the key order of the linked HashMap
                     statistics.put("Above", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv > 13.9).count());
-                    statistics.put("SlightlyAbove", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv <= 13.9 && mv >= 10).count());
-                    statistics.put("InRange", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 10 && mv >= 3.9).count());
+                    statistics.put("SlightlyAbove", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv <= 13.9 && mv > 10).count());
+                    statistics.put("InRange", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv <= 10 && mv >= 3.9).count());
                     statistics.put("SlightlyBelow", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3.9 && mv >= 3).count());
                     statistics.put("Below", (double) measurementsAtTime.stream().map(Measurement::getValue).filter(mv -> mv < 3).count());
                     out.put(currentTime.toLocalTime().toString() + ":00", statistics);
