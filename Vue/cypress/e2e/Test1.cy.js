@@ -100,9 +100,6 @@ describe('Test1.cy.js', () => {
       cy.wait(100)
       cy.get('.modal-content').should('be.visible')
       cy.contains('Yes').last().click({ force: true })
-
-      //cy.contains(new RegExp('Testing for patient: ' + patient)).last().get('.delete-note-btn').last().click({force:true})
-
     })
   })
 
