@@ -78,12 +78,6 @@ export default {
 }
 
 
-body {
-  /*Hide Scrollbar*/
-  /*overflow: hidden;*/
-  
-}
-
 </style>
 
 
